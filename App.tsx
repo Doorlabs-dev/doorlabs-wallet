@@ -3,15 +3,19 @@ import 'react-native-polyfill-globals/auto';
 import 'react-native-get-random-values';
 import './shim';
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { RecoilRoot } from 'recoil';
 import AppNavigation from './src/router';
+import { StatusBar } from 'expo-status-bar';
 
 const App = () => {
   return (
-    <RecoilRoot>
-      <AppNavigation />
-    </RecoilRoot>
+    <Fragment>
+      <StatusBar style="light" />
+      <RecoilRoot>
+        <AppNavigation />
+      </RecoilRoot>
+    </Fragment>
   );
 };
 

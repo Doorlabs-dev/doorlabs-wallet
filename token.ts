@@ -38,8 +38,3 @@ export function transfer(
   etherContract.connect(fromAccount);
   return etherContract.transfer(address, uint256.bnToUint256(transferBn));
 }
-
-export function formatEther(amount: BigNumberish) {
-  const [int, dec = '0'] = utils.formatEther(amount).split('.');
-  return `${int}.${dec.substring(0, 6)}`;
-}

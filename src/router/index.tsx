@@ -17,7 +17,8 @@ const AppNavigation = () => {
   return (
     <NavigationContainer>
       {/* {biometricsRequired ? <AuthStack /> : <HomeTabs />} */}
-      <AuthStack />
+      {/* <AuthStack /> */}
+      <HomeTabs />
     </NavigationContainer>
   );
 };

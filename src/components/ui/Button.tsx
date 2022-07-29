@@ -8,9 +8,12 @@ type Props = {
 };
 
 const Button = styled.TouchableOpacity`
-  ${({ width = 300, height = 64, color = colors.secondary }: Props) => {
+  ${({ width, height = 64, color = colors.secondary }: Props) => {
     return css`
-      width: ${width}px;
+      ${width &&
+      css`
+        width: ${width};
+      `}
       height: ${height}px;
       background-color: ${color};
       border-radius: 40px;
