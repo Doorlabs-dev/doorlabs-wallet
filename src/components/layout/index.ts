@@ -1,3 +1,4 @@
 import Container from './Container';
+import Spacer from './Spacer';
 
-export { Container };
+export { Container, Spacer };

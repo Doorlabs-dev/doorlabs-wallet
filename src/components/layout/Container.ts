@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { colors } from '../../styles';
 
 type Props = {
   center?: boolean;
@@ -6,7 +7,7 @@ type Props = {
 };
 
 const Container = styled.View`
-  ${({ center = true, color }: Props) => {
+  ${({ center = true, color = colors.primary }: Props) => {
     return css`
       flex: 1;
       ${center &&

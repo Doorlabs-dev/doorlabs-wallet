@@ -16,7 +16,7 @@ const token = {
 
 const etherContract = new Contract(Erc20Abi as Abi, token.address, provider);
 
-function getBalance(address: string): Promise<BigNumber> {
+export function getBalance(address: string): Promise<BigNumber> {
   return etherContract.balanceOf(address).then(([balance]: [Uint256]) => {
     return BigNumber.from(number.toHex(uint256.uint256ToBN(balance)));
   });
