@@ -10,10 +10,7 @@ const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator
-      initialRouteName="create-wallet-password"
-      screenOptions={{ headerShown: false }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen
         name="create-wallet-password"

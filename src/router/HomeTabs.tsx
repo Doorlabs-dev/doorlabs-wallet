@@ -1,14 +1,19 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/HomeScreen';
 
-const Tab = createBottomTabNavigator();
+import { AccountDetailScreen } from '../screens/account';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 const HomeTabs = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="assets" component={HomeScreen} />
-    </Tab.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="account-detail"
+        component={AccountDetailScreen}
+      />
+    </Stack.Navigator>
   );
 };
 
