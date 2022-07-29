@@ -38,7 +38,7 @@ const AccountDetailScreen = () => {
           }}
         />
         <Spacer width={10} />
-        <Title size={24}>{data ? data : 'Fetching...'}</Title>
+        <Title size={24}>{data ? data : 'Loading...'}</Title>
       </Row>
       <Spacer height={32} />
       <Row>
