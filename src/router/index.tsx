@@ -4,6 +4,7 @@ import AuthStack from './AuthStack';
 import HomeTabs from './HomeTabs';
 import useBiometrics from '../hooks/useBiometrics';
 import useAppState from '../hooks/useAppState';
+import { Container } from '../components/layout';
 
 const AppNavigation = () => {
   const { biometricsRequired, setBiometricsRequired } = useBiometrics();
@@ -16,7 +17,7 @@ const AppNavigation = () => {
   return (
     <NavigationContainer>
       {/* {biometricsRequired ? <AuthStack /> : <HomeTabs />} */}
-      <HomeTabs />
+      <AuthStack />
     </NavigationContainer>
   );
 };
