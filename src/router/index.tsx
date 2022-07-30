@@ -1,24 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './AuthStack';
 import HomeTabs from './HomeTabs';
-import useBiometrics from '../hooks/useBiometrics';
 import useAppState from '../hooks/useAppState';
-import { Container } from '../components/layout';
+import OnboardingStack from './OnboardingStack';
+import useAuthentication from '../hooks/useAuthentication';
+import { SplashScreen } from '../screens/onboarding';
 
 const AppNavigation = () => {
-  const { biometricsRequired, setBiometricsRequired } = useBiometrics();
+  const {
+    isCheckingAccount,
+    isAccountAvailable,
+    isAuthenticated,
+    setIsAuthenticated,
+    checkAccountAvailable,
+  } = useAuthentication();
+
   useAppState({
     onAppActive: () => {
-      setBiometricsRequired(true);
+      setIsAuthenticated(false);
     },
     onAppBackground: () => {},
   });
+
+  useEffect(() => {
+    checkAccountAvailable();
+  }, []);
+
+  if (isCheckingAccount) return <SplashScreen />;
+
   return (
     <NavigationContainer>
-      {/* {biometricsRequired ? <AuthStack /> : <HomeTabs />} */}
-      {/* <AuthStack /> */}
-      <HomeTabs />
+      {isAccountAvailable ? (
+        isAuthenticated ? (
+          <HomeTabs />
+        ) : (
+          <AuthStack />
+        )
+      ) : (
+        <OnboardingStack />
+      )}
     </NavigationContainer>
   );
 };

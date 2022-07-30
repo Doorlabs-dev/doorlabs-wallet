@@ -17,11 +17,11 @@ const WelcomeScreen = () => {
     <Container>
       <Title>Doorlabs Wallet</Title>
       <Spacer height={32} />
-      <Button onPress={navigateToCreatePasswordScreen}>
+      <Button width={300} onPress={navigateToCreatePasswordScreen}>
         <Title size={20}>Create wallet</Title>
       </Button>
       <Spacer height={16} />
-      <Button>
+      <Button width={300}>
         <Title size={20}>Restore wallet</Title>
       </Button>
     </Container>
