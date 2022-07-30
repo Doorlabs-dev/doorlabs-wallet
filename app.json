@@ -14,18 +14,22 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSFaceIDUsageDescription": "To login to app"
-      }
+      },
+      "bundleIdentifier": "com.doorlabs.wallet"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#161616"
-      }
+      },
+      "package": "com.doorlabs.wallet"
     },
     "web": {
       "favicon": "./assets/favicon.png"
