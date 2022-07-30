@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Image } from 'react-native';
 import { hexToDecimalString } from 'starknet/dist/utils/number';
 import useSWR from 'swr';
@@ -15,13 +15,17 @@ const useETHBalance = (address: string) => {
     (url) => fetch(url).then((res) => res.json())
   );
 
-  if (error || !data) return null;
+  const isLoading = useMemo(() => !data && !error, [data, error]);
 
-  return formatEther(hexToDecimalString(`${data.balance}`));
+  return {
+    error,
+    data,
+    isLoading,
+  };
 };
 
 const AccountDetailScreen = () => {
-  const data = useETHBalance(address);
+  const { data, error, isLoading } = useETHBalance(address);
 
   return (
     <Container>
@@ -38,7 +42,13 @@ const AccountDetailScreen = () => {
           }}
         />
         <Spacer width={10} />
-        <Title size={24}>{data ? data : 'Loading...'}</Title>
+        <Title size={24}>
+          {data
+            ? formatEther(hexToDecimalString(`${data.balance}`))
+            : isLoading
+            ? 'Loading...'
+            : error}
+        </Title>
       </Row>
       <Spacer height={32} />
       <Row>

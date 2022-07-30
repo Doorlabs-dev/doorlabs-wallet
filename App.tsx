@@ -1,5 +1,4 @@
 import 'node-libs-react-native/globals';
-import 'react-native-polyfill-globals/auto';
 import 'react-native-get-random-values';
 import './shim';
 
