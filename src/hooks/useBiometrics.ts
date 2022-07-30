@@ -1,39 +1,41 @@
 import { Alert } from 'react-native';
-import { atom, useRecoilState } from 'recoil';
 import * as LocalAuthentication from 'expo-local-authentication';
-
-export const biometricsRequiredState = atom({
-  key: 'biometricsState',
-  default: true,
-});
+import { useEffect, useState } from 'react';
 
 type UseBiometrics = {
-  biometricsRequired: boolean;
-  setBiometricsRequired: (required: boolean) => void;
-  authenticateBiometrics: () => Promise<void>;
+  isBiometricsAvailable: boolean;
+  authenticateBiometrics: (onSuccess?: () => void) => Promise<void>;
+  checkAvailable: () => Promise<boolean>;
 };
 
 const useBiometrics = (): UseBiometrics => {
-  const [biometricsRequired, setBiometricsRequired] = useRecoilState(
-    biometricsRequiredState
-  );
+  const [isBiometricsAvailable, setIsBiometricsAvailable] = useState(false);
 
-  const authenticateBiometrics = async () => {
+  useEffect(() => {
+    checkAvailable().then(setIsBiometricsAvailable);
+  }, []);
+
+  const checkAvailable = async () => {
+    const isHardwareAvailable = await LocalAuthentication.hasHardwareAsync();
+    const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+    return isHardwareAvailable && isEnrolled;
+  };
+
+  const authenticateBiometrics = async (onSuccess?: () => void) => {
     const result = await LocalAuthentication.authenticateAsync();
 
     if (result.success) {
       Alert.alert('Sucessfully authenticated');
-      setBiometricsRequired(false);
+      onSuccess?.();
     } else {
       Alert.alert('Fail authentication');
-      setBiometricsRequired(false);
     }
   };
 
   return {
-    biometricsRequired,
-    setBiometricsRequired,
+    isBiometricsAvailable,
     authenticateBiometrics,
+    checkAvailable,
   };
 };
 

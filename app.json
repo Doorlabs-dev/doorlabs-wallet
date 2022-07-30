@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-js-demo",
-    "slug": "app-js-demo",
+    "name": "doorlabs-wallet",
+    "slug": "doorlabs-wallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,12 +11,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#161616"
     },
+    "jsEngine": "hermes",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
