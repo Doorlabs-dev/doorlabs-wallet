@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-import { AccountDetailScreen } from '../screens/account';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AccountDetailScreen, AccountCreating } from '../screens/account'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 const HomeTabs = () => {
   return (
@@ -11,10 +11,11 @@ const HomeTabs = () => {
       <Stack.Screen
         options={{ headerShown: false }}
         name="account-detail"
-        component={AccountDetailScreen}
+        // component={AccountDetailScreen}
+        component={AccountCreating}
       />
     </Stack.Navigator>
-  );
-};
+  )
+}
 
-export default HomeTabs;
+export default HomeTabs
