@@ -12,7 +12,7 @@ const Button = styled.TouchableOpacity`
     return css`
       ${width &&
       css`
-        width: ${width};
+        width: ${width}px;
       `}
       height: ${height}px;
       background-color: ${color};

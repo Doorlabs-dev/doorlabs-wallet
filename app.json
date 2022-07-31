@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-js-demo",
-    "slug": "app-js-demo",
+    "name": "doorlabs-wallet",
+    "slug": "doorlabs-wallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,6 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#161616"
     },
+    "jsEngine": "hermes",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -19,13 +20,15 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSFaceIDUsageDescription": "To login to app"
-      }
+      },
+      "bundleIdentifier": "com.doorlabs.wallet"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#161616"
-      }
+      },
+      "package": "com.doorlabs.wallet"
     },
     "web": {
       "favicon": "./assets/favicon.png"
