@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import { useState } from 'react'
-import { Abi, Account, Contract, ec, json, Provider, stark } from 'starknet'
+import { Abi, Account, Contract, ec, json, Provider, stark, defaultProvider } from 'starknet'
 import ArgentAccount from '../../contracts/ArgentAccount.json'
 import { createRandomWallet } from './wallet'
 
