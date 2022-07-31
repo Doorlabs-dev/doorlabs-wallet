@@ -1,3 +1,5 @@
+// copied from https://github.com/argentlabs/argent-x/blob/develop/packages/extension/src/background/keys/keyDerivation.ts
+
 import { BigNumber, BigNumberish, utils } from 'ethers'
 import isNumber from 'lodash-es/isNumber'
 import { KeyPair, ec, number } from 'starknet'
