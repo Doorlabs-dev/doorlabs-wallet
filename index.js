@@ -2,6 +2,7 @@ import 'node-libs-react-native/globals';
 import 'react-native-url-polyfill/auto';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
+import 'fast-text-encoding'; // just require me before use
 
 import './shim';
 

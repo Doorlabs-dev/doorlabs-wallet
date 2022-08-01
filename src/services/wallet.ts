@@ -16,9 +16,9 @@ import {
 } from 'starknet';
 
 import ArgentAccount from '../../contracts/ArgentAccount.json';
+import ProxyContract from '../../contracts/ProxyContract.json';
 import { HDNode } from 'ethers/lib/utils';
-import { grindKey } from './keys/keyDerivation';
-import { useRef } from 'react';
+import { getNextPathIndex, getStarkPair, grindKey } from './keys/keyDerivation';
 
 const provider = new Provider({ network: 'goerli-alpha' }); // TODO: should be able to switch network later
 
@@ -109,15 +109,8 @@ export const deployAccountStarkNet = async () => {
 };
 
 import * as SecureStorage from 'expo-secure-store';
-
-type Session = {
-  password: string;
-  secret: string;
-};
-
-type BaseWalletAccount = {
-  address: string;
-};
+import { BaseWalletAccount, WalletSession } from './wallet.model';
+import { getSelectorFromName } from 'starknet/dist/utils/hash';
 
 const BACKUP_KEY = 'backup';
 const ACCOUNT_KEY = 'account';
@@ -125,16 +118,24 @@ const N = 64;
 const encryptOptions = {
   scrypt: { N },
 };
-
+const PROXY_CONTRACT_CLASS_HASHES = [
+  '0x25ec026985a3bf9d0cc1fe17326b245dfdc3ff89b8fde106542a3ea56c5a918',
+];
+const ARGENT_ACCOUNT_CONTRACT_CLASS_HASHES = [
+  '0x3e327de1c40540b98d05cbcb13552008e36f0ec8d61d46956d2f9752c294328',
+];
+const baseDerivationPath = "m/44'/9004'/0'/0";
 class Wallet {
   public backup?: string;
-  public session?: Session;
+  public session?: WalletSession;
 
   setSession(secret: string, password: string) {
     this.session = { password, secret };
   }
 
-  async startSession(password: string) {
+  async startSession(password?: string) {
+    if (!password) return;
+
     if (!(await this.isInitialized())) {
       await this.createWallet(password);
       return true;
@@ -204,43 +205,71 @@ class Wallet {
     await this.storeBackup();
   }
 
-  async getWalletAccount(): Promise<BaseWalletAccount | null> {
+  async getWalletAccount(): Promise<BaseWalletAccount | undefined> {
     const result = await SecureStorage.getItemAsync(ACCOUNT_KEY);
 
-    if (result) {
-      return JSON.parse(result) as BaseWalletAccount;
-    }
-    return null;
+    if (!result) return;
+
+    return JSON.parse(result) as BaseWalletAccount;
   }
 
   async addWalletAccount(account: BaseWalletAccount) {
     await SecureStorage.setItemAsync(ACCOUNT_KEY, JSON.stringify(account));
   }
 
+  async getAccountClassHash() {
+    // Goerli-testnet account class hash
+    return '0x3e327de1c40540b98d05cbcb13552008e36f0ec8d61d46956d2f9752c294328';
+    // return PROXY_CONTRACT_CLASS_HASHES[0];
+  }
+
+  async getDeployContractPayloadForAccount() {
+    const starkKeyPair = ec.getKeyPair(this.session?.secret);
+    const starkKeyPub = ec.getStarkKey(starkKeyPair);
+    console.log('Getting account class hash');
+    const accountClassHash = await this.getAccountClassHash();
+    console.log('Account class hash', accountClassHash);
+
+    const payload = {
+      contract: {
+        abi: ProxyContract.abi as Abi,
+        program: ProxyContract.program,
+        entry_points_by_type: ProxyContract.entry_points_by_type,
+      },
+      constructorCalldata: stark.compileCalldata({
+        implementation: accountClassHash,
+        selector: getSelectorFromName('initialize'),
+        calldata: stark.compileCalldata({ signer: starkKeyPub, guardian: '0' }),
+      }),
+      addressSalt: starkKeyPub,
+    };
+
+    return payload;
+  }
+
   async createNewAccount() {
     if (!this.session) return;
 
-    const starkKeyPair = ec.getKeyPair(this.session.secret);
-    const starkKeyPub = ec.getStarkKey(starkKeyPair);
+    console.log('Getting payload for deploying contract');
+    const payload = await this.getDeployContractPayloadForAccount();
+    console.log(payload);
+    console.log('Deploying proxy contract');
+    const txResponse = await provider.deployContract(payload);
 
-    const txResponse = await provider.deployContract({
-      contract: {
-        abi: ArgentAccount.abi as Abi,
-        program: ArgentAccount.program,
-        entry_points_by_type: ArgentAccount.entry_points_by_type,
-      },
-      addressSalt: starkKeyPub,
-    });
-
+    console.log(txResponse);
+    console.log('Waiting for transaction to be accepted');
     await provider.waitForTransaction(txResponse.transaction_hash);
 
     if (!txResponse.address) throw 'Cannot create account';
 
+    console.log('Create account successfully');
     const account = {
       address: txResponse.address,
     };
+
     await this.addWalletAccount(account);
     await this.storeBackup();
+
     return { account, txHash: txResponse.transaction_hash };
   }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Image } from 'react-native';
+import { ActivityIndicator, Image } from 'react-native';
 import { hexToDecimalString } from 'starknet/dist/utils/number';
 import useSWR from 'swr';
 
@@ -27,16 +27,19 @@ const useETHBalance = (address: string) => {
 };
 
 const AccountDetailScreen = () => {
-  // const { data, error, isLoading } = useETHBalance(address);
-
-  useWallet();
+  const { account, createNewAccount, isInitializing } = useWallet();
 
   return (
     <Container>
       <Title>Accounts 1</Title>
-      <ShortAddress address={address} />
-      <Spacer height={16} />
-      <Row alignItems="center">
+      {isInitializing && <ActivityIndicator />}
+      {account && <ShortAddress address={account.address} />}
+      {!account && (
+        <Button onPress={createNewAccount}>
+          <Title>Create account</Title>
+        </Button>
+      )}
+      {/* <Row alignItems="center">
         <Image
           resizeMode="contain"
           source={{
@@ -46,15 +49,14 @@ const AccountDetailScreen = () => {
           }}
         />
         <Spacer width={10} />
-        {/* <Title size={24}>
+        <Title size={24}>
           {data
             ? formatEther(hexToDecimalString(`${data.balance}`))
             : isLoading
             ? 'Loading...'
             : error}
-        </Title> */}
-      </Row>
-      <Spacer height={32} />
+        </Title>
+      </Row> */}
     </Container>
   );
 };
