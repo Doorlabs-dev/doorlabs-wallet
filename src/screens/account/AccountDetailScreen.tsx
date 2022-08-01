@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Image } from 'react-native';
 import { hexToDecimalString } from 'starknet/dist/utils/number';
 import useSWR from 'swr';
+
 import { Container, Row, Spacer } from '../../components/layout';
 import { Button, ShortAddress, Title } from '../../components/ui';
+import useWallet from '../../hooks/useWallet';
 import { formatEther } from '../../utils';
 
 const address =
@@ -25,7 +27,9 @@ const useETHBalance = (address: string) => {
 };
 
 const AccountDetailScreen = () => {
-  const { data, error, isLoading } = useETHBalance(address);
+  // const { data, error, isLoading } = useETHBalance(address);
+
+  useWallet();
 
   return (
     <Container>
@@ -42,24 +46,15 @@ const AccountDetailScreen = () => {
           }}
         />
         <Spacer width={10} />
-        <Title size={24}>
+        {/* <Title size={24}>
           {data
             ? formatEther(hexToDecimalString(`${data.balance}`))
             : isLoading
             ? 'Loading...'
             : error}
-        </Title>
+        </Title> */}
       </Row>
       <Spacer height={32} />
-      <Row>
-        <Button width={100} height={36}>
-          <Title size={16}>Send</Title>
-        </Button>
-        <Spacer width={10} />
-        <Button width={100} height={36}>
-          <Title size={16}>Receive</Title>
-        </Button>
-      </Row>
     </Container>
   );
 };

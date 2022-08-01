@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { atom, useRecoilState } from 'recoil';
-import useWalletPassword from './useWalletPassword';
+import useWalletPassword from '../services/wallet_password';
 
 const accountAvailableState = atom({
   key: 'accountAvailableState',
