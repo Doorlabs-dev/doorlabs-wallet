@@ -5,6 +5,7 @@ import '@ethersproject/shims';
 import 'fast-text-encoding'; // just require me before use
 
 import './shim';
+import 'react-native-gesture-handler';
 
 import { registerRootComponent } from 'expo';
 

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './AuthStack';
-import HomeTabs from './HomeTabs';
 import useAppState from '../hooks/useAppState';
 import OnboardingStack from './OnboardingStack';
 import useAuthentication from '../hooks/useAuthentication';
 import { SplashScreen } from '../screens/onboarding';
+import MainDrawer from './MainDrawer';
 
 const AppNavigation = () => {
   const {
@@ -33,7 +33,7 @@ const AppNavigation = () => {
     <NavigationContainer>
       {isAccountAvailable ? (
         isAuthenticated ? (
-          <HomeTabs />
+          <MainDrawer />
         ) : (
           <AuthStack />
         )

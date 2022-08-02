@@ -1,11 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert } from 'react-native';
+import { ActivityIndicator, ToastAndroid } from 'react-native';
 import { TextInput } from '../../components/form';
 import { Container, Spacer } from '../../components/layout';
 import { Button, Text, Title } from '../../components/ui';
 import useAuthentication from '../../hooks/useAuthentication';
+import wallet from '../../services/wallet';
 import useWalletPassword from '../../services/wallet_password';
+import { colors } from '../../styles';
 
 const NewWalletScreen = () => {
   const { control, handleSubmit, getValues } = useForm({
@@ -15,20 +17,55 @@ const NewWalletScreen = () => {
     },
     mode: 'onChange',
   });
-  const { setPassword } = useWalletPassword();
+
+  const { setWalletPassword } = useWalletPassword();
   const { setIsAuthenticated, setIsAccountAvailable } = useAuthentication();
+  const [isCreatingWallet, setIsCreatingWallet] = useState(false);
+  const [error, setError] = useState<any>();
 
   const onConfirm = () => {
     handleSubmit(async ({ password }) => {
-      await setPassword(password);
-      setIsAuthenticated(true);
-      setIsAccountAvailable(true);
+      try {
+        setIsCreatingWallet(true);
+
+        await setWalletPassword(password);
+        const success = await wallet.startSession(password);
+
+        if (!success) throw Error('Error creating wallet');
+
+        await wallet.createNewAccount();
+
+        setTimeout(() => {
+          setIsAuthenticated(true);
+          setIsAccountAvailable(true);
+        }, 300);
+      } catch (e) {
+        setIsCreatingWallet(false);
+        ToastAndroid.show(`${error}`, 2000);
+      }
     })();
   };
 
   const isSameValue = (value: string) => {
     return value === getValues().password;
   };
+
+  if (error) {
+    return (
+      <Container>
+        <Title textAlign="center">{error}</Title>
+      </Container>
+    );
+  }
+
+  if (isCreatingWallet) {
+    return (
+      <Container>
+        <ActivityIndicator size={'large'} color={colors.white} />
+        <Title textAlign="center">Creating wallet{'\n'}for you...🚀</Title>
+      </Container>
+    );
+  }
 
   return (
     <Container>
