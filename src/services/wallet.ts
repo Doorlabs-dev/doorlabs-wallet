@@ -13,6 +13,7 @@ import {
   stark,
   defaultProvider,
   KeyPair,
+  hash,
 } from 'starknet';
 
 import ArgentAccount from '../../contracts/ArgentAccount.json';
@@ -110,7 +111,12 @@ export const deployAccountStarkNet = async () => {
 
 import * as SecureStorage from 'expo-secure-store';
 import { BaseWalletAccount, WalletSession } from './wallet.model';
-import { getSelectorFromName } from 'starknet/dist/utils/hash';
+import {
+  calculateContractAddressFromHash,
+  getSelectorFromName,
+} from 'starknet/dist/utils/hash';
+import { fromCallsToExecuteCalldata } from 'starknet/dist/utils/transaction';
+import { contract } from '../../contracts/contract';
 
 const BACKUP_KEY = 'backup';
 const ACCOUNT_KEY = 'account';
@@ -219,29 +225,38 @@ class Wallet {
 
   async getAccountClassHash() {
     // Goerli-testnet account class hash
-    return '0x3e327de1c40540b98d05cbcb13552008e36f0ec8d61d46956d2f9752c294328';
-    // return PROXY_CONTRACT_CLASS_HASHES[0];
+
+    return ARGENT_ACCOUNT_CONTRACT_CLASS_HASHES[0];
   }
 
   async getDeployContractPayloadForAccount() {
-    const starkKeyPair = ec.getKeyPair(this.session?.secret);
-    const starkKeyPub = ec.getStarkKey(starkKeyPair);
-    console.log('Getting account class hash');
-    const accountClassHash = await this.getAccountClassHash();
-    console.log('Account class hash', accountClassHash);
+    const starkKeyPair = getStarkPair(
+      0,
+      this.session?.secret ?? '',
+      baseDerivationPath
+    );
 
+    const starkPub = ec.getStarkKey(starkKeyPair);
+    const accountClassHash = await this.getAccountClassHash();
+    console.log('Selector', hash.getSelectorFromName('initialize'));
     const payload = {
       contract: {
         abi: ProxyContract.abi as Abi,
         program: ProxyContract.program,
         entry_points_by_type: ProxyContract.entry_points_by_type,
       },
+      // contract: compiledProxyContract,
       constructorCalldata: stark.compileCalldata({
         implementation: accountClassHash,
-        selector: getSelectorFromName('initialize'),
-        calldata: stark.compileCalldata({ signer: starkKeyPub, guardian: '0' }),
+        // entry_point_selector: hash.getSelectorFromName('initialize'),
+        entry_point_selector:
+          '0x79dc0da7c54b95f10aa182ad0a46400db63156920adb65eca2654c0945a463',
+        calldata: stark.compileCalldata({
+          signer: starkPub,
+          guardian: '0',
+        }),
       }),
-      addressSalt: starkKeyPub,
+      addressSalt: starkPub,
     };
 
     return payload;
@@ -252,11 +267,12 @@ class Wallet {
 
     console.log('Getting payload for deploying contract');
     const payload = await this.getDeployContractPayloadForAccount();
-    console.log(payload);
+
     console.log('Deploying proxy contract');
     const txResponse = await provider.deployContract(payload);
 
     console.log(txResponse);
+
     console.log('Waiting for transaction to be accepted');
     await provider.waitForTransaction(txResponse.transaction_hash);
 
