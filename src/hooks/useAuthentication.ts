@@ -19,10 +19,10 @@ const useAuthentication = () => {
   );
   const [isAuthenticated, setIsAuthenticated] =
     useRecoilState(authenticationState);
-  const { getSavedPassword } = useWalletPassword();
+  const { getWalletSavedPassword } = useWalletPassword();
 
   const checkAccountAvailable = async () => {
-    const result = await getSavedPassword();
+    const result = await getWalletSavedPassword();
     if (result != null) {
       setIsAccountAvailable(true);
     }
