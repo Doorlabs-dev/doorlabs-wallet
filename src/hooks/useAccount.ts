@@ -26,9 +26,8 @@ const useAccount = (account?: BaseWalletAccount) => {
   const reload = () => {
     mutate();
   };
-
   return {
-    balance: !!data && !error ? data?.balance : '0x0',
+    balance: data?.balance ?? '0x0',
     address: account?.address ?? '',
     reload,
   };

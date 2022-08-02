@@ -16,7 +16,7 @@ const AccountDetailScreen = () => {
     getWalletAccount();
   }, []);
   const { address, balance, reload } = useAccount(account);
-
+  console.log('My balance', balance);
   if (!account) {
     return (
       <Container>
