@@ -1,7 +1,3 @@
-import 'node-libs-react-native/globals';
-import 'react-native-get-random-values';
-import './shim';
-
 import React, { Fragment } from 'react';
 import { RecoilRoot } from 'recoil';
 import AppNavigation from './src/router';

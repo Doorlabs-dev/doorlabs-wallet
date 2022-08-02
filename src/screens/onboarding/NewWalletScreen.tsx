@@ -5,9 +5,9 @@ import { TextInput } from '../../components/form';
 import { Container, Spacer } from '../../components/layout';
 import { Button, Text, Title } from '../../components/ui';
 import useAuthentication from '../../hooks/useAuthentication';
-import useWalletPassword from '../../hooks/useWalletPassword';
+import useWalletPassword from '../../services/wallet_password';
 
-const CreateWalletPasswordScreen = () => {
+const NewWalletScreen = () => {
   const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       password: '',
@@ -58,7 +58,7 @@ const CreateWalletPasswordScreen = () => {
               value={value}
               onChangeText={onChange}
               secureTextEntry
-              placeholder="Password"
+              placeholder="Password confirmation"
             />
             <Text color="red" size={12}>
               {error?.type == 'validate'
@@ -76,4 +76,4 @@ const CreateWalletPasswordScreen = () => {
   );
 };
 
-export default CreateWalletPasswordScreen;
+export default NewWalletScreen;

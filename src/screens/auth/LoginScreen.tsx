@@ -4,7 +4,7 @@ import useBiometrics from '../../hooks/useBiometrics';
 import { Button, Text, Title } from '../../components/ui';
 import { TextInput } from '../../components/form';
 import { Alert } from 'react-native';
-import useWalletPassword from '../../hooks/useWalletPassword';
+import useWalletPassword from '../../services/wallet_password';
 import useAuthentication from '../../hooks/useAuthentication';
 import { Controller, useForm } from 'react-hook-form';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AccountDetailScreen } from '../screens/account';
+import { AccountDetailScreen, AccountCreating } from '../screens/account';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
@@ -12,6 +12,7 @@ const HomeTabs = () => {
         options={{ headerShown: false }}
         name="account-detail"
         component={AccountDetailScreen}
+        // component={AccountCreating}
       />
     </Stack.Navigator>
   );
