@@ -1,10 +1,8 @@
-import React, { Fragment, useEffect, useMemo } from 'react';
-import { ActivityIndicator, Image } from 'react-native';
+import React, { Fragment, useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { hexToDecimalString } from 'starknet/dist/utils/number';
-import useSWR from 'swr';
-
 import { Container, Row, Spacer } from '../../components/layout';
-import { Button, EtherIcon, ShortAddress, Title } from '../../components/ui';
+import { EtherIcon, ShortAddress, Title } from '../../components/ui';
 import useAccount from '../../hooks/useAccount';
 import useWallet from '../../hooks/useWallet';
 import { colors } from '../../styles';
@@ -15,8 +13,9 @@ const AccountDetailScreen = () => {
   useEffect(() => {
     getWalletAccount();
   }, []);
+
   const { address, balance, reload } = useAccount(account);
-  console.log('My balance', balance);
+
   if (!account) {
     return (
       <Container>
