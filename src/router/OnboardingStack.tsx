@@ -1,6 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NewWalletScreen, WelcomeScreen } from '../screens/onboarding';
+import {
+  InputSeedPhraseScreen,
+  RestoreWalletScreen,
+} from '../screens/recovery';
 
 const Stack = createNativeStackNavigator();
 
@@ -9,6 +13,8 @@ const OnboardingStack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="create-wallet-password" component={NewWalletScreen} />
+      <Stack.Screen name="input-phrase" component={InputSeedPhraseScreen} />
+      <Stack.Screen name="restore-wallet" component={RestoreWalletScreen} />
     </Stack.Navigator>
   );
 };
