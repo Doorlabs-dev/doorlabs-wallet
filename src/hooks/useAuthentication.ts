@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { atom, useRecoilState } from 'recoil';
+import wallet from '../services/wallet';
 import useWalletPassword from '../services/wallet_password';
 
 const accountAvailableState = atom({
@@ -23,7 +24,9 @@ const useAuthentication = () => {
 
   const checkAccountAvailable = async () => {
     const result = await getWalletSavedPassword();
-    if (result != null) {
+    const initialized = await wallet.isInitialized();
+
+    if (result != null && initialized) {
       setIsAccountAvailable(true);
     }
     setIsCheckingAccount(false);

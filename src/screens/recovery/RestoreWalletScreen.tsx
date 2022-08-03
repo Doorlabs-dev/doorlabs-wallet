@@ -1,3 +1,4 @@
+import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, ToastAndroid } from 'react-native';
@@ -5,11 +6,12 @@ import { TextInput } from '../../components/form';
 import { Container, Spacer } from '../../components/layout';
 import { Button, Text, Title } from '../../components/ui';
 import useAuthentication from '../../hooks/useAuthentication';
+import { AuthStackParamList } from '../../router/AuthStack';
 import wallet from '../../services/wallet';
 import useWalletPassword from '../../services/wallet_password';
 import { colors } from '../../styles';
 
-const NewWalletScreen = () => {
+const RestoreWalletScreen = () => {
   const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       password: '',
@@ -17,30 +19,28 @@ const NewWalletScreen = () => {
     },
     mode: 'onChange',
   });
+  const { params } =
+    useRoute<RouteProp<AuthStackParamList, 'restore-wallet'>>();
+  const phrase = params?.phrase;
 
   const { setWalletPassword } = useWalletPassword();
   const { setIsAuthenticated, setIsAccountAvailable } = useAuthentication();
-  const [isCreatingWallet, setIsCreatingWallet] = useState(false);
-  const [error, setError] = useState<any>();
+  const [isRestoring, setIsRestoring] = useState(false);
 
   const onConfirm = () => {
     handleSubmit(async ({ password }) => {
       try {
-        setIsCreatingWallet(true);
+        setIsRestoring(true);
 
         await setWalletPassword(password);
-        const success = await wallet.startSession(password);
-
-        if (!success) throw Error('Error creating wallet');
-
-        await wallet.createNewAccount();
+        await wallet.restoreSeedPhrase(phrase, password);
 
         setTimeout(() => {
           setIsAuthenticated(true);
           setIsAccountAvailable(true);
         }, 300);
       } catch (e) {
-        setIsCreatingWallet(false);
+        setIsRestoring(false);
         ToastAndroid.show(`${e}`, 2000);
       }
     })();
@@ -50,26 +50,18 @@ const NewWalletScreen = () => {
     return value === getValues().password;
   };
 
-  if (error) {
-    return (
-      <Container>
-        <Title textAlign="center">{error}</Title>
-      </Container>
-    );
-  }
-
-  if (isCreatingWallet) {
+  if (isRestoring) {
     return (
       <Container>
         <ActivityIndicator size={'large'} color={colors.white} />
-        <Title textAlign="center">Creating wallet{'\n'}for you...🚀</Title>
+        <Title textAlign="center">Bring your wallet home...😍</Title>
       </Container>
     );
   }
 
   return (
     <Container>
-      <Title>Create your wallet password</Title>
+      <Title textAlign="center">New password{'\n'}for your wallet</Title>
       <Spacer height={32} />
       <Controller
         name="password"
@@ -113,4 +105,4 @@ const NewWalletScreen = () => {
   );
 };
 
-export default NewWalletScreen;
+export default RestoreWalletScreen;

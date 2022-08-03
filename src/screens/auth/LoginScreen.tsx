@@ -9,6 +9,8 @@ import useAuthentication from '../../hooks/useAuthentication';
 import { Controller, useForm } from 'react-hook-form';
 import wallet from '../../services/wallet';
 import { colors } from '../../styles';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNavigationProps } from '../../router/navigation-props';
 
 const LoginScreen = () => {
   const { authenticateBiometrics, isBiometricsAvailable } = useBiometrics();
@@ -16,6 +18,7 @@ const LoginScreen = () => {
   const { setIsAuthenticated } = useAuthentication();
   const [savedPassword, setSavedPassword] = useState<string | null>();
   const [isStarting, setIsStarting] = useState(false);
+  const navigation = useNavigation<ScreenNavigationProps<any>>();
 
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
@@ -76,7 +79,11 @@ const LoginScreen = () => {
         <Title size={20}>Unlock</Title>
       </Button>
       <Spacer height={32} />
-      <Text onPress={() => Alert.alert('TODO: recover page')}>
+      <Text
+        onPress={() => {
+          navigation.navigate({ name: 'reset-confirmation' });
+        }}
+      >
         Recover your wallet ?
       </Text>
     </Container>
