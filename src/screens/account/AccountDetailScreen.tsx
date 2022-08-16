@@ -7,6 +7,7 @@ import useAccount from '../../hooks/useAccount';
 import useWallet from '../../hooks/useWallet';
 import { colors } from '../../styles';
 import { formatEther } from '../../utils';
+import { SelectNetworkDropdown } from './components';
 
 const AccountDetailScreen = () => {
   const { account, getWalletAccount } = useWallet();
@@ -26,10 +27,9 @@ const AccountDetailScreen = () => {
 
   return (
     <Container>
-      <Fragment>
-        <Title>Account</Title>
-        <ShortAddress address={address} />
-      </Fragment>
+      <SelectNetworkDropdown />
+      <Title>Account</Title>
+      <ShortAddress address={address} />
       <Spacer height={16} />
       <Row alignItems="center">
         <EtherIcon />
