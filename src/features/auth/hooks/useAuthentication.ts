@@ -1,17 +1,11 @@
 import { useState } from 'react';
-import { atom, useRecoilState } from 'recoil';
-import wallet from '../services/wallet';
-import useWalletPassword from '../services/wallet_password';
-
-const accountAvailableState = atom({
-  key: 'accountAvailableState',
-  default: false,
-});
-
-const authenticationState = atom({
-  key: 'authenticationState',
-  default: false,
-});
+import { useRecoilState } from 'recoil';
+import wallet from '../../../services/wallet';
+import useWalletPassword from '../../../services/wallet_password';
+import {
+  accountAvailableState,
+  authenticationState,
+} from '../authentication.state';
 
 const useAuthentication = () => {
   const [isCheckingAccount, setIsCheckingAccount] = useState(true);

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Spacer } from '../../components/layout';
-import useBiometrics from '../../hooks/useBiometrics';
-import { Button, Text, Title } from '../../components/ui';
-import { TextInput } from '../../components/form';
+import { Container, Spacer } from '../../../components/layout';
+import useBiometrics from '../../../hooks/useBiometrics';
+import { Button, Text, Title } from '../../../components/ui';
+import { TextInput } from '../../../components/form';
 import { ActivityIndicator, Alert } from 'react-native';
-import useWalletPassword from '../../services/wallet_password';
-import useAuthentication from '../../hooks/useAuthentication';
+import useWalletPassword from '../../../services/wallet_password';
+import useAuthentication from '../hooks/useAuthentication';
 import { Controller, useForm } from 'react-hook-form';
-import wallet from '../../services/wallet';
-import { colors } from '../../styles';
+import wallet from '../../../services/wallet';
+import { colors } from '../../../styles';
 import { useNavigation } from '@react-navigation/native';
-import { ScreenNavigationProps } from '../../router/navigation-props';
+import { ScreenNavigationProps } from '../../../router/navigation-props';
 
 const LoginScreen = () => {
   const { authenticateBiometrics, isBiometricsAvailable } = useBiometrics();

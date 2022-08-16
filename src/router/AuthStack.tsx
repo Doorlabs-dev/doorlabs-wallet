@@ -1,11 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LoginScreen } from '../screens/auth';
-import {
-  InputSeedPhraseScreen,
-  ResetConfirmationScreen,
-  RestoreWalletScreen,
-} from '../screens/recovery';
+
+import InputSeedPhraseScreen from '../features/recovery/screen/InputSeedPhraseScreen';
+import RestoreWalletScreen from '../features/recovery/screen/RestoreWalletScreen';
+import ResetConfirmationScreen from '../features/recovery/screen/ResetConfirmationScreen';
+import LoginScreen from '../features/auth/screen/LoginScreen';
 
 export type AuthStackParamList = {
   login: undefined;

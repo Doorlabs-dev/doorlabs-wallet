@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/drawer';
 import HomeTabs from './HomeTabs';
 import { colors } from '../styles';
-import { GetSeedPhraseScreen } from '../screens/recovery';
+import GetSeedPhraseScreen from '../features/recovery/screen/GetSeedPhraseScreen';
 
 const Drawer = createDrawerNavigator();
 

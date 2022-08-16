@@ -1,10 +1,10 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ToastAndroid } from 'react-native';
-import { Container, Spacer } from '../../components/layout';
-import { Button, Title } from '../../components/ui';
-import wallet from '../../services/wallet';
-import { colors } from '../../styles';
+import { Container, Spacer } from '../../../components/layout';
+import { Button, Title } from '../../../components/ui';
+import wallet from '../../../services/wallet';
+import { colors } from '../../../styles';
 import * as Clipboard from 'expo-clipboard';
 
 type Props = {};
