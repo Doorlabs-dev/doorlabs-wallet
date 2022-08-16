@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Container, Row, Spacer } from '../../components/layout';
-import { Button, Title } from '../../components/ui';
-import useAuthentication from '../../hooks/useAuthentication';
-import { ScreenNavigationProps } from '../../router/navigation-props';
-import wallet from '../../services/wallet';
-import useWalletPassword from '../../services/wallet_password';
-import { colors } from '../../styles';
+import { Container, Row, Spacer } from '../../../components/layout';
+import { Button, Title } from '../../../components/ui';
+import useAuthentication from '../../auth/hooks/useAuthentication';
+import { ScreenNavigationProps } from '../../../router/navigation-props';
+import wallet from '../../../services/wallet';
+import useWalletPassword from '../../../services/wallet_password';
+import { colors } from '../../../styles';
 
 type Props = {};
 

@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
-import wallet from '../services/wallet';
-import { BaseWalletAccount } from '../services/wallet.model';
+import { useCallback, useState } from 'react';
+import wallet from '../../../services/wallet';
+import { BaseWalletAccount } from '../../../services/wallet.model';
 
 const useWallet = () => {
   const [account, setAccount] = useState<BaseWalletAccount>();

@@ -3,11 +3,11 @@ import { ethers } from 'ethers';
 import { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, ToastAndroid } from 'react-native';
-import { TextInput } from '../../components/form';
-import { Container, Spacer } from '../../components/layout';
-import { Button, Text, Title } from '../../components/ui';
-import { ScreenNavigationProps } from '../../router/navigation-props';
-import { colors } from '../../styles';
+import { TextInput } from '../../../components/form';
+import { Container, Spacer } from '../../../components/layout';
+import { Button, Text, Title } from '../../../components/ui';
+import { ScreenNavigationProps } from '../../../router/navigation-props';
+import { colors } from '../../../styles';
 
 const InputSeedPhraseScreen = () => {
   const { control, handleSubmit } = useForm();

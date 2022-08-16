@@ -1,10 +1,9 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NewWalletScreen, WelcomeScreen } from '../screens/onboarding';
-import {
-  InputSeedPhraseScreen,
-  RestoreWalletScreen,
-} from '../screens/recovery';
+import WelcomeScreen from '../features/onboarding/screen/WelcomeScreen';
+import NewWalletScreen from '../features/onboarding/screen/NewWalletScreen';
+import InputSeedPhraseScreen from '../features/recovery/screen/InputSeedPhraseScreen';
+import RestoreWalletScreen from '../features/recovery/screen/RestoreWalletScreen';
 
 const Stack = createNativeStackNavigator();
 

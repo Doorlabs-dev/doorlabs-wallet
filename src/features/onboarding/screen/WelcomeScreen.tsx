@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Container, Spacer } from '../../components/layout';
-import { Button, Title } from '../../components/ui';
-import { ScreenNavigationProps } from '../../router/navigation-props';
+import { Container, Spacer } from '../../../components/layout';
+import { Button, Title } from '../../../components/ui';
+import { ScreenNavigationProps } from '../../../router/navigation-props';
 
 type Props = {};
 

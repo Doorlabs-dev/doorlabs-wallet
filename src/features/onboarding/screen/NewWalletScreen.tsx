@@ -1,13 +1,13 @@
 import React, { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ActivityIndicator, ToastAndroid } from 'react-native';
-import { TextInput } from '../../components/form';
-import { Container, Spacer } from '../../components/layout';
-import { Button, Text, Title } from '../../components/ui';
-import useAuthentication from '../../hooks/useAuthentication';
-import wallet from '../../services/wallet';
-import useWalletPassword from '../../services/wallet_password';
-import { colors } from '../../styles';
+import { TextInput } from '../../../components/form';
+import { Container, Spacer } from '../../../components/layout';
+import { Button, Text, Title } from '../../../components/ui';
+import useAuthentication from '../../auth/hooks/useAuthentication';
+import wallet from '../../../services/wallet';
+import useWalletPassword from '../../../services/wallet_password';
+import { colors } from '../../../styles';
 
 const NewWalletScreen = () => {
   const { control, handleSubmit, getValues } = useForm({
