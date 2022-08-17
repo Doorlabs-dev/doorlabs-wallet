@@ -9,12 +9,7 @@ const useAccounts = () => {
     return await wallet.getWalletAccountsByNetwork(networkId);
   };
 
-  const getSelectedAccount = async () => {
-    return await wallet.getSelectedAccount();
-  };
-
   return {
-    getSelectedAccount,
     getAllWalletAccounts,
     getAccountsByNetwork,
   };
