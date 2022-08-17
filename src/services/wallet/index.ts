@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { Abi, ec, json, Provider, stark } from 'starknet';
-import ProxyContract from '../../../contracts/ProxyContract.json';
+import ProxyContract from '../../contracts/ProxyContract.json';
 import {
   getNextPathIndex,
   getPathForIndex,

@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, ToastAndroid } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
 import { Button, Text, Title } from '../../../components/ui';
@@ -45,7 +46,7 @@ const NewWalletScreen = () => {
         }, 300);
       } catch (e) {
         setIsCreatingWallet(false);
-        console.log(e);
+        Toast.show(`${e}`);
       }
     })();
   };

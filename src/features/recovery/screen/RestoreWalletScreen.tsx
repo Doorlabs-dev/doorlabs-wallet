@@ -1,7 +1,8 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, ToastAndroid } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
 import { Button, Text, Title } from '../../../components/ui';
@@ -41,7 +42,7 @@ const RestoreWalletScreen = () => {
         }, 300);
       } catch (e) {
         setIsRestoring(false);
-        ToastAndroid.show(`${e}`, 2000);
+        Toast.show(`${e}`);
       }
     })();
   };

@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  BottomTabBarProps,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AccountScreen from '../features/account/screen/AccountScreen';
-import { Dimensions, View } from 'react-native';
 import { CustomTabBar } from '../components/ui';
 
 const Tabs = createBottomTabNavigator();
