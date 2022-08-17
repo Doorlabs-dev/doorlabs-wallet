@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import useSWR from 'swr';
-import { BaseWalletAccount } from '../../../services/wallet.model';
+
+import { BaseWalletAccount } from '../../../services/wallet/wallet.model';
 
 const BASE_EXPLORE_URL = 'https://goerli.voyager.online';
 
@@ -32,5 +33,3 @@ const useAccount = (account?: BaseWalletAccount) => {
     reload,
   };
 };
-
-export default useAccount;

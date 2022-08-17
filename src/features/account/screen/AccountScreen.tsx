@@ -1,23 +1,27 @@
-import React, { Fragment, useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import { hexToDecimalString } from 'starknet/dist/utils/number';
 import { Container, Row, Spacer } from '../../../components/layout';
-import { EtherIcon, ShortAddress, Title } from '../../../components/ui';
-import useAccount from '../hooks/useAccount';
-import useWallet from '../../wallet/hooks/useWallet';
+import { EtherIcon, ShortAddress, Text, Title } from '../../../components/ui';
+import { WalletAccount } from '../../../services/wallet/wallet.model';
 import { colors } from '../../../styles';
 import { formatEther } from '../../../utils';
 import SelectNetworkDropdown from '../../network/components/SelectNetworkDropdown';
+import useAccounts from '../hooks/useAccounts';
 
 const AccountScreen = () => {
-  const { account, getWalletAccount } = useWallet();
+  const [selectedAccount, setSelectedAccount] = useState<WalletAccount | null>(
+    null
+  );
+  const { getSelectedAccount } = useAccounts();
+
   useEffect(() => {
-    getWalletAccount();
+    getSelectedAccount().then((res) => {
+      setSelectedAccount(res);
+    });
   }, []);
 
-  const { address, balance, reload } = useAccount(account);
-
-  if (!account) {
+  if (!selectedAccount) {
     return (
       <Container>
         <ActivityIndicator size={'large'} color={colors.white} />
@@ -28,14 +32,17 @@ const AccountScreen = () => {
   return (
     <Container>
       <SelectNetworkDropdown />
-      <Title>Account</Title>
-      <ShortAddress address={address} />
-      <Spacer height={16} />
-      <Row alignItems="center">
-        <EtherIcon />
-        <Spacer width={10} />
-        <Title size={24}>{formatEther(hexToDecimalString(balance))} ETH</Title>
-      </Row>
+      <View>
+        <Title>Account</Title>
+        <Spacer height={16} />
+        <ShortAddress address={selectedAccount.address} />
+        <Spacer height={16} />
+        <Row alignItems="center">
+          {/* <EtherIcon />
+            <Spacer width={10} /> */}
+          {/* <Title size={24}>{formatEther(hexToDecimalStrng(balance))} ETH</Title> */}
+        </Row>
+      </View>
     </Container>
   );
 };

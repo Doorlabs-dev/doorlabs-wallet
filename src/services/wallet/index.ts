@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { Abi, ec, Provider, stark } from 'starknet';
+import { Abi, ec, json, Provider, stark } from 'starknet';
 import ProxyContract from '../../../contracts/ProxyContract.json';
 import {
   getNextPathIndex,
@@ -10,9 +10,13 @@ import * as SecureStorage from 'expo-secure-store';
 import { WalletAccount, WalletSession } from './wallet.model';
 import { getNetwork, Network } from '../network';
 import { getProvider } from '../provider';
+import { DEFAULT_NETWORKS } from '../network/default_networks';
 
 const BACKUP_KEY = 'backup';
 const ACCOUNTS_KEY = 'accounts';
+const SELECTED_KEY = 'selected';
+const defaultNetwork = DEFAULT_NETWORKS[1];
+
 const N = 64; //TODO: use this number for DEV mode
 const encryptOptions = {
   scrypt: { N },
@@ -145,8 +149,27 @@ class Wallet {
     await this.storeBackup();
   }
 
+  async selectAccount(account: WalletAccount) {
+    await SecureStorage.setItemAsync(SELECTED_KEY, JSON.stringify(account));
+  }
+
+  async getSelectedAccount(): Promise<WalletAccount | null> {
+    const res = await SecureStorage.getItemAsync(SELECTED_KEY);
+    if (res) {
+      return JSON.parse(res) as WalletAccount;
+    }
+
+    const accounts = await this.getWalletAccountsByNetwork(defaultNetwork.id);
+    return accounts[0];
+  }
+
   async resetWalletAccounts() {
     await SecureStorage.deleteItemAsync(ACCOUNTS_KEY);
+  }
+
+  async getWalletAccountsByNetwork(networkId: string) {
+    const accounts = await this.getWalletAccounts();
+    return accounts.filter((acc) => acc.networkId === networkId);
   }
 
   async getWalletAccounts(): Promise<WalletAccount[]> {
@@ -252,6 +275,7 @@ class Wallet {
         },
       };
 
+      await this.selectAccount(account);
       await this.addWalletAccounts([account]);
       await this.storeBackup();
 

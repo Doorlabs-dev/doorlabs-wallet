@@ -8,6 +8,8 @@ import useAuthentication from '../../auth/hooks/useAuthentication';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
+import useWallet from '../../wallet/hooks/useWallet';
+import useNetwork from '../../network/hooks/useNetwork';
 
 const NewWalletScreen = () => {
   const { control, handleSubmit, getValues } = useForm({
@@ -20,6 +22,8 @@ const NewWalletScreen = () => {
 
   const { setWalletPassword } = useWalletPassword();
   const { setIsAuthenticated, setIsAccountAvailable } = useAuthentication();
+  const { addAccount } = useWallet();
+  const { selectedNetwork } = useNetwork();
   const [isCreatingWallet, setIsCreatingWallet] = useState(false);
   const [error, setError] = useState<any>();
 
@@ -33,7 +37,7 @@ const NewWalletScreen = () => {
 
         if (!success) throw Error('Error creating wallet');
 
-        await wallet.createNewAccount();
+        await addAccount(selectedNetwork.id);
 
         setTimeout(() => {
           setIsAuthenticated(true);
@@ -41,7 +45,7 @@ const NewWalletScreen = () => {
         }, 300);
       } catch (e) {
         setIsCreatingWallet(false);
-        ToastAndroid.show(`${e}`, 2000);
+        console.log(e);
       }
     })();
   };

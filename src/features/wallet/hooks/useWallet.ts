@@ -1,18 +1,17 @@
-import { useCallback, useState } from 'react';
 import wallet from '../../../services/wallet';
-import { BaseWalletAccount } from '../../../services/wallet.model';
+import { WalletAccount } from '../../../services/wallet/wallet.model';
 
-const useWallet = () => {
-  const [account, setAccount] = useState<BaseWalletAccount>();
+type UseWallet = {
+  addAccount: (networkId: string) => Promise<void>;
+};
 
-  const getWalletAccount = useCallback(async () => {
-    const account = await wallet.getWalletAccount();
-    setAccount(account);
-  }, []);
+const useWallet = (): UseWallet => {
+  const addAccount = async (networkId: string) => {
+    await wallet.addAccount(networkId);
+  };
 
   return {
-    account,
-    getWalletAccount,
+    addAccount,
   };
 };
 
