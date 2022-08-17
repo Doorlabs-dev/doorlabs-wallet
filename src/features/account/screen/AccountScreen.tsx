@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { hexToDecimalString } from 'starknet/dist/utils/number';
-import { Container, Row, Spacer } from '../../../components/layout';
+import { Container, Row, SafeArea, Spacer } from '../../../components/layout';
 import { EtherIcon, ShortAddress, Text, Title } from '../../../components/ui';
 import { WalletAccount } from '../../../services/wallet/wallet.model';
 import { colors } from '../../../styles';
@@ -30,20 +30,22 @@ const AccountScreen = () => {
   }
 
   return (
-    <Container>
-      <SelectNetworkDropdown />
-      <View>
-        <Title>Account</Title>
-        <Spacer height={16} />
-        <ShortAddress address={selectedAccount.address} />
-        <Spacer height={16} />
-        <Row alignItems="center">
-          {/* <EtherIcon />
+    <SafeArea>
+      <Container>
+        <SelectNetworkDropdown />
+        <View>
+          <Title>Account</Title>
+          <Spacer height={16} />
+          <ShortAddress address={selectedAccount.address} />
+          <Spacer height={16} />
+          <Row alignItems="center">
+            {/* <EtherIcon />
             <Spacer width={10} /> */}
-          {/* <Title size={24}>{formatEther(hexToDecimalStrng(balance))} ETH</Title> */}
-        </Row>
-      </View>
-    </Container>
+            {/* <Title size={24}>{formatEther(hexToDecimalStrng(balance))} ETH</Title> */}
+          </Row>
+        </View>
+      </Container>
+    </SafeArea>
   );
 };
 
