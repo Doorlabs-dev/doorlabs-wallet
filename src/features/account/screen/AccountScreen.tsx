@@ -1,21 +1,29 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
-
 import { Container, Row, SafeArea, Spacer } from '../../../components/layout';
-import { EtherIcon, ShortAddress, Text, Title } from '../../../components/ui';
-
+import {
+  Button,
+  EtherIcon,
+  ShortAddress,
+  Text,
+  Title,
+} from '../../../components/ui';
 import { colors } from '../../../styles';
 import { getTokenInfo } from '../../../tokens';
 import { formatEther } from '../../../utils';
+import useExploreAccount from '../../explore/hooks/useExploreAccount';
 
 import useSelectedAccount, { useBalance } from '../hooks/useSelectedAccount';
 
 const AccountScreen = () => {
   const { selectedAccount } = useSelectedAccount();
-
   const { data: ethBalance } = useBalance(
     getTokenInfo('ETH', selectedAccount?.networkId)?.address,
     selectedAccount
+  );
+  const { exploreAccount } = useExploreAccount(
+    selectedAccount?.network,
+    selectedAccount?.address
   );
 
   if (!selectedAccount) {
@@ -40,6 +48,9 @@ const AccountScreen = () => {
             <Title size={24}>{formatEther(ethBalance ?? 0)} ETH</Title>
           </Row>
         </View>
+        <Button width={300} onPress={() => exploreAccount()}>
+          <Title>Explore</Title>
+        </Button>
       </Container>
     </SafeArea>
   );
