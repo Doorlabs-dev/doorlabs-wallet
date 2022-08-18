@@ -170,6 +170,24 @@ class Wallet {
     }
   }
 
+  async exportPrivateKey() {
+    if (!this.session || !this.session.secret)
+      throw new Error('No session opened');
+
+    const account = await this.getSelectedAccount();
+
+    if (!account) throw Error('No selected account');
+
+    console.log(account.signer.derivationPath);
+
+    const starkPair = getStarkPair(
+      account?.signer.derivationPath,
+      this.session?.secret
+    );
+
+    return starkPair.priv.toString();
+  }
+
   async getSelectedAccount(): Promise<WalletAccount | null> {
     const res = await SecureStorage.getItemAsync(SELECTED_KEY);
     if (res) {

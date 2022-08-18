@@ -8,6 +8,7 @@ import {
   Text,
   Title,
 } from '../../../components/ui';
+import wallet from '../../../services/wallet';
 import { colors } from '../../../styles';
 import { getTokenInfo } from '../../../tokens';
 import { formatEther } from '../../../utils';
@@ -50,6 +51,13 @@ const AccountScreen = () => {
         </View>
         <Button width={300} onPress={() => exploreAccount()}>
           <Title>Explore</Title>
+        </Button>
+
+        <Button
+          width={300}
+          onPress={async () => await wallet.exportPrivateKey()}
+        >
+          <Title>Export priv key</Title>
         </Button>
       </Container>
     </SafeArea>
