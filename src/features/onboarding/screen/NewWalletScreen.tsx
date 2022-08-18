@@ -10,7 +10,7 @@ import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
 import useWallet from '../../wallet/hooks/useWallet';
-import useNetwork from '../../network/hooks/useNetwork';
+import { defaultNetwork } from '../../../services/network/default_networks';
 
 const NewWalletScreen = () => {
   const { control, handleSubmit, getValues } = useForm({
@@ -24,7 +24,6 @@ const NewWalletScreen = () => {
   const { setWalletPassword } = useWalletPassword();
   const { setIsAuthenticated, setIsAccountAvailable } = useAuthentication();
   const { addAccount } = useWallet();
-  const { selectedNetwork } = useNetwork();
   const [isCreatingWallet, setIsCreatingWallet] = useState(false);
   const [error, setError] = useState<any>();
 
@@ -38,7 +37,7 @@ const NewWalletScreen = () => {
 
         if (!success) throw Error('Error creating wallet');
 
-        await addAccount(selectedNetwork.id);
+        await addAccount(defaultNetwork.id);
 
         setTimeout(() => {
           setIsAuthenticated(true);

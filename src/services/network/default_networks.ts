@@ -24,3 +24,5 @@ export const DEFAULT_NETWORKS = [
     readonly: true,
   },
 ];
+
+export const defaultNetwork = DEFAULT_NETWORKS[0];
