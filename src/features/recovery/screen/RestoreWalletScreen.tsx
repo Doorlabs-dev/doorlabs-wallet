@@ -7,7 +7,6 @@ import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
 import { Button, Text, Title } from '../../../components/ui';
 import useAuthentication from '../../auth/hooks/useAuthentication';
-import { AuthStackParamList } from '../../../router/AuthStack';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
@@ -21,7 +20,9 @@ const RestoreWalletScreen = () => {
     mode: 'onChange',
   });
   const { params } =
-    useRoute<RouteProp<AuthStackParamList, 'restore-wallet'>>();
+    useRoute<
+      RouteProp<{ 'restore-wallet': { phrase: string } }, 'restore-wallet'>
+    >();
   const phrase = params?.phrase;
 
   const { setWalletPassword } = useWalletPassword();

@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import { colors } from '../../styles';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Text from './Text';
+import ScreenNames from '../../router/screenNames';
 
 type Props = {};
 
@@ -26,7 +27,7 @@ const CustomTabBar = (props: BottomTabBarProps) => {
     <TabBarContainer>
       {props.state.routes.map((route) => (
         <Text key={route.key} color={colors.white}>
-          {route.name == 'account-detail' ? 'Tokens' : ''}
+          {route.name == ScreenNames.ACCOUNT_TOKENS ? 'Tokens' : ''}
         </Text>
       ))}
     </TabBarContainer>

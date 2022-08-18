@@ -1,8 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Spacer } from '../../../components/layout';
 import { Button, Title } from '../../../components/ui';
 import { ScreenNavigationProps } from '../../../router/navigation-props';
+import ScreenNames from '../../../router/screenNames';
+import wallet from '../../../services/wallet';
 
 type Props = {};
 
@@ -10,11 +12,11 @@ const WelcomeScreen = () => {
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
   const navigateToCreatePasswordScreen = () => {
-    navigation.navigate({ name: 'create-wallet-password' });
+    navigation.navigate({ name: ScreenNames.CREATE_WALLET_PASSWORD });
   };
 
   const navigateToInputPhraseScreen = () => {
-    navigation.navigate({ name: 'input-phrase' });
+    navigation.navigate({ name: ScreenNames.INPUT_PHRASE });
   };
 
   return (

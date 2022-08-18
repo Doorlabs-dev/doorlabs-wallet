@@ -3,17 +3,20 @@ import { RecoilRoot } from 'recoil';
 import AppNavigation from './src/router';
 import { StatusBar } from 'expo-status-bar';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App = () => {
   return (
-    <RootSiblingParent>
-      <Fragment>
-        <StatusBar style="light" />
-        <RecoilRoot>
-          <AppNavigation />
-        </RecoilRoot>
-      </Fragment>
-    </RootSiblingParent>
+    <SafeAreaProvider>
+      <RootSiblingParent>
+        <Fragment>
+          <StatusBar style="light" />
+          <RecoilRoot>
+            <AppNavigation />
+          </RecoilRoot>
+        </Fragment>
+      </RootSiblingParent>
+    </SafeAreaProvider>
   );
 };
 
