@@ -2,7 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { ethers } from 'ethers';
 import { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, ToastAndroid } from 'react-native';
+import Toast from 'react-native-root-toast';
+import { ActivityIndicator } from 'react-native';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
 import { Button, Text, Title } from '../../../components/ui';
@@ -33,7 +34,7 @@ const InputSeedPhraseScreen = () => {
       const success = await validatePhrase(phrase);
       setIsValidating(false);
       if (!success) {
-        return ToastAndroid.show('Invalid phrase', 1000);
+        return Toast.show('Invalid phrase');
       }
 
       navigation.navigate({

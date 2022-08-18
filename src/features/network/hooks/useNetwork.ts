@@ -1,4 +1,5 @@
 import { useRecoilState } from 'recoil';
+import { Network } from '../../../services/network';
 import { DEFAULT_NETWORKS } from '../../../services/network/default_networks';
 import networkState from '../network.state';
 

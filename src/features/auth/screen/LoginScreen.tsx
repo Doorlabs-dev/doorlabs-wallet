@@ -11,6 +11,7 @@ import wallet from '../../../services/wallet';
 import { colors } from '../../../styles';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '../../../router/navigation-props';
+import ScreenNames from '../../../router/screenNames';
 
 const LoginScreen = () => {
   const { authenticateBiometrics, isBiometricsAvailable } = useBiometrics();
@@ -81,7 +82,7 @@ const LoginScreen = () => {
       <Spacer height={32} />
       <Text
         onPress={() => {
-          navigation.navigate({ name: 'reset-confirmation' });
+          navigation.navigate({ name: ScreenNames.RESET_CONFIRMATION });
         }}
       >
         Recover your wallet ?

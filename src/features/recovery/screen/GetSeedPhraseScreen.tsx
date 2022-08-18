@@ -1,13 +1,12 @@
-import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ToastAndroid } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import Toast from 'react-native-root-toast';
+import { ActivityIndicator } from 'react-native';
 import { Container, Spacer } from '../../../components/layout';
 import { Button, Title } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import { colors } from '../../../styles';
 import * as Clipboard from 'expo-clipboard';
-
-type Props = {};
 
 const GetSeedPhraseScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +43,7 @@ const GetSeedPhraseScreen = () => {
   const onClick = async () => {
     if (phrase) {
       await Clipboard.setStringAsync(phrase);
-      ToastAndroid.show('Copied', 1000);
+      Toast.show('Copied');
     } else {
       getRecoveryPhrase();
     }

@@ -1,12 +1,12 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, ToastAndroid } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
 import { Button, Text, Title } from '../../../components/ui';
 import useAuthentication from '../../auth/hooks/useAuthentication';
-import { AuthStackParamList } from '../../../router/AuthStack';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
@@ -20,7 +20,9 @@ const RestoreWalletScreen = () => {
     mode: 'onChange',
   });
   const { params } =
-    useRoute<RouteProp<AuthStackParamList, 'restore-wallet'>>();
+    useRoute<
+      RouteProp<{ 'restore-wallet': { phrase: string } }, 'restore-wallet'>
+    >();
   const phrase = params?.phrase;
 
   const { setWalletPassword } = useWalletPassword();
@@ -41,7 +43,7 @@ const RestoreWalletScreen = () => {
         }, 300);
       } catch (e) {
         setIsRestoring(false);
-        ToastAndroid.show(`${e}`, 2000);
+        Toast.show(`${e}`);
       }
     })();
   };

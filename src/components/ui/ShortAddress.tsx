@@ -1,4 +1,5 @@
-import { ToastAndroid, TouchableOpacity } from 'react-native';
+import Toast from 'react-native-root-toast';
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { setStringAsync } from 'expo-clipboard';
 
@@ -22,7 +23,7 @@ const ShortAddress = ({ address }: { address: string }) => {
     <TouchableOpacity
       onPress={async () => {
         await setStringAsync(address);
-        ToastAndroid.show('Copied', 1000);
+        Toast.show('Copied');
       }}
     >
       <ShortAddressText>

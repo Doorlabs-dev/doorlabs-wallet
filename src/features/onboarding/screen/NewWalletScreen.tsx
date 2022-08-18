@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, ToastAndroid } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
 import { Button, Text, Title } from '../../../components/ui';
@@ -8,6 +9,8 @@ import useAuthentication from '../../auth/hooks/useAuthentication';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
+import useWallet from '../../wallet/hooks/useWallet';
+import { defaultNetwork } from '../../../services/network/default_networks';
 
 const NewWalletScreen = () => {
   const { control, handleSubmit, getValues } = useForm({
@@ -20,6 +23,7 @@ const NewWalletScreen = () => {
 
   const { setWalletPassword } = useWalletPassword();
   const { setIsAuthenticated, setIsAccountAvailable } = useAuthentication();
+  const { addAccount } = useWallet();
   const [isCreatingWallet, setIsCreatingWallet] = useState(false);
   const [error, setError] = useState<any>();
 
@@ -33,7 +37,7 @@ const NewWalletScreen = () => {
 
         if (!success) throw Error('Error creating wallet');
 
-        await wallet.createNewAccount();
+        await addAccount(defaultNetwork.id);
 
         setTimeout(() => {
           setIsAuthenticated(true);
@@ -41,7 +45,7 @@ const NewWalletScreen = () => {
         }, 300);
       } catch (e) {
         setIsCreatingWallet(false);
-        ToastAndroid.show(`${e}`, 2000);
+        Toast.show(`${e}`);
       }
     })();
   };
