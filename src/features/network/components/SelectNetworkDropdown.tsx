@@ -1,27 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { colors } from '../../../styles';
 import DropDownPicker from 'react-native-dropdown-picker';
 import useNetwork from '../hooks/useNetwork';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { ScreenNavigationProps } from '../../../router/navigation-props';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getNetwork, Network } from '../../../services/network';
+import ScreenNames from '../../../router/screenNames';
+import useSelectedAccount from '../../account/hooks/useSelectedAccount';
 
 const TopPosition = styled.View`
-  position: absolute;
-  top: 0px;
-  right: 16px;
-  max-width: 180px;
-  z-index: 1000;
+  ${(props: { top: number }) => {
+    return css`
+      position: absolute;
+      right: 16px;
+      top: ${props.top}px;
+      max-width: 180px;
+      z-index: 1000;
+    `;
+  }}
 `;
 
 const SelectNetworkDropdown = () => {
+  const insets = useSafeAreaInsets();
   const { selectNetwork, selectedNetwork, getNetworks } = useNetwork();
   const [showDropdown, setShowDropdown] = useState(false);
   const [chosenNetworkId, setChosenNetworkId] = useState(selectedNetwork.id);
+  const { selectedAccount } = useSelectedAccount();
+  const navigation = useNavigation<ScreenNavigationProps<any>>();
+
+  useEffect(() => {
+    if (selectedAccount) {
+      const network = getNetwork(selectedAccount.networkId);
+      setChosenNetworkId(network.id);
+    }
+  }, [selectedAccount?.networkId]);
 
   useEffect(() => {
     if (chosenNetworkId == null) return;
 
     const foundNetwork = getNetworks().find(
-      (item) => item.id == chosenNetworkId
+      (item: Network) => item.id == chosenNetworkId
     );
     if (foundNetwork != null) {
       selectNetwork(foundNetwork);
@@ -29,7 +49,7 @@ const SelectNetworkDropdown = () => {
   }, [chosenNetworkId]);
 
   return (
-    <TopPosition>
+    <TopPosition top={insets.top}>
       <DropDownPicker
         open={showDropdown}
         value={chosenNetworkId}
@@ -37,17 +57,29 @@ const SelectNetworkDropdown = () => {
           value: item.id,
           label: item.name,
         }))}
+        onSelectItem={(item) => {
+          const nextNetworkId = item.value;
+
+          if (nextNetworkId === chosenNetworkId) return;
+          setTimeout(() => {
+            navigation.dispatch(
+              StackActions.replace(ScreenNames.ACCOUNTS_LIST)
+            );
+          }, 0);
+        }}
         setOpen={setShowDropdown}
         setValue={setChosenNetworkId}
         style={{
           borderRadius: showDropdown ? 10 : 100,
-          backgroundColor: colors.gold,
+          backgroundColor: colors.orange,
         }}
         textStyle={{
-          fontWeight: '600',
+          fontSize: 14,
+          fontWeight: '500',
+          color: colors.white,
         }}
         dropDownContainerStyle={{
-          backgroundColor: colors.gold,
+          backgroundColor: colors.orange,
           zIndex: 1000,
         }}
       />
