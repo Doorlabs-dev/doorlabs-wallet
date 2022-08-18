@@ -7,7 +7,11 @@ import {
   getStarkPair,
 } from '../keys/keyDerivation';
 import * as SecureStorage from 'expo-secure-store';
-import { WalletAccount, WalletSession } from './wallet.model';
+import {
+  BaseWalletAccount,
+  WalletAccount,
+  WalletSession,
+} from './wallet.model';
 import { getNetwork, Network } from '../network';
 import { getProvider } from '../provider';
 import { DEFAULT_NETWORKS } from '../network/default_networks';
@@ -51,6 +55,7 @@ class Wallet {
   }
 
   async reset() {
+    await this.resetSelectedAccount();
     await this.resetWalletAccounts();
     await this.resetBackup();
     this.session = undefined;
@@ -149,8 +154,20 @@ class Wallet {
     await this.storeBackup();
   }
 
-  async selectAccount(account: WalletAccount) {
-    await SecureStorage.setItemAsync(SELECTED_KEY, JSON.stringify(account));
+  async selectAccount(accountIdentifier: BaseWalletAccount) {
+    const accounts = await this.getWalletAccountsByNetwork(
+      accountIdentifier.networkId
+    );
+    const targetAccount = accounts.find(
+      (acc) => acc.address == accountIdentifier.address
+    );
+
+    if (targetAccount) {
+      await SecureStorage.setItemAsync(
+        SELECTED_KEY,
+        JSON.stringify(targetAccount)
+      );
+    }
   }
 
   async getSelectedAccount(): Promise<WalletAccount | null> {
@@ -161,6 +178,10 @@ class Wallet {
 
     const accounts = await this.getWalletAccountsByNetwork(defaultNetwork.id);
     return accounts[0];
+  }
+
+  async resetSelectedAccount() {
+    await SecureStorage.deleteItemAsync(SELECTED_KEY);
   }
 
   async resetWalletAccounts() {
@@ -275,9 +296,9 @@ class Wallet {
         },
       };
 
-      await this.selectAccount(account);
       await this.addWalletAccounts([account]);
       await this.storeBackup();
+      await this.selectAccount(account);
 
       return { account, txHash: txResponse.transaction_hash };
     } catch (error) {
