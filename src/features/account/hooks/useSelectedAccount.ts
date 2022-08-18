@@ -1,23 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import wallet from '../../../services/wallet';
 import { WalletAccount } from '../../../services/wallet/wallet.model';
 import { fetchBalance } from '../../../services/balance';
 import { getNetwork } from '../../../services/network';
 import { Account } from '../account.model';
 import useSWR from 'swr';
-import { getTokenInfo } from '../../../tokens';
+import { useRecoilState } from 'recoil';
+import selectedAccountState from '../selected-account.state';
 
-const useBalance = (tokenAddress?: string, account?: Account | null) => {
+export const useBalance = (tokenAddress?: string, account?: Account | null) => {
   return useSWR([tokenAddress, account], fetchBalance, {
     refreshInterval: 5000,
   });
 };
 
 const useSelectedAccount = () => {
-  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
-  const { data: ethBalance } = useBalance(
-    getTokenInfo('ETH', selectedAccount?.networkId)?.address,
-    selectedAccount
+  const [selectedAccount, setSelectedAccount] = useRecoilState<Account | null>(
+    selectedAccountState
   );
 
   useEffect(() => {
@@ -31,7 +30,6 @@ const useSelectedAccount = () => {
 
   return {
     selectedAccount,
-    ethBalance: ethBalance || 0,
   };
 };
 

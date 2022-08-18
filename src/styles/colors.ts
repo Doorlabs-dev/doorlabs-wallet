@@ -3,7 +3,7 @@ const secondary = '#383838';
 const greyScale = '#414141';
 const white = '#ffffff';
 const red = 'red';
-const gold = '#F2C136';
+const orange = '#FF6F36';
 
 export default {
   primary,
@@ -11,5 +11,5 @@ export default {
   greyScale,
   white,
   red,
-  gold,
+  orange,
 };
