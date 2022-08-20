@@ -1,4 +1,4 @@
-{
+export default `{
   "abi": [
     {
       "members": [
@@ -56272,3 +56272,4 @@
     }
   }
 }
+`;
