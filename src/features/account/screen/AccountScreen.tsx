@@ -13,8 +13,8 @@ import { colors } from '../../../styles';
 import { getTokenInfo } from '../../../tokens';
 import { formatEther } from '../../../utils';
 import useExploreAccount from '../../explore/hooks/useExploreAccount';
-
 import useSelectedAccount, { useBalance } from '../hooks/useSelectedAccount';
+import IconToken from '../../../../assets/svg/icon_token.svg';
 
 const AccountScreen = () => {
   const { selectedAccount } = useSelectedAccount();
@@ -51,13 +51,6 @@ const AccountScreen = () => {
         </View>
         <Button width={300} onPress={() => exploreAccount()}>
           <Title>Explore</Title>
-        </Button>
-
-        <Button
-          width={300}
-          onPress={async () => await wallet.exportPrivateKey()}
-        >
-          <Title>Export priv key</Title>
         </Button>
       </Container>
     </SafeArea>

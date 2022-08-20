@@ -4381,6 +4381,11 @@ expo-keep-awake@~10.1.1:
   resolved "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-10.1.1.tgz"
   integrity sha512-9zC0sdhQljUeMr2yQ7o4kzEZXVAy82fFOAZE1+TwPL7qR0b0sphe7OJ5T1GX1qLcwuVaJ8YewaPoLSHRk79+Rg==
 
+expo-linear-gradient@~11.3.0:
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-11.3.0.tgz#855f470c9684f5b979c3c1be0ed1fe1943d57158"
+  integrity sha512-gm0cULqE5cTP39HZHi+eCGgQ2qMcwym92DwSzRpA5nA4Ah5oKksV+PwD7zzo6YJt3X3lgqrTYEqts9VQISCTgw==
+
 expo-local-authentication@~12.2.0:
   version "12.2.0"
   resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-12.2.0.tgz#a1534d2f1a3e63483d20a1cff303b1a312b8e1ef"
@@ -7176,9 +7181,9 @@ react-native-svg-transformer@^1.0.0:
     "@svgr/plugin-svgo" "^6.1.2"
     path-dirname "^1.0.2"
 
-react-native-svg@^12.3.0:
+react-native-svg@12.3.0:
   version "12.3.0"
-  resolved "https://registry.npmjs.org/react-native-svg/-/react-native-svg-12.3.0.tgz#40f657c5d1ee366df23f3ec8dae76fd276b86248"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.3.0.tgz#40f657c5d1ee366df23f3ec8dae76fd276b86248"
   integrity sha512-ESG1g1j7/WLD7X3XRFTQHVv0r6DpbHNNcdusngAODIxG88wpTWUZkhcM3A2HJTb+BbXTFDamHv7FwtRKWQ/ALg==
   dependencies:
     css-select "^4.2.1"
