@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
-import { Abi, ec, stark } from 'starknet';
-import ProxyContract from '../../contracts/ProxyContract.json';
+import { ec, json, stark } from 'starknet';
 import {
   getNextPathIndex,
   getPathForIndex,
@@ -15,6 +14,7 @@ import {
 import { getNetwork, Network } from '../network';
 import { getProvider } from '../provider';
 import { DEFAULT_NETWORKS } from '../network/default_networks';
+import ProxyContract from '../../contracts/ProxyContract';
 
 const BACKUP_KEY = 'backup';
 const ACCOUNTS_KEY = 'accounts';
