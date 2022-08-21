@@ -1,18 +1,10 @@
 import Toast from 'react-native-root-toast';
 import { TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
 import { setStringAsync } from 'expo-clipboard';
-
-const ShortAddressText = styled.Text`
-  font-size: 13px;
-  font-weight: bold;
-  text-align: center;
-  color: #fff;
-  border-radius: 13px;
-  padding: 4px 12px;
-  background-color: rgba(255, 255, 255, 0.15);
-  overflow: hidden;
-`;
+import colors from '@styles/colors';
+import Text from './Text';
+import IconCopy from '@assets/svg/icon_copy.svg';
+import { Row, Spacer } from '@components/layout';
 
 const ShortAddress = ({ address }: { address: string }) => {
   if (!address) {
@@ -21,14 +13,19 @@ const ShortAddress = ({ address }: { address: string }) => {
 
   return (
     <TouchableOpacity
+      activeOpacity={0.8}
       onPress={async () => {
         await setStringAsync(address);
         Toast.show('Copied');
       }}
     >
-      <ShortAddressText>
-        {address.substring(0, 6)} ... {address.substring(address.length - 4)}
-      </ShortAddressText>
+      <Row alignItems="center">
+        <Text color={colors.periwinkle} size={18} lineHeight={28}>
+          {address.substring(0, 6)} ... {address.substring(address.length - 4)}
+        </Text>
+        <Spacer width={8} />
+        <IconCopy />
+      </Row>
     </TouchableOpacity>
   );
 };
