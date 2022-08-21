@@ -2,7 +2,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import styled, { css } from 'styled-components/native';
 import colors from '@styles/colors';
-import Text from './Text';
+import Text from '../Text';
 import { Column, Container, Spacer } from '@components/layout';
 
 type StyleProps = {

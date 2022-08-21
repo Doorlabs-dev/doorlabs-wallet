@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components/native';
-import { colors } from '../../styles';
+import { colors } from '../../../styles';
 
 type Props = {
   width?: number;
