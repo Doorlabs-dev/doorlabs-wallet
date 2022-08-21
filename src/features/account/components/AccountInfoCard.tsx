@@ -6,7 +6,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import IconMore from '@assets/svg/icon_more.svg';
 import { Row } from '@components/layout';
 
-type Props = {};
+type Props = {
+  address: string;
+};
 
 const { width } = Dimensions.get('window');
 
@@ -27,7 +29,7 @@ const PositionedIcon = styled.View`
   right: -32px;
 `;
 
-const AccountInfoCard = (props: Props) => {
+const AccountInfoCard = ({ address }: Props) => {
   return (
     <CardContainer start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} colors={COLORS}>
       <Row justifyContent="center" alignItems="center">
@@ -41,7 +43,7 @@ const AccountInfoCard = (props: Props) => {
       <Text size={28} lineHeight={38} weight={500}>
         $0.00
       </Text>
-      <ShortAddress address="0x0206EeC09a5A758147FA91cD2A3C8F87eBe65467cE03fC4fc393b082D5F5D9d7" />
+      <ShortAddress address={address} />
     </CardContainer>
   );
 };

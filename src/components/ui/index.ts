@@ -4,5 +4,14 @@ import Text from './Text';
 import Title from './Title';
 import EtherIcon from './EtherIcon';
 import CustomTabBar from './CustomTabbar';
+import RoundButton from './RoundButton';
 
-export { Title, Button, Text, ShortAddress, EtherIcon, CustomTabBar };
+export {
+  Title,
+  Button,
+  RoundButton,
+  Text,
+  ShortAddress,
+  EtherIcon,
+  CustomTabBar,
+};

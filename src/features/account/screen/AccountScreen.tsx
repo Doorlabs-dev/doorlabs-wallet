@@ -1,31 +1,16 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { Container, Row, SafeArea, Spacer } from '../../../components/layout';
-import {
-  Button,
-  EtherIcon,
-  ShortAddress,
-  Text,
-  Title,
-} from '../../../components/ui';
-import wallet from '../../../services/wallet';
+import { Container, Row, SafeArea, Spacer } from '@components/layout';
 import { colors } from '../../../styles';
-import { getTokenInfo } from '../../../tokens';
-import { formatEther } from '../../../utils';
-import useExploreAccount from '../../explore/hooks/useExploreAccount';
-import useSelectedAccount, { useBalance } from '../hooks/useSelectedAccount';
-import IconToken from '../../../../assets/svg/icon_token.svg';
+import useSelectedAccount from '../hooks/useSelectedAccount';
+import AccountInfoCard from '../components/AccountInfoCard';
+import SelectNetworkDropdown from '@features/network/components/SelectNetworkDropdown';
+import { RoundButton } from '@components/ui';
+import IconAdd from '@assets/svg/icon_add.svg';
+import IconSend from '@assets/svg/icon_send.svg';
 
 const AccountScreen = () => {
   const { selectedAccount } = useSelectedAccount();
-  const { data: ethBalance } = useBalance(
-    getTokenInfo('ETH', selectedAccount?.networkId)?.address,
-    selectedAccount
-  );
-  const { exploreAccount } = useExploreAccount(
-    selectedAccount?.network,
-    selectedAccount?.address
-  );
 
   if (!selectedAccount) {
     return (
@@ -37,21 +22,18 @@ const AccountScreen = () => {
 
   return (
     <SafeArea>
-      <Container>
+      <SelectNetworkDropdown />
+      <Spacer height={48} />
+      <Container alignItems="center" center={false}>
         <View>
-          <Title>Account</Title>
-          <Spacer height={16} />
-          <ShortAddress address={selectedAccount.address} />
-          <Spacer height={16} />
-          <Row alignItems="center">
-            <EtherIcon />
-            <Spacer width={10} />
-            <Title size={24}>{formatEther(ethBalance ?? 0)} ETH</Title>
+          <AccountInfoCard address={selectedAccount.address} />
+          <Spacer height={24} />
+          <Row justifyContent="center">
+            <RoundButton icon={<IconAdd />} title="Add funds" />
+            <Spacer width={61} />
+            <RoundButton icon={<IconSend />} title="Send" />
           </Row>
         </View>
-        <Button width={300} onPress={() => exploreAccount()}>
-          <Title>Explore</Title>
-        </Button>
       </Container>
     </SafeArea>
   );
