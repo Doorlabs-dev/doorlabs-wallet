@@ -9,8 +9,10 @@ const ScreenNames = {
   RESET_CONFIRMATION: 'reset-confirmation',
   // APP STACK
   ACCOUNT_TABS: 'account-tabs',
-  ACCOUNT_TOKENS: 'account-tokens',
   ACCOUNTS_LIST: 'accounts-list',
+  ACCOUNT_TOKENS: 'account-tokens',
+  ACCOUNT_NFTS: 'account-nfts',
+  ACCOUNT_ACTIVITY: 'account-activity',
 };
 
 export default ScreenNames;

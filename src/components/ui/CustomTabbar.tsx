@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, TouchableOpacity } from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../../styles';
@@ -46,17 +46,26 @@ const Dot = styled.View`
   background-color: ${colors.white};
 `;
 
+const { ACCOUNT_TOKENS, ACCOUNT_NFTS, ACCOUNT_ACTIVITY } = ScreenNames;
+type IconNames = 'account-tokens' | 'account-nfts' | 'account-activity';
+
 type TabBarItemProps = {
   active?: boolean;
   label: string;
-  iconName: 'account-tokens' | 'account-nfts' | 'account-activity';
+  iconName: IconNames;
   onPress: () => void;
 };
 
 const Icons = {
-  'account-tokens': IconToken,
-  'account-nfts': IconNft,
-  'account-activity': IconActivity,
+  [ACCOUNT_TOKENS]: IconToken,
+  [ACCOUNT_NFTS]: IconNft,
+  [ACCOUNT_ACTIVITY]: IconActivity,
+};
+
+const LABELS = {
+  [ACCOUNT_TOKENS]: 'Tokens',
+  [ACCOUNT_NFTS]: 'NFTs',
+  [ACCOUNT_ACTIVITY]: 'Activity',
 };
 
 const TabBarItem = ({
@@ -68,31 +77,30 @@ const TabBarItem = ({
   const Icon = Icons[iconName];
   const color = active ? colors.white : colors.lightGreyScale;
   return (
-    <TabBarItemContainer>
-      <Icon fill={color} {...iconSize} />
-      <Spacer height={5} />
-      <Text color={color}>{label}</Text>
-      <Spacer height={5} />
-      {active ? <Dot /> : <Spacer height={4} />}
-    </TabBarItemContainer>
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+      <TabBarItemContainer>
+        <Icon fill={color} {...iconSize} />
+        <Spacer height={5} />
+        <Text color={color}>{label}</Text>
+        <Spacer height={5} />
+        {active ? <Dot /> : <Spacer height={4} />}
+      </TabBarItemContainer>
+    </TouchableOpacity>
   );
 };
 
 const CustomTabBar = (props: BottomTabBarProps) => {
   return (
     <TabBarContainer>
-      <TabBarItem
-        active
-        iconName="account-tokens"
-        label="Tokens"
-        onPress={() => {}}
-      />
-      <TabBarItem iconName="account-nfts" label="NFTs" onPress={() => {}} />
-      <TabBarItem
-        iconName="account-activity"
-        label="Activity"
-        onPress={() => {}}
-      />
+      {props.state.routes.map((route, index) => (
+        <TabBarItem
+          key={route.key}
+          active={index == props.state.index}
+          iconName={route.name as IconNames}
+          label={LABELS[route.name]}
+          onPress={() => props.navigation.navigate(route.name)}
+        />
+      ))}
     </TabBarContainer>
   );
 };
