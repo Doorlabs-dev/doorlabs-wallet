@@ -7,7 +7,9 @@
       "@assets/*": ["./assets/*"],
       "@services/*": ["./src/services/*"],
       "@components/*": ["./src/components/*"],
-      "@features/*": ["./src/features/*"]
+      "@features/*": ["./src/features/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   }
 }
