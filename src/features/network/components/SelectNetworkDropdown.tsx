@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { colors } from '../../../styles';
 import DropDownPicker from 'react-native-dropdown-picker';
 import useNetwork from '../hooks/useNetwork';
@@ -9,17 +9,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getNetwork, Network } from '../../../services/network';
 import ScreenNames from '../../../router/screenNames';
 import useSelectedAccount from '../../account/hooks/useSelectedAccount';
+import IconDropdown from '@assets/svg/icon_dropdown.svg';
 
-const TopPosition = styled.View`
-  ${(props: { top: number }) => {
-    return css`
-      position: absolute;
-      right: 16px;
-      top: ${props.top}px;
-      max-width: 180px;
-      z-index: 1000;
-    `;
-  }}
+const DropdownContainer = styled.View`
+  max-width: 180px;
+  z-index: 1000;
+`;
+
+const Dot = styled.View`
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: ${colors.white};
 `;
 
 const SelectNetworkDropdown = () => {
@@ -49,7 +50,7 @@ const SelectNetworkDropdown = () => {
   }, [chosenNetworkId]);
 
   return (
-    <TopPosition top={insets.top}>
+    <DropdownContainer>
       <DropDownPicker
         open={showDropdown}
         value={chosenNetworkId}
@@ -69,21 +70,29 @@ const SelectNetworkDropdown = () => {
         }}
         setOpen={setShowDropdown}
         setValue={setChosenNetworkId}
+        ArrowUpIconComponent={() => <IconDropdown />}
+        ArrowDownIconComponent={() => <IconDropdown />}
+        TickIconComponent={() => <Dot />}
         style={{
-          borderRadius: showDropdown ? 10 : 100,
+          borderRadius: showDropdown ? 10 : 50,
           backgroundColor: colors.orange,
+          borderColor: 'transparent',
+          padding: 0,
+          height: 32,
         }}
         textStyle={{
           fontSize: 14,
+          lineHeight: 20,
           fontWeight: '500',
           color: colors.white,
         }}
         dropDownContainerStyle={{
+          borderColor: 'transparent',
           backgroundColor: colors.orange,
           zIndex: 1000,
         }}
       />
-    </TopPosition>
+    </DropdownContainer>
   );
 };
 
