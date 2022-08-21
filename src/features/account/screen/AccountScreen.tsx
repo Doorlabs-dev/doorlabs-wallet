@@ -8,10 +8,15 @@ import SelectNetworkDropdown from '@features/network/components/SelectNetworkDro
 import { RoundButton } from '@components/ui';
 import IconAdd from '@assets/svg/icon_add.svg';
 import IconSend from '@assets/svg/icon_send.svg';
+import TokenItem from '@features/tokens/components/TokenItem';
+import SecondaryButton from '@components/ui/button/SecondaryButton';
+import AccountScreenHeader from '../components/AccountScreenHeader';
+import { getTokenInfo } from '@services/tokens';
+import useNetwork from '@features/network/hooks/useNetwork';
 
 const AccountScreen = () => {
   const { selectedAccount } = useSelectedAccount();
-
+  const { selectedNetwork } = useNetwork();
   if (!selectedAccount) {
     return (
       <Container>
@@ -22,18 +27,22 @@ const AccountScreen = () => {
 
   return (
     <SafeArea>
-      <SelectNetworkDropdown />
+      <AccountScreenHeader />
       <Spacer height={48} />
       <Container alignItems="center" center={false}>
-        <View>
-          <AccountInfoCard address={selectedAccount.address} />
-          <Spacer height={24} />
-          <Row justifyContent="center">
-            <RoundButton icon={<IconAdd />} title="Add funds" />
-            <Spacer width={61} />
-            <RoundButton icon={<IconSend />} title="Send" />
-          </Row>
-        </View>
+        <AccountInfoCard address={selectedAccount.address} />
+        <Spacer height={24} />
+        <Row justifyContent="center">
+          <RoundButton icon={<IconAdd />} title="Add funds" />
+          <Spacer width={61} />
+          <RoundButton icon={<IconSend />} title="Send" />
+        </Row>
+        <Spacer height={32} />
+        <TokenItem
+          token={getTokenInfo('ETH', selectedNetwork.id)}
+          account={selectedAccount}
+        />
+        <SecondaryButton title={'Add tokens'} />
       </Container>
     </SafeArea>
   );
