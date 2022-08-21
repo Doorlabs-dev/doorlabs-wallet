@@ -13,6 +13,8 @@ const ScreenNames = {
   ACCOUNT_TOKENS: 'account-tokens',
   ACCOUNT_NFTS: 'account-nfts',
   ACCOUNT_ACTIVITY: 'account-activity',
+  // Settings Stack
+  SETTING_STACK: 'setting-stack',
 };
 
 export default ScreenNames;

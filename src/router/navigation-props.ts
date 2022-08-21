@@ -4,6 +4,8 @@ type ScreenNavigationProps<T> = {
   navigate: ({ name, params }: { name: string; params?: T }) => void;
   goBack: () => void;
   dispatch: (actions: StackActionType) => void;
+  openDrawer: () => void;
+  closeDrawer: () => void;
 };
 
 export { ScreenNavigationProps };
