@@ -5,7 +5,7 @@ import useAppState from '../hooks/useAppState';
 import OnboardingStack from './OnboardingStack';
 import useAuthentication from '../features/auth/hooks/useAuthentication';
 import SplashScreen from '../features/onboarding/screen/SplashScreen';
-import AppStack from './AppStack';
+import AppDrawer from './AppDrawer';
 
 const AppNavigation = () => {
   const {
@@ -33,7 +33,7 @@ const AppNavigation = () => {
     <NavigationContainer>
       {isAccountAvailable ? (
         isAuthenticated ? (
-          <AppStack />
+          <AppDrawer />
         ) : (
           <AuthStack />
         )

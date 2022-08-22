@@ -1,3 +1,4 @@
+import { formatAddress } from './formatAddress';
 import formatEther from './formatEther';
 
-export { formatEther };
+export { formatEther, formatAddress };

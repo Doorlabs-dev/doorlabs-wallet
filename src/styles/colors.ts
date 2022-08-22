@@ -1,6 +1,8 @@
 const primary = '#161616';
 const secondary = '#383838';
 const greyScale = '#414141';
+const greyScale800 = '#2E2E2E';
+const greyScale600 = '#707070';
 const lightGreyScale = '#888888';
 const whiteGrey = '#CFCFCF';
 const white = '#ffffff';
@@ -16,6 +18,8 @@ export default {
   primary,
   secondary,
   greyScale,
+  greyScale800,
+  greyScale600,
   lightGreyScale,
   whiteGrey,
   white,
