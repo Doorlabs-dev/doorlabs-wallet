@@ -62,11 +62,14 @@ const AccountScreen = () => {
           actions={[
             {
               label: 'View on voyager',
-              onPress: exploreAccount,
+              onPress: () => {
+                exploreAccount();
+              },
             },
             {
               label: 'Export private key',
               onPress: () => {
+                close();
                 navigation.navigate({ name: ScreenNames.ACCOUNT_PRIVATE_KEY });
               },
             },

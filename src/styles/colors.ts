@@ -14,6 +14,7 @@ const darkBlue = 'rgba(93, 100, 214, 0.1)';
 const middleBlue = 'rgba(93, 100, 214, 0.3)';
 const lightBlue = 'rgba(93, 100, 214, 0.9)';
 const periwinkle = '#C6CAFF';
+const buttonPrimary = '#3B43B9';
 
 export default {
   primary,
@@ -32,4 +33,5 @@ export default {
   middleBlue,
   lightBlue,
   periwinkle,
+  buttonPrimary,
 };
