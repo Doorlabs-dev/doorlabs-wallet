@@ -8,6 +8,7 @@ import RoundButton from './button/RoundButton';
 import SecondaryButton from './button/SecondaryButton';
 import PrimaryButton from './button/PrimaryButton';
 import TodoScreen from './TodoScreen';
+import DefaultAvatar from './DefaultAvatar';
 
 export {
   Title,
@@ -20,4 +21,5 @@ export {
   EtherIcon,
   CustomTabBar,
   TodoScreen,
+  DefaultAvatar,
 };
