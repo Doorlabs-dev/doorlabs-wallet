@@ -29,6 +29,7 @@ const TabBarContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  z-index: 0;
 `;
 
 const TabBarItemContainer = styled.View`
@@ -47,7 +48,7 @@ const Dot = styled.View`
 `;
 
 const { ACCOUNT_TOKENS, ACCOUNT_NFTS, ACCOUNT_ACTIVITY } = ScreenNames;
-type IconNames = 'account-tokens' | 'account-nfts' | 'account-activity';
+type IconNames = 'account-tokens-stack' | 'account-nfts' | 'account-activity';
 
 type TabBarItemProps = {
   active?: boolean;

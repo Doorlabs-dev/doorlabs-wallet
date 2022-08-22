@@ -28,8 +28,13 @@ const useSelectedAccount = () => {
     setSelectedAccount(res ? mapWalletAccountToAccount(res) : null);
   };
 
+  const exportPrivateKey = async () => {
+    await wallet.exportPrivateKey();
+  };
+
   return {
     selectedAccount,
+    exportPrivateKey,
   };
 };
 
