@@ -32,6 +32,8 @@ const Container = styled.View`
         align-items: center;
       `}
       background-color: ${color};
+      padding-right: 16px;
+      padding-left: 16px;
     `;
   }}
 `;

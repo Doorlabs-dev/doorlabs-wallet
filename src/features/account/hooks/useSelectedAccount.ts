@@ -29,7 +29,7 @@ const useSelectedAccount = () => {
   };
 
   const exportPrivateKey = async () => {
-    await wallet.exportPrivateKey();
+    return await wallet.exportPrivateKey();
   };
 
   return {

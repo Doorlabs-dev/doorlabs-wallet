@@ -49,7 +49,12 @@ const AccountActionsModal = ({ visible, onClose, actions }: Props) => {
     <BottomSheet visible={visible} onClose={onClose}>
       {actions.map((action, index) => (
         <Fragment key={index}>
-          <ActionItem onPress={() => action.onPress()} label={action.label} />
+          <ActionItem
+            onPress={() => {
+              action.onPress();
+            }}
+            label={action.label}
+          />
           {index != actions.length - 1 && <Line />}
         </Fragment>
       ))}

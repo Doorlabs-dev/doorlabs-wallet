@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ScreenNames from '../screenNames';
 import { TodoScreen } from '@components/ui';
 import AccountTabs from './AccountTabs';
+import AccountPrivateKeyScreen from '@features/account/screen/AccountPrivateKeyScreen';
+import colors from '@styles/colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,10 +22,21 @@ const AccountStack = () => {
       />
       <Stack.Screen
         options={{
-          headerShown: false,
+          headerTitle: 'Show Private Key',
+          headerStyle: {
+            backgroundColor: colors.primary,
+          },
+          headerTitleStyle: {
+            color: colors.white,
+            fontSize: 24,
+            fontWeight: '500',
+          },
+          headerBackTitleVisible: false,
+          headerTintColor: colors.white,
+          headerTitleAlign: 'left',
         }}
         name={ACCOUNT_PRIVATE_KEY}
-        component={TodoScreen}
+        component={AccountPrivateKeyScreen}
       />
     </Stack.Navigator>
   );

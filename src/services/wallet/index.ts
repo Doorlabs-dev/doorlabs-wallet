@@ -170,7 +170,7 @@ class Wallet {
     }
   }
 
-  async exportPrivateKey() {
+  async exportPrivateKey(): Promise<string> {
     if (!this.session || !this.session.secret)
       throw new Error('No session opened');
 
