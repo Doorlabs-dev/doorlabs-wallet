@@ -1,14 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AccountScreen from '../features/account/screen/AccountScreen';
-import { CustomTabBar, TodoScreen } from '../components/ui';
-import ScreenNames from './screenNames';
+import { CustomTabBar, TodoScreen } from '../../components/ui';
+import ScreenNames from '../screenNames';
+import AccountTokensStack from './AccountStack';
+import AccountScreen from '@features/account/screen/AccountScreen';
 
 const Tabs = createBottomTabNavigator();
 
 const { ACCOUNT_TOKENS, ACCOUNT_NFTS, ACCOUNT_ACTIVITY } = ScreenNames;
 
-const MainTabs = () => {
+const AccountTabs = () => {
   return (
     <Tabs.Navigator tabBar={CustomTabBar}>
       <Tabs.Screen
@@ -36,4 +37,4 @@ const MainTabs = () => {
   );
 };
 
-export default MainTabs;
+export default AccountTabs;

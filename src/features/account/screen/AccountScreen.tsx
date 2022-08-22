@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Container, Row, SafeArea, Spacer } from '@components/layout';
 import { colors } from '../../../styles';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AccountInfoCard from '../components/AccountInfoCard';
-import SelectNetworkDropdown from '@features/network/components/SelectNetworkDropdown';
-import { RoundButton } from '@components/ui';
+import { RoundButton, Text } from '@components/ui';
 import IconAdd from '@assets/svg/icon_add.svg';
 import IconSend from '@assets/svg/icon_send.svg';
 import TokenItem from '@features/tokens/components/TokenItem';
@@ -13,10 +12,23 @@ import SecondaryButton from '@components/ui/button/SecondaryButton';
 import AccountScreenHeader from '../components/AccountScreenHeader';
 import { getTokenInfo } from '@services/tokens';
 import useNetwork from '@features/network/hooks/useNetwork';
+import useModal from '../../../hooks/useModal';
+import AccountActionsModal from '../components/AccountActionsModal';
+import useExploreAccount from '@features/explore/hooks/useExploreAccount';
+import { useNavigation } from '@react-navigation/native';
+import ScreenNames from '../../../router/screenNames';
+import { ScreenNavigationProps } from 'src/router/navigation-props';
 
 const AccountScreen = () => {
   const { selectedAccount } = useSelectedAccount();
   const { selectedNetwork } = useNetwork();
+  const { exploreAccount } = useExploreAccount(
+    selectedNetwork,
+    selectedAccount?.address
+  );
+  const { visible, close, open } = useModal();
+  const navigation = useNavigation<ScreenNavigationProps<any>>();
+
   if (!selectedAccount) {
     return (
       <Container>
@@ -30,7 +42,10 @@ const AccountScreen = () => {
       <AccountScreenHeader />
       <Spacer height={48} />
       <Container alignItems="center" center={false}>
-        <AccountInfoCard address={selectedAccount.address} />
+        <AccountInfoCard
+          onPress={() => open()}
+          address={selectedAccount.address}
+        />
         <Spacer height={24} />
         <Row justifyContent="center">
           <RoundButton icon={<IconAdd />} title="Add funds" />
@@ -43,6 +58,30 @@ const AccountScreen = () => {
           account={selectedAccount}
         />
         <SecondaryButton title={'Add tokens'} />
+        <AccountActionsModal
+          actions={[
+            {
+              label: 'View on voyager',
+              onPress: exploreAccount,
+            },
+            {
+              label: 'Export private key',
+              onPress: () => {
+                navigation.navigate({ name: ScreenNames.ACCOUNT_PRIVATE_KEY });
+              },
+            },
+            {
+              label: 'Hide account',
+              onPress: () => {},
+            },
+            {
+              label: 'Edit name',
+              onPress: () => {},
+            },
+          ]}
+          visible={visible}
+          onClose={close}
+        />
       </Container>
     </SafeArea>
   );
