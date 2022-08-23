@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components/native';
-import { colors } from '../../../styles';
+import styled, { css } from "styled-components/native";
+import { colors } from "../../../styles";
 
 type Props = {
   width?: number;
@@ -8,15 +8,18 @@ type Props = {
 };
 
 const Button = styled.TouchableOpacity`
-  ${({ width, height = 64, color = colors.secondary }: Props) => {
+  ${({ width, height = 64, color = colors.primary700 }: Props) => {
     return css`
-      ${width &&
-      css`
-        width: ${width}px;
-      `}
+      ${width
+        ? css`
+            width: ${width}px;
+          `
+        : css`
+            width: 100%;
+          `}
       height: ${height}px;
       background-color: ${color};
-      border-radius: 40px;
+      border-radius: 8px;
       justify-content: center;
       align-items: center;
     `;
