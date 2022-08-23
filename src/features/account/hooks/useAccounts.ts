@@ -22,10 +22,16 @@ const useAccounts = () => {
     return accounts[0];
   };
 
+  const addNewAccount = async (networkId: string) => {
+    const account = await Account.addAccount(networkId);
+    return account;
+  };
+
   return {
     getAllWalletAccounts,
     getAccountsByNetwork,
     getDefaultAccountByNetwork,
+    addNewAccount,
   };
 };
 

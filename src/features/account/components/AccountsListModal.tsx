@@ -7,6 +7,8 @@ import { PrimaryButton, Text } from '@components/ui';
 import { Spacer } from '@components/layout';
 import { ScrollView } from 'react-native';
 import useSelectedAccount from '../hooks/useSelectedAccount';
+import AddAccountButton from './AddAccountButton';
+import generateAccountName from '@utils/generateAccountName';
 
 type Props = {
   visible: boolean;
@@ -33,18 +35,23 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
         List Account
       </Text>
       <Spacer height={32} />
+
       {!!accounts.length ? (
-        accounts.map((acc) => (
-          <AccountItem
-            selected
-            onPress={() => {
-              onClose();
-              selectAccount(acc);
-            }}
-            key={acc.address}
-            account={acc}
-          />
-        ))
+        <>
+          {accounts.map((acc) => (
+            <AccountItem
+              key={acc.address}
+              name={generateAccountName(acc)}
+              account={acc}
+              selected={selectedAccount?.address === acc.address}
+              onPress={() => {
+                onClose();
+                selectAccount(acc);
+              }}
+            />
+          ))}
+          <AddAccountButton />
+        </>
       ) : (
         <>
           <Text>No accounts on this network yet</Text>

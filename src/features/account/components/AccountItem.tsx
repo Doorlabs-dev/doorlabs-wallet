@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native';
 import IconCheck from '@assets/svg/icon_check.svg';
 
 type Props = {
+  name: string;
   account: Account;
   onPress: () => void;
   selected?: boolean;
@@ -18,7 +19,7 @@ const AccountItemContainer = styled.View`
   padding: 16px;
 `;
 
-const AccountItem = ({ account, onPress, selected = false }: Props) => {
+const AccountItem = ({ name, account, onPress, selected = false }: Props) => {
   const address = account.address;
 
   return (
@@ -28,7 +29,7 @@ const AccountItem = ({ account, onPress, selected = false }: Props) => {
           <DefaultAvatar />
           <Spacer width={16} />
           <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-            <Title size={20}>Account 1</Title>
+            <Title size={20}>{name}</Title>
             <Spacer height={8} />
             <Text>
               {address.substring(0, 6)} ...{' '}
@@ -36,7 +37,7 @@ const AccountItem = ({ account, onPress, selected = false }: Props) => {
             </Text>
           </TouchableOpacity>
         </Row>
-        <IconCheck />
+        {selected ? <IconCheck /> : null}
       </Row>
     </AccountItemContainer>
   );

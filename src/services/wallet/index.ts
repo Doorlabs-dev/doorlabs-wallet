@@ -36,7 +36,7 @@ const ARGENT_ACCOUNT_CONTRACT_CLASS_HASHES = [
 const SELECTOR_FROM_NAME_INITIALIZE =
   '0x79dc0da7c54b95f10aa182ad0a46400db63156920adb65eca2654c0945a463';
 
-const baseDerivationPath = "m/44'/9004'/0'/0";
+export const baseDerivationPath = "m/44'/9004'/0'/0";
 
 class Wallet {
   public backup?: string;
@@ -255,71 +255,65 @@ class Wallet {
   async addAccount(
     networkId: string
   ): Promise<{ account: WalletAccount; txHash: string }> {
-    try {
-      if (!this.session) throw Error('No session opened');
+    if (!this.session) throw Error('No session opened');
 
-      const network = getNetwork(networkId);
+    const network = getNetwork(networkId);
 
-      const accounts = await this.getWalletAccounts();
-      const currentPaths = accounts
-        .filter(
-          (account) =>
-            account.signer.type === 'local_secret' &&
-            account.network.id === network.id
-        )
-        .map((account) => account.signer.derivationPath);
+    const accounts = await this.getWalletAccounts();
+    const currentPaths = accounts
+      .filter(
+        (account) =>
+          account.signer.type === 'local_secret' &&
+          account.network.id === network.id
+      )
+      .map((account) => account.signer.derivationPath);
 
-      const index = getNextPathIndex(currentPaths, baseDerivationPath);
+    const index = getNextPathIndex(currentPaths, baseDerivationPath);
 
-      const starkKeyPair = getStarkPair(
-        index,
-        this.session?.secret ?? '',
-        baseDerivationPath
-      );
+    const starkKeyPair = getStarkPair(
+      index,
+      this.session?.secret ?? '',
+      baseDerivationPath
+    );
 
-      const starkPub = ec.getStarkKey(starkKeyPair);
+    const starkPub = ec.getStarkKey(starkKeyPair);
 
-      const accountClassHash = await this.getAccountClassHash(network);
+    const accountClassHash = await this.getAccountClassHash(network);
 
-      const payload = {
-        contract: json.parse(ProxyContract),
-        constructorCalldata: stark.compileCalldata({
-          implementation: accountClassHash,
-          selector: SELECTOR_FROM_NAME_INITIALIZE,
-          calldata: stark.compileCalldata({
-            signer: starkPub,
-            guardian: '0',
-          }),
+    const payload = {
+      contract: json.parse(ProxyContract),
+      constructorCalldata: stark.compileCalldata({
+        implementation: accountClassHash,
+        selector: SELECTOR_FROM_NAME_INITIALIZE,
+        calldata: stark.compileCalldata({
+          signer: starkPub,
+          guardian: '0',
         }),
-        addressSalt: starkPub,
-      };
+      }),
+      addressSalt: starkPub,
+    };
 
-      const provider = getProvider(network);
+    const provider = getProvider(network);
 
-      const txResponse = await provider.deployContract(payload);
+    const txResponse = await provider.deployContract(payload);
 
-      await provider.waitForTransaction(txResponse?.transaction_hash);
+    if (!txResponse?.address) throw Error('Cannot create account');
 
-      if (!txResponse?.address) throw Error('Cannot create account');
+    const account: WalletAccount = {
+      address: txResponse.address,
+      network,
+      networkId: network.id,
+      signer: {
+        type: 'local_secret' as const,
+        derivationPath: getPathForIndex(index, baseDerivationPath),
+      },
+    };
 
-      const account: WalletAccount = {
-        address: txResponse.address,
-        network,
-        networkId: network.id,
-        signer: {
-          type: 'local_secret' as const,
-          derivationPath: getPathForIndex(index, baseDerivationPath),
-        },
-      };
+    await this.addWalletAccounts([account]);
+    await this.storeBackup();
+    await this.selectAccount(account);
 
-      await this.addWalletAccounts([account]);
-      await this.storeBackup();
-      await this.selectAccount(account);
-
-      return { account, txHash: txResponse.transaction_hash };
-    } catch (error) {
-      throw error;
-    }
+    return { account, txHash: txResponse.transaction_hash };
   }
 }
 

@@ -8,7 +8,7 @@ import IconEther from '@assets/svg/icon_ether.svg';
 import { useBalance } from '@features/account/hooks/useSelectedAccount';
 import { Token } from '@services/tokens/token.model';
 import { Account } from '@features/account/account.model';
-import { formatEther } from '@utils/index';
+import formatEther from '@utils/formatEther';
 
 const { width } = Dimensions.get('window');
 

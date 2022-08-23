@@ -3,8 +3,9 @@ import React from 'react';
 import { Row, Spacer } from '@components/layout';
 import { DefaultAvatar, Text } from '@components/ui';
 import IconDropdown from '@assets/svg/icon_dropdown.svg';
-import { formatAddress } from '@utils/formatAddress';
+import formatAddress from '@utils/formatAddress';
 import { Account } from '../account.model';
+import generateAccountName from '@utils/generateAccountName';
 
 type Props = {
   selectedAccount?: Account;
@@ -20,7 +21,9 @@ const DrawerAccountInfo = ({ selectedAccount, onPress }: Props) => {
         <View style={{ width: 150 }}>
           <Row justifyContent="space-between" alignItems="center">
             <Text size={20} lineHeight={30} weight={400}>
-              {!!selectedAccount ? 'Account 1' : 'Select account'}
+              {!!selectedAccount
+                ? generateAccountName(selectedAccount)
+                : 'Select account'}
             </Text>
             <IconDropdown />
           </Row>

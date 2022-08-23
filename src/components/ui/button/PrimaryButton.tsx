@@ -1,4 +1,4 @@
-import { TouchableOpacity, Dimensions } from 'react-native';
+import { TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import React from 'react';
 import styled from 'styled-components/native';
 import colors from '@styles/colors';
@@ -7,9 +7,8 @@ import Text from '../Text';
 type Props = {
   label: string;
   onPress: () => void;
+  loading?: boolean;
 };
-
-const { width } = Dimensions.get('window');
 
 const Container = styled.TouchableOpacity`
   width: 100%;
@@ -20,12 +19,16 @@ const Container = styled.TouchableOpacity`
   border-radius: 8px;
 `;
 
-const PrimaryButton = ({ label, onPress }: Props) => {
+const PrimaryButton = ({ label, onPress, loading = false }: Props) => {
   return (
-    <Container activeOpacity={0.8} onPress={onPress}>
-      <Text size={16} lineHeight={24} weight={500}>
-        {label}
-      </Text>
+    <Container disabled={loading} activeOpacity={0.8} onPress={onPress}>
+      {loading ? (
+        <ActivityIndicator color={colors.white} />
+      ) : (
+        <Text size={16} lineHeight={24} weight={500}>
+          {label}
+        </Text>
+      )}
     </Container>
   );
 };
