@@ -1,7 +1,15 @@
-import { Text, Title } from "@components/ui";
+import { Spacer } from "@components/layout";
+import { Text } from "@components/ui";
 import { useState } from "react";
 import {
-  LayoutChangeEvent,
+  Control,
+  ControllerFieldState,
+  FieldErrors,
+  FieldPath,
+  FieldValues, RegisterOptions,
+  useController
+} from "react-hook-form";
+import {
   NativeSyntheticEvent,
   StyleProp,
   StyleSheet,
@@ -9,24 +17,41 @@ import {
   TextInputFocusEventData,
   TextInputProps,
   View,
-  ViewStyle,
+  ViewStyle
 } from "react-native";
 import { colors } from "../../styles";
 
-type Props = {
+interface Props {
   wrapperStyles?: StyleProp<ViewStyle>;
   inputProps?: TextInputProps;
   placeholder?: string;
   label?: string;
-};
+  fieldState?: ControllerFieldState;
+  name: string;
+  errors?: FieldErrors;
+  control: Control<FieldValues>;
+  rules?: Omit<
+    RegisterOptions<FieldValues, FieldPath<FieldValues>>,
+    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
+  >;
+}
 
 const TextInput = ({
   wrapperStyles,
   inputProps,
   placeholder,
   label,
+  name,
+  errors,
+  control,
+  rules,
 }: Props) => {
+  const {
+    field: { value, onChange },
+  } = useController({ control, name, rules });
   const [isFocused, setFocused] = useState(false);
+
+  const errorMess = errors?.[name]?.message || "";
 
   const _onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
     setFocused(true);
@@ -59,12 +84,23 @@ const TextInput = ({
           underlineColorAndroid={colors.white}
           selectionColor={colors.white}
           placeholder={placeholder}
+          value={value}
+          onChangeText={onChange}
           {...inputProps}
           onFocus={_onFocus}
           onBlur={_onBlur}
           style={[styles.textInput, inputProps?.style]}
         />
       </View>
+      {!!errorMess ? (
+        <View style={{ height: 20, justifyContent: "center" }}>
+          <Text color="red" size={10}>
+            {errorMess}
+          </Text>
+        </View>
+      ) : (
+        <Spacer height={20} />
+      )}
     </View>
   );
 };

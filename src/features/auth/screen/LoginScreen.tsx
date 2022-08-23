@@ -1,24 +1,24 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Container, Spacer } from "../../../components/layout";
-import useBiometrics from "../../../hooks/useBiometrics";
-import { Button, Text, Title } from "../../../components/ui";
-import { TextInput } from "../../../components/form";
+import { FieldValues, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Alert,
-  StyleSheet,
   Image,
-  View,
   StatusBar,
+  StyleSheet,
+  View,
 } from "react-native";
-import useWalletPassword from "../../../services/wallet_password";
-import useAuthentication from "../hooks/useAuthentication";
-import { Controller, useForm } from "react-hook-form";
-import wallet from "../../../services/wallet";
-import { colors } from "../../../styles";
-import { useNavigation } from "@react-navigation/native";
+import { TextInput } from "../../../components/form";
+import { Container, Spacer } from "../../../components/layout";
+import { Button, Text, Title } from "../../../components/ui";
+import useBiometrics from "../../../hooks/useBiometrics";
 import { ScreenNavigationProps } from "../../../router/navigation-props";
 import ScreenNames from "../../../router/screenNames";
+import wallet from "../../../services/wallet";
+import useWalletPassword from "../../../services/wallet_password";
+import { colors } from "../../../styles";
+import useAuthentication from "../hooks/useAuthentication";
 
 const LOGO = require("@assets/logo.png");
 
@@ -30,7 +30,7 @@ const LoginScreen = () => {
   const [isStarting, setIsStarting] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit } = useForm<FieldValues>({
     defaultValues: { password: "" },
   });
 
@@ -69,20 +69,15 @@ const LoginScreen = () => {
       <View style={styles.tileWrap}>
         <Title size={20}>Unlock your wallet to continue</Title>
       </View>
-      <Controller
+      <TextInput
+        placeholder="Input your password"
+        label="Password"
         name="password"
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            inputProps={{
-              value,
-              onChangeText: onChange,
-              secureTextEntry: true,
-            }}
-            placeholder="Input your password"
-            label="Password"
-          />
-        )}
+        rules={{ required: "This field is required." }}
+        inputProps={{
+          secureTextEntry: true,
+        }}
       />
       <Spacer height={12} />
       {/* {isBiometricsAvailable && (
