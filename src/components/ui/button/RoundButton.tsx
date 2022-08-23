@@ -24,12 +24,13 @@ type Props = {
   size?: number;
   icon: JSX.Element;
   title?: string;
+  onPress?: () => void;
 };
 
-const RoundButton = ({ size, icon, title }: Props) => {
+const RoundButton = ({ size, icon, title, onPress }: Props) => {
   return (
     <Column alignItems="center">
-      <TouchableOpacity activeOpacity={0.8}>
+      <TouchableOpacity onPress={() => onPress?.()} activeOpacity={0.8}>
         <RoundView size={size}>{icon}</RoundView>
       </TouchableOpacity>
       {!!title && (

@@ -3,12 +3,10 @@ import BottomSheet from '@components/ui/modal/BottomSheet';
 import { Account } from '../account.model';
 import useAccounts from '../hooks/useAccounts';
 import AccountItem from './AccountItem';
-import { PrimaryButton, Text } from '@components/ui';
+import { Text } from '@components/ui';
 import { Spacer } from '@components/layout';
-import { ScrollView } from 'react-native';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AddAccountButton from './AddAccountButton';
-import generateAccountName from '@utils/generateAccountName';
 
 type Props = {
   visible: boolean;
