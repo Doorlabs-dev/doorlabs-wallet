@@ -14,29 +14,22 @@ type Props = {
 const DrawerAccountInfo = ({ selectedAccount, onPress }: Props) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      {!!selectedAccount ? (
-        <Row>
-          <DefaultAvatar />
-          <Spacer width={16} />
-          <View style={{ width: 150 }}>
-            <Row justifyContent="space-between" alignItems="center">
-              <Text size={20} lineHeight={30} weight={400}>
-                Account 1
-              </Text>
-              <IconDropdown />
-            </Row>
-            <Spacer height={5} />
-            <Text size={14} lineHeight={20} weight={400}>
-              {formatAddress(selectedAccount?.address)}
+      <Row>
+        <DefaultAvatar text={!!selectedAccount ? 'A1' : 'N/A'} />
+        <Spacer width={16} />
+        <View style={{ width: 150 }}>
+          <Row justifyContent="space-between" alignItems="center">
+            <Text size={20} lineHeight={30} weight={400}>
+              {!!selectedAccount ? 'Account 1' : 'Select account'}
             </Text>
-          </View>
-        </Row>
-      ) : (
-        <>
-          <Spacer height={16} />
-          <Text>No account on this network</Text>
-        </>
-      )}
+            <IconDropdown />
+          </Row>
+          <Spacer height={5} />
+          <Text size={14} lineHeight={20} weight={400}>
+            {formatAddress(selectedAccount?.address)}
+          </Text>
+        </View>
+      </Row>
     </TouchableOpacity>
   );
 };
