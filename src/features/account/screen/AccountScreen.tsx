@@ -1,10 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import React from 'react';
+import { ActivityIndicator } from 'react-native';
 import { Container, Row, SafeArea, Spacer } from '@components/layout';
 import { colors } from '../../../styles';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AccountInfoCard from '../components/AccountInfoCard';
-import { RoundButton, Text } from '@components/ui';
+import { RoundButton } from '@components/ui';
 import IconAdd from '@assets/svg/icon_add.svg';
 import IconSend from '@assets/svg/icon_send.svg';
 import TokenItem from '@features/tokens/components/TokenItem';
@@ -31,9 +31,12 @@ const AccountScreen = () => {
 
   if (!selectedAccount) {
     return (
-      <Container>
-        <ActivityIndicator size={'large'} color={colors.white} />
-      </Container>
+      <SafeArea>
+        <AccountScreenHeader />
+        <Container>
+          <ActivityIndicator size={'large'} color={colors.white} />
+        </Container>
+      </SafeArea>
     );
   }
 

@@ -14,18 +14,32 @@ export const useBalance = (tokenAddress?: string, account?: Account | null) => {
   });
 };
 
-const useSelectedAccount = () => {
+const useSelectedAccount = (fetchOnMount = true) => {
   const [selectedAccount, setSelectedAccount] = useRecoilState<Account | null>(
     selectedAccountState
   );
 
   useEffect(() => {
-    getSelectedAccount();
-  }, []);
+    if (fetchOnMount) {
+      getSelectedAccount();
+    }
+  }, [fetchOnMount]);
 
   const getSelectedAccount = async () => {
     const res = await wallet.getSelectedAccount();
     setSelectedAccount(res ? mapWalletAccountToAccount(res) : null);
+  };
+
+  const selectAccount = async (account?: Account) => {
+    await wallet.selectAccount(
+      account
+        ? {
+            address: account.address,
+            networkId: account.networkId,
+          }
+        : undefined
+    );
+    setSelectedAccount(account || null);
   };
 
   const exportPrivateKey = async () => {
@@ -34,6 +48,7 @@ const useSelectedAccount = () => {
 
   return {
     selectedAccount,
+    selectAccount,
     exportPrivateKey,
   };
 };

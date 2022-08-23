@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 import { ScreenNavigationProps } from './navigation-props';
 import AccountStack from './account-navigation/AccountStack';
+import useModal from 'src/hooks/useModal';
 
 const Drawer = createDrawerNavigator();
 

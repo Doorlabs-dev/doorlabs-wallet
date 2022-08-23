@@ -5,7 +5,7 @@ import colors from '@styles/colors';
 import { Row, Spacer } from '@components/layout';
 import IconSetting from '@assets/svg/icon_setting.svg';
 import IconLogout from '@assets/svg/icon_logout.svg';
-import { Text } from '@components/ui';
+import { DefaultAvatar, Text } from '@components/ui';
 import styled from 'styled-components/native';
 import useAuthentication from '@features/auth/hooks/useAuthentication';
 import useSelectedAccount from '@features/account/hooks/useSelectedAccount';
@@ -14,6 +14,9 @@ import IconDropdown from '@assets/svg/icon_dropdown.svg';
 import { useNavigation } from '@react-navigation/native';
 import ScreenNames from '../screenNames';
 import { ScreenNavigationProps } from '../navigation-props';
+import AccountsListModal from '@features/account/components/AccountsListModal';
+import useNetwork from '@features/network/hooks/useNetwork';
+import useModal from '@hooks/useModal';
 
 type Props = {};
 
@@ -33,13 +36,6 @@ const Line = styled.View`
   background-color: ${colors.white};
 `;
 
-const DefaultAvatar = styled.View`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  background-color: ${colors.blue};
-`;
-
 const DrawerItem = ({ label, icon, onPress }: DrawerItemProps) => (
   <TouchableOpacity onPress={onPress}>
     <Row>
@@ -56,6 +52,8 @@ const CustomDrawer = (props: Props) => {
   const { setIsAuthenticated } = useAuthentication();
   const { selectedAccount } = useSelectedAccount();
   const navigation = useNavigation<ScreenNavigationProps<any>>();
+  const { visible, open, close } = useModal();
+  const { selectedNetwork } = useNetwork();
 
   return (
     <DrawerContentScrollView
@@ -68,7 +66,8 @@ const CustomDrawer = (props: Props) => {
       <Container>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate({ name: ScreenNames.ACCOUNT_TABS })
+            // navigation.navigate({ name: ScreenNames.ACCOUNT_TABS })
+            open()
           }
         >
           <Row>
@@ -92,6 +91,14 @@ const CustomDrawer = (props: Props) => {
         <Line />
         <Spacer height={16} />
         <DrawerItem
+          label="Home"
+          icon={<View />}
+          onPress={() =>
+            navigation.navigate({ name: ScreenNames.ACCOUNT_TABS })
+          }
+        />
+        <Spacer height={32} />
+        <DrawerItem
           label="Settings"
           icon={<IconSetting />}
           onPress={() =>
@@ -105,6 +112,11 @@ const CustomDrawer = (props: Props) => {
           onPress={() => setIsAuthenticated(false)}
         />
       </Container>
+      <AccountsListModal
+        visible={visible}
+        onClose={close}
+        networkId={selectedNetwork.id}
+      />
     </DrawerContentScrollView>
   );
 };
