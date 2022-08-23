@@ -1,98 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../../../styles';
-import DropDownPicker from 'react-native-dropdown-picker';
 import useNetwork from '../hooks/useNetwork';
-import { StackActions, useNavigation } from '@react-navigation/native';
-import { ScreenNavigationProps } from '../../../router/navigation-props';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getNetwork, Network } from '../../../services/network';
-import ScreenNames from '../../../router/screenNames';
+import { Network } from '../../../services/network';
 import useSelectedAccount from '../../account/hooks/useSelectedAccount';
 import IconDropdown from '@assets/svg/icon_dropdown.svg';
+import { Row } from '@components/layout';
+import { Text } from '@components/ui';
+import SelectNetworkModal from './SelectNetworkModal';
+import useModal from '@hooks/useModal';
+import useAccounts from '@features/account/hooks/useAccounts';
 
-const DropdownContainer = styled.View`
-  max-width: 180px;
+const DropdownContainer = styled.TouchableOpacity`
+  width: 160px;
+  height: 32px;
   z-index: 1000;
-`;
-
-const Dot = styled.View`
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background-color: ${colors.white};
+  padding: 6px 8px;
+  background-color: ${colors.orange};
+  justify-content: center;
+  border-radius: 24px;
 `;
 
 const SelectNetworkDropdown = () => {
-  const insets = useSafeAreaInsets();
   const { selectNetwork, selectedNetwork, getNetworks } = useNetwork();
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [chosenNetworkId, setChosenNetworkId] = useState(selectedNetwork.id);
-  const { selectedAccount } = useSelectedAccount();
-  const navigation = useNavigation<ScreenNavigationProps<any>>();
+  const { selectAccount } = useSelectedAccount(false);
+  const { getDefaultAccountByNetwork } = useAccounts();
+  const { visible, open, close } = useModal();
 
   useEffect(() => {
-    if (selectedAccount) {
-      const network = getNetwork(selectedAccount.networkId);
-      setChosenNetworkId(network.id);
+    if (selectedNetwork.id) {
+      getDefaultAccountByNetwork(selectedNetwork.id).then((defaultAcc) =>
+        selectAccount(defaultAcc)
+      );
     }
-  }, [selectedAccount?.networkId]);
+  }, [selectedNetwork?.id]);
 
-  useEffect(() => {
-    if (chosenNetworkId == null) return;
-
-    const foundNetwork = getNetworks().find(
-      (item: Network) => item.id == chosenNetworkId
-    );
-    if (foundNetwork != null) {
-      selectNetwork(foundNetwork);
-    }
-  }, [chosenNetworkId]);
+  const onSelectNetwork = (network: Network) => {
+    close();
+    selectNetwork(network);
+  };
 
   return (
-    <DropdownContainer>
-      <DropDownPicker
-        open={showDropdown}
-        value={chosenNetworkId}
-        items={getNetworks().map((item) => ({
-          value: item.id,
-          label: item.name,
-        }))}
-        onSelectItem={(item) => {
-          const nextNetworkId = item.value;
-
-          if (nextNetworkId === chosenNetworkId) return;
-          setTimeout(() => {
-            navigation.dispatch(
-              StackActions.replace(ScreenNames.ACCOUNTS_LIST)
-            );
-          }, 0);
-        }}
-        setOpen={setShowDropdown}
-        setValue={setChosenNetworkId}
-        ArrowUpIconComponent={() => <IconDropdown />}
-        ArrowDownIconComponent={() => <IconDropdown />}
-        TickIconComponent={() => <Dot />}
-        style={{
-          borderRadius: showDropdown ? 10 : 50,
-          backgroundColor: colors.orange,
-          borderColor: 'transparent',
-          padding: 0,
-          height: 32,
-        }}
-        textStyle={{
-          fontSize: 14,
-          lineHeight: 20,
-          fontWeight: '500',
-          color: colors.white,
-        }}
-        dropDownContainerStyle={{
-          borderColor: 'transparent',
-          backgroundColor: colors.orange,
-          zIndex: 1000,
-        }}
+    <>
+      <DropdownContainer onPress={open}>
+        <Row justifyContent="space-between">
+          <Text size={14} weight={500}>
+            {selectedNetwork?.name}
+          </Text>
+          <IconDropdown />
+        </Row>
+      </DropdownContainer>
+      <SelectNetworkModal
+        selectedNetwork={selectedNetwork}
+        visible={visible}
+        onClose={close}
+        networks={getNetworks()}
+        onPress={onSelectNetwork}
       />
-    </DropdownContainer>
+    </>
   );
 };
 
