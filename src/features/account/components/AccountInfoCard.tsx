@@ -36,7 +36,7 @@ const AccountInfoCard = ({ address, onPress }: Props) => {
       <TouchableOpacity onPress={onPress}>
         <Row justifyContent="center" alignItems="center">
           <Text size={20} lineHeight={30}>
-            Account 2
+            Account 1
           </Text>
           <PositionedIcon>
             <IconMore />

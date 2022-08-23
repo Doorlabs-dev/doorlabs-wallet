@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import wallet from '../../../services/wallet';
 import { WalletAccount } from '../../../services/wallet/wallet.model';
 import { fetchBalance } from '../../../services/balance';
@@ -7,6 +7,7 @@ import { Account } from '../account.model';
 import useSWR from 'swr';
 import { useRecoilState } from 'recoil';
 import selectedAccountState from '../selected-account.state';
+import useAccounts from './useAccounts';
 
 export const useBalance = (tokenAddress?: string, account?: Account | null) => {
   return useSWR([tokenAddress, account], fetchBalance, {
@@ -15,9 +16,10 @@ export const useBalance = (tokenAddress?: string, account?: Account | null) => {
 };
 
 const useSelectedAccount = (fetchOnMount = true) => {
-  const [selectedAccount, setSelectedAccount] = useRecoilState<Account | null>(
-    selectedAccountState
-  );
+  const [selectedAccount, setSelectedAccount] = useRecoilState<
+    Account | undefined
+  >(selectedAccountState);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (fetchOnMount) {
@@ -26,8 +28,10 @@ const useSelectedAccount = (fetchOnMount = true) => {
   }, [fetchOnMount]);
 
   const getSelectedAccount = async () => {
+    setIsLoading(true);
     const res = await wallet.getSelectedAccount();
-    setSelectedAccount(res ? mapWalletAccountToAccount(res) : null);
+    setSelectedAccount(res ? mapWalletAccountToAccount(res) : undefined);
+    setIsLoading(false);
   };
 
   const selectAccount = async (account?: Account) => {
@@ -39,7 +43,7 @@ const useSelectedAccount = (fetchOnMount = true) => {
           }
         : undefined
     );
-    setSelectedAccount(account || null);
+    setSelectedAccount(account);
   };
 
   const exportPrivateKey = async () => {
@@ -48,6 +52,7 @@ const useSelectedAccount = (fetchOnMount = true) => {
 
   return {
     selectedAccount,
+    isLoading,
     selectAccount,
     exportPrivateKey,
   };

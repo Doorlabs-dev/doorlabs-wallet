@@ -5,18 +5,17 @@ import colors from '@styles/colors';
 import { Row, Spacer } from '@components/layout';
 import IconSetting from '@assets/svg/icon_setting.svg';
 import IconLogout from '@assets/svg/icon_logout.svg';
-import { DefaultAvatar, Text } from '@components/ui';
+import { Text } from '@components/ui';
 import styled from 'styled-components/native';
 import useAuthentication from '@features/auth/hooks/useAuthentication';
 import useSelectedAccount from '@features/account/hooks/useSelectedAccount';
-import { formatAddress } from '@utils/formatAddress';
-import IconDropdown from '@assets/svg/icon_dropdown.svg';
 import { useNavigation } from '@react-navigation/native';
 import ScreenNames from '../screenNames';
 import { ScreenNavigationProps } from '../navigation-props';
 import AccountsListModal from '@features/account/components/AccountsListModal';
 import useNetwork from '@features/network/hooks/useNetwork';
 import useModal from '@hooks/useModal';
+import DrawerAccountInfo from '@features/account/components/DrawerAccountInfo';
 
 type Props = {};
 
@@ -64,29 +63,10 @@ const CustomDrawer = (props: Props) => {
       contentContainerStyle={{}}
     >
       <Container>
-        <TouchableOpacity
-          onPress={() =>
-            // navigation.navigate({ name: ScreenNames.ACCOUNT_TABS })
-            open()
-          }
-        >
-          <Row>
-            <DefaultAvatar />
-            <Spacer width={16} />
-            <View style={{ width: 150 }}>
-              <Row justifyContent="space-between" alignItems="center">
-                <Text size={20} lineHeight={30} weight={400}>
-                  Account 1
-                </Text>
-                <IconDropdown />
-              </Row>
-              <Spacer height={5} />
-              <Text size={14} lineHeight={20} weight={400}>
-                {formatAddress(selectedAccount?.address)}
-              </Text>
-            </View>
-          </Row>
-        </TouchableOpacity>
+        <DrawerAccountInfo
+          selectedAccount={selectedAccount}
+          onPress={() => open()}
+        />
         <Spacer height={45} />
         <Line />
         <Spacer height={16} />

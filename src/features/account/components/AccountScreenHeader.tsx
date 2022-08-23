@@ -1,11 +1,9 @@
 import React from 'react';
-import { Text } from '@components/ui';
 import { Row } from '@components/layout';
 import IconBurger from '@assets/svg/icon_burger.svg';
 import SelectNetworkDropdown from '@features/network/components/SelectNetworkDropdown';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
 import { ScreenNavigationProps } from 'src/router/navigation-props';
 
 type Props = {};
