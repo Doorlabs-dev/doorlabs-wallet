@@ -30,8 +30,13 @@ const LoginScreen = () => {
   const [isStarting, setIsStarting] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
-  const { control, handleSubmit } = useForm<FieldValues>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FieldValues>({
     defaultValues: { password: "" },
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -74,6 +79,7 @@ const LoginScreen = () => {
         label="Password"
         name="password"
         control={control}
+        errors={errors}
         rules={{ required: "This field is required." }}
         inputProps={{
           secureTextEntry: true,
@@ -88,7 +94,7 @@ const LoginScreen = () => {
         </Text>
       )} */}
       <Spacer height={12} />
-      <Button onPress={onSubmit}>
+      <Button onPress={onSubmit} width={"100%"}>
         <Title size={16}>Unlock</Title>
       </Button>
       <Spacer height={32} />

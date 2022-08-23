@@ -6,8 +6,9 @@ import {
   ControllerFieldState,
   FieldErrors,
   FieldPath,
-  FieldValues, RegisterOptions,
-  useController
+  FieldValues,
+  RegisterOptions,
+  useController,
 } from "react-hook-form";
 import {
   NativeSyntheticEvent,
@@ -17,7 +18,7 @@ import {
   TextInputFocusEventData,
   TextInputProps,
   View,
-  ViewStyle
+  ViewStyle,
 } from "react-native";
 import { colors } from "../../styles";
 
@@ -50,7 +51,6 @@ const TextInput = ({
     field: { value, onChange },
   } = useController({ control, name, rules });
   const [isFocused, setFocused] = useState(false);
-
   const errorMess = errors?.[name]?.message || "";
 
   const _onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {

@@ -6,12 +6,10 @@ import Toast from "react-native-root-toast";
 import { TextInput } from "../../../components/form";
 import { Container, Spacer } from "../../../components/layout";
 import { Button, Text, Title } from "../../../components/ui";
-import { defaultNetwork } from "../../../services/network/default_networks";
 import wallet from "../../../services/wallet";
 import useWalletPassword from "../../../services/wallet_password";
 import { colors } from "../../../styles";
 import useAuthentication from "../../auth/hooks/useAuthentication";
-import useWallet from "../../wallet/hooks/useWallet";
 
 const NewWalletScreen = () => {
   const {
@@ -44,7 +42,7 @@ const NewWalletScreen = () => {
         await setWalletPassword(password);
         const success = await wallet.startSession(password);
 
-        if (!success) throw Error('Error creating wallet');
+        if (!success) throw Error("Error creating wallet");
 
         setTimeout(() => {
           setIsAuthenticated(true);
