@@ -41,7 +41,6 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
           {accounts.map((acc) => (
             <AccountItem
               key={acc.address}
-              name={generateAccountName(acc)}
               account={acc}
               selected={selectedAccount?.address === acc.address}
               onPress={() => {
@@ -56,7 +55,7 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
         <>
           <Text>No accounts on this network yet</Text>
           <Spacer height={16} />
-          <PrimaryButton label="Add new account" onPress={() => {}} />
+          <AddAccountButton />
         </>
       )}
     </BottomSheet>

@@ -13,17 +13,16 @@ type Props = {
 };
 
 const DrawerAccountInfo = ({ selectedAccount, onPress }: Props) => {
+  const { name, symbol } = generateAccountName(selectedAccount);
   return (
     <TouchableOpacity onPress={onPress}>
       <Row>
-        <DefaultAvatar text={!!selectedAccount ? 'A1' : 'N/A'} />
+        <DefaultAvatar text={!!selectedAccount ? symbol : 'N/A'} />
         <Spacer width={16} />
         <View style={{ width: 150 }}>
           <Row justifyContent="space-between" alignItems="center">
             <Text size={20} lineHeight={30} weight={400}>
-              {!!selectedAccount
-                ? generateAccountName(selectedAccount)
-                : 'Select account'}
+              {!!selectedAccount ? name : 'Select account'}
             </Text>
             <IconDropdown />
           </Row>

@@ -38,7 +38,7 @@ const AccountInfoCard = ({ account, onPress }: Props) => {
       <TouchableOpacity onPress={onPress}>
         <Row justifyContent="center" alignItems="center">
           <Text size={20} lineHeight={30}>
-            {generateAccountName(account)}
+            {generateAccountName(account).name}
           </Text>
           <PositionedIcon>
             <IconMore />
