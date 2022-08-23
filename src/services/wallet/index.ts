@@ -154,7 +154,12 @@ class Wallet {
     await this.storeBackup();
   }
 
-  async selectAccount(accountIdentifier: BaseWalletAccount) {
+  async selectAccount(accountIdentifier?: BaseWalletAccount) {
+    if (!accountIdentifier) {
+      await SecureStorage.setItemAsync(SELECTED_KEY, '');
+      return;
+    }
+
     const accounts = await this.getWalletAccountsByNetwork(
       accountIdentifier.networkId
     );

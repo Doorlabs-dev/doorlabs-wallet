@@ -91,6 +91,14 @@ const CustomDrawer = (props: Props) => {
         <Line />
         <Spacer height={16} />
         <DrawerItem
+          label="Home"
+          icon={<View />}
+          onPress={() =>
+            navigation.navigate({ name: ScreenNames.ACCOUNT_TABS })
+          }
+        />
+        <Spacer height={32} />
+        <DrawerItem
           label="Settings"
           icon={<IconSetting />}
           onPress={() =>

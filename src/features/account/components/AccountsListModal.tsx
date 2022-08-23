@@ -6,6 +6,7 @@ import AccountItem from './AccountItem';
 import { Text } from '@components/ui';
 import { Spacer } from '@components/layout';
 import { ScrollView } from 'react-native';
+import useSelectedAccount from '../hooks/useSelectedAccount';
 
 type Props = {
   visible: boolean;
@@ -16,6 +17,7 @@ type Props = {
 const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const { getAccountsByNetwork } = useAccounts();
+  const { selectAccount } = useSelectedAccount(true);
 
   useEffect(() => {
     if (visible) {
@@ -31,11 +33,13 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
         List Account
       </Text>
       <Spacer height={32} />
-      {/* <ScrollView> */}
       {accounts.map((acc) => (
-        <AccountItem key={acc.address} account={acc} />
+        <AccountItem
+          onPress={() => selectAccount(acc)}
+          key={acc.address}
+          account={acc}
+        />
       ))}
-      {/* </ScrollView> */}
     </BottomSheet>
   );
 };

@@ -15,17 +15,9 @@ const useAccounts = () => {
     return result.map(mapWalletAccountToAccount);
   };
 
-  const selectAccount = async (account: Account) => {
-    await wallet.selectAccount({
-      address: account.address,
-      networkId: account.networkId,
-    });
-  };
-
   return {
     getAllWalletAccounts,
     getAccountsByNetwork,
-    selectAccount,
   };
 };
 
