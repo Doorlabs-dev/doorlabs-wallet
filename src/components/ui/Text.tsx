@@ -7,11 +7,13 @@ const Text = styled.Text`
     size = 14,
     lineHeight,
     weight,
+    textAlign,
   }: {
     color?: string;
     size?: number;
     lineHeight?: number;
     weight?: number;
+    textAlign?: 'center' | 'left';
   }) => {
     return css`
       font-size: ${size}px;
@@ -23,6 +25,10 @@ const Text = styled.Text`
       ${weight &&
       css`
         font-weight: ${weight};
+      `}
+      ${textAlign &&
+      css`
+        text-align: ${textAlign};
       `}
     `;
   }}

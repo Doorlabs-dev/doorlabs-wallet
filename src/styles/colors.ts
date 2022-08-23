@@ -4,6 +4,7 @@ const greyScale = '#414141';
 const greyScale800 = '#2E2E2E';
 const greyScale700 = '#414141';
 const greyScale600 = '#707070';
+const greyScale300 = '#CFCFCF';
 const lightGreyScale = '#888888';
 const whiteGrey = '#CFCFCF';
 const white = '#ffffff';
@@ -23,6 +24,7 @@ export default {
   greyScale800,
   greyScale700,
   greyScale600,
+  greyScale300,
   lightGreyScale,
   whiteGrey,
   white,

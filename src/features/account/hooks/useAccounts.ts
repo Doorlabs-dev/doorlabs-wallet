@@ -15,9 +15,17 @@ const useAccounts = () => {
     return result.map(mapWalletAccountToAccount);
   };
 
+  const getDefaultAccountByNetwork = async (
+    networkId: string
+  ): Promise<Account | undefined> => {
+    const accounts = await getAccountsByNetwork(networkId);
+    return accounts[0];
+  };
+
   return {
     getAllWalletAccounts,
     getAccountsByNetwork,
+    getDefaultAccountByNetwork,
   };
 };
 

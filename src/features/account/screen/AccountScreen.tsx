@@ -18,9 +18,10 @@ import useExploreAccount from '@features/explore/hooks/useExploreAccount';
 import { useNavigation } from '@react-navigation/native';
 import ScreenNames from '../../../router/screenNames';
 import { ScreenNavigationProps } from 'src/router/navigation-props';
+import NoAccount from '../components/NoAccount';
 
 const AccountScreen = () => {
-  const { selectedAccount } = useSelectedAccount();
+  const { selectedAccount, isLoading } = useSelectedAccount();
   const { selectedNetwork } = useNetwork();
   const { exploreAccount } = useExploreAccount(
     selectedNetwork,
@@ -29,13 +30,21 @@ const AccountScreen = () => {
   const { visible, close, open } = useModal();
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
+  if (isLoading) {
+    return (
+      <SafeArea>
+        <Container>
+          <ActivityIndicator color={colors.white} />
+        </Container>
+      </SafeArea>
+    );
+  }
+
   if (!selectedAccount) {
     return (
       <SafeArea>
         <AccountScreenHeader />
-        <Container>
-          <ActivityIndicator size={'large'} color={colors.white} />
-        </Container>
+        <NoAccount />
       </SafeArea>
     );
   }

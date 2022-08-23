@@ -1,9 +1,9 @@
 import { atom } from 'recoil';
 import { Account } from './account.model';
 
-const selectedAccountState = atom<Account | null>({
+const selectedAccountState = atom<Account | undefined>({
   key: 'selectedAccountState',
-  default: null,
+  default: undefined,
 });
 
 export default selectedAccountState;
