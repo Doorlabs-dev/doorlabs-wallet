@@ -5,6 +5,7 @@ import { DefaultAvatar, Text, Title } from '../../../components/ui';
 import { Row, Spacer } from '../../../components/layout';
 import { TouchableOpacity } from 'react-native';
 import IconCheck from '@assets/svg/icon_check.svg';
+import generateAccountName from '@utils/generateAccountName';
 
 type Props = {
   account: Account;
@@ -20,15 +21,15 @@ const AccountItemContainer = styled.View`
 
 const AccountItem = ({ account, onPress, selected = false }: Props) => {
   const address = account.address;
-
+  const { name, symbol } = generateAccountName(account);
   return (
     <AccountItemContainer>
       <Row alignItems="center" justifyContent="space-between">
         <Row>
-          <DefaultAvatar />
+          <DefaultAvatar text={symbol} />
           <Spacer width={16} />
           <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-            <Title size={20}>Account 1</Title>
+            <Title size={20}>{name}</Title>
             <Spacer height={8} />
             <Text>
               {address.substring(0, 6)} ...{' '}
@@ -36,7 +37,7 @@ const AccountItem = ({ account, onPress, selected = false }: Props) => {
             </Text>
           </TouchableOpacity>
         </Row>
-        <IconCheck />
+        {selected ? <IconCheck /> : null}
       </Row>
     </AccountItemContainer>
   );

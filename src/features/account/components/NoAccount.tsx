@@ -1,8 +1,9 @@
 import React from 'react';
 import { Container, Spacer } from '@components/layout';
 import AddAccountSvg from '@assets/svg/account/add_account.svg';
-import { PrimaryButton, Text } from '@components/ui';
+import { Text } from '@components/ui';
 import colors from '@styles/colors';
+import AddAccountButton from './AddAccountButton';
 
 type Props = {};
 
@@ -17,7 +18,7 @@ const NoAccount = (props: Props) => {
         has roots in a
       </Text>
       <Spacer height={24} />
-      <PrimaryButton label="Add account" onPress={() => {}} />
+      <AddAccountButton />
     </Container>
   );
 };

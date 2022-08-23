@@ -9,8 +9,6 @@ import useAuthentication from '../../auth/hooks/useAuthentication';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
-import useWallet from '../../wallet/hooks/useWallet';
-import { defaultNetwork } from '../../../services/network/default_networks';
 
 const NewWalletScreen = () => {
   const { control, handleSubmit, getValues } = useForm({
@@ -23,9 +21,7 @@ const NewWalletScreen = () => {
 
   const { setWalletPassword } = useWalletPassword();
   const { setIsAuthenticated, setIsAccountAvailable } = useAuthentication();
-  const { addAccount } = useWallet();
   const [isCreatingWallet, setIsCreatingWallet] = useState(false);
-  const [error, setError] = useState<any>();
 
   const onConfirm = () => {
     handleSubmit(async ({ password }) => {
@@ -36,8 +32,6 @@ const NewWalletScreen = () => {
         const success = await wallet.startSession(password);
 
         if (!success) throw Error('Error creating wallet');
-
-        await addAccount(defaultNetwork.id);
 
         setTimeout(() => {
           setIsAuthenticated(true);
@@ -53,14 +47,6 @@ const NewWalletScreen = () => {
   const isSameValue = (value: string) => {
     return value === getValues().password;
   };
-
-  if (error) {
-    return (
-      <Container>
-        <Title textAlign="center">{error}</Title>
-      </Container>
-    );
-  }
 
   if (isCreatingWallet) {
     return (

@@ -3,8 +3,9 @@ import React from 'react';
 import { Row, Spacer } from '@components/layout';
 import { DefaultAvatar, Text } from '@components/ui';
 import IconDropdown from '@assets/svg/icon_dropdown.svg';
-import { formatAddress } from '@utils/formatAddress';
+import formatAddress from '@utils/formatAddress';
 import { Account } from '../account.model';
+import generateAccountName from '@utils/generateAccountName';
 
 type Props = {
   selectedAccount?: Account;
@@ -12,31 +13,25 @@ type Props = {
 };
 
 const DrawerAccountInfo = ({ selectedAccount, onPress }: Props) => {
+  const { name, symbol } = generateAccountName(selectedAccount);
   return (
     <TouchableOpacity onPress={onPress}>
-      {!!selectedAccount ? (
-        <Row>
-          <DefaultAvatar />
-          <Spacer width={16} />
-          <View style={{ width: 150 }}>
-            <Row justifyContent="space-between" alignItems="center">
-              <Text size={20} lineHeight={30} weight={400}>
-                Account 1
-              </Text>
-              <IconDropdown />
-            </Row>
-            <Spacer height={5} />
-            <Text size={14} lineHeight={20} weight={400}>
-              {formatAddress(selectedAccount?.address)}
+      <Row>
+        <DefaultAvatar text={!!selectedAccount ? symbol : 'N/A'} />
+        <Spacer width={16} />
+        <View style={{ width: 150 }}>
+          <Row justifyContent="space-between" alignItems="center">
+            <Text size={20} lineHeight={30} weight={400}>
+              {!!selectedAccount ? name : 'Select account'}
             </Text>
-          </View>
-        </Row>
-      ) : (
-        <>
-          <Spacer height={16} />
-          <Text>No account on this network</Text>
-        </>
-      )}
+            <IconDropdown />
+          </Row>
+          <Spacer height={5} />
+          <Text size={14} lineHeight={20} weight={400}>
+            {formatAddress(selectedAccount?.address)}
+          </Text>
+        </View>
+      </Row>
     </TouchableOpacity>
   );
 };

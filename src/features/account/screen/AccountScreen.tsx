@@ -54,10 +54,7 @@ const AccountScreen = () => {
       <AccountScreenHeader />
       <Spacer height={48} />
       <Container alignItems="center" center={false}>
-        <AccountInfoCard
-          onPress={() => open()}
-          address={selectedAccount.address}
-        />
+        <AccountInfoCard onPress={() => open()} account={selectedAccount} />
         <Spacer height={24} />
         <Row justifyContent="center">
           <RoundButton icon={<IconAdd />} title="Add funds" />

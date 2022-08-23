@@ -5,9 +5,11 @@ import { ShortAddress, Text } from '@components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 import IconMore from '@assets/svg/icon_more.svg';
 import { Row } from '@components/layout';
+import generateAccountName from '@utils/generateAccountName';
+import { Account } from '../account.model';
 
 type Props = {
-  address: string;
+  account: Account;
   onPress: () => void;
 };
 
@@ -30,13 +32,13 @@ const PositionedIcon = styled.View`
   right: -32px;
 `;
 
-const AccountInfoCard = ({ address, onPress }: Props) => {
+const AccountInfoCard = ({ account, onPress }: Props) => {
   return (
     <CardContainer start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} colors={COLORS}>
       <TouchableOpacity onPress={onPress}>
         <Row justifyContent="center" alignItems="center">
           <Text size={20} lineHeight={30}>
-            Account 1
+            {generateAccountName(account).name}
           </Text>
           <PositionedIcon>
             <IconMore />
@@ -46,7 +48,7 @@ const AccountInfoCard = ({ address, onPress }: Props) => {
       <Text size={28} lineHeight={38} weight={500}>
         $0.00
       </Text>
-      <ShortAddress address={address} />
+      <ShortAddress address={account.address} />
     </CardContainer>
   );
 };

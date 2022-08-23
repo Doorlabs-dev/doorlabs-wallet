@@ -37,6 +37,7 @@ const AppDrawer = () => {
       />
       <Drawer.Screen
         options={{
+          headerShown: false,
           headerStyle: {
             backgroundColor: colors.primary,
             shadowColor: 'transparent',

@@ -19,6 +19,7 @@ const ScreenNames = {
   ACCOUNT_PRIVATE_KEY: 'account-private-key',
   // Settings Stack
   SETTING_STACK: 'setting-stack',
+  SETTINGS: 'settings',
 };
 
 export default ScreenNames;
