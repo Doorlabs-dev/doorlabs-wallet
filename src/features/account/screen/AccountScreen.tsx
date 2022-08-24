@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { Container, Row, SafeArea, Spacer } from '@components/layout';
 import { colors } from '../../../styles';
 import useSelectedAccount from '../hooks/useSelectedAccount';
@@ -56,8 +56,16 @@ const AccountScreen = () => {
       <Container alignItems="center" center={false}>
         <AccountInfoCard onPress={() => open()} account={selectedAccount} />
         <Spacer height={24} />
-        <Row justifyContent="center">
+        <Row justifyContent="space-between">
           <RoundButton icon={<IconAdd />} title="Add funds" />
+          <Spacer width={61} />
+          <RoundButton
+            icon={<View />}
+            title="Receive"
+            onPress={() =>
+              navigation.navigate({ name: ScreenNames.ACCOUNT_RECEIVE })
+            }
+          />
           <Spacer width={61} />
           <RoundButton icon={<IconSend />} title="Send" />
         </Row>

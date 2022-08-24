@@ -5,14 +5,28 @@ import { TodoScreen } from '@components/ui';
 import AccountTabs from './AccountTabs';
 import AccountPrivateKeyScreen from '@features/account/screen/AccountPrivateKeyScreen';
 import colors from '@styles/colors';
+import AccountReceiveScreen from '@features/account/screen/AccountReceiveScreen';
 
 const Stack = createNativeStackNavigator();
 
-const { ACCOUNT_TABS, ACCOUNT_PRIVATE_KEY } = ScreenNames;
+const { ACCOUNT_TABS, ACCOUNT_PRIVATE_KEY, ACCOUNT_RECEIVE } = ScreenNames;
 
 const AccountStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.primary,
+        },
+        headerTitleStyle: {
+          color: colors.white,
+          fontSize: 20,
+          fontWeight: '500',
+        },
+        headerBackTitleVisible: false,
+        headerTintColor: colors.white,
+      }}
+    >
       <Stack.Screen
         options={{
           headerShown: false,
@@ -23,20 +37,16 @@ const AccountStack = () => {
       <Stack.Screen
         options={{
           headerTitle: 'Show Private Key',
-          headerStyle: {
-            backgroundColor: colors.primary,
-          },
-          headerTitleStyle: {
-            color: colors.white,
-            fontSize: 24,
-            fontWeight: '500',
-          },
-          headerBackTitleVisible: false,
-          headerTintColor: colors.white,
-          headerTitleAlign: 'left',
         }}
         name={ACCOUNT_PRIVATE_KEY}
         component={AccountPrivateKeyScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'Receive',
+        }}
+        name={ACCOUNT_RECEIVE}
+        component={AccountReceiveScreen}
       />
     </Stack.Navigator>
   );
