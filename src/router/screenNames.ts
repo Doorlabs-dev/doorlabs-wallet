@@ -20,6 +20,7 @@ const ScreenNames = {
   // Settings Stack
   SETTING_STACK: 'setting-stack',
   SETTINGS: 'settings',
+  RECOVERY_GET_PHRASE: 'recovery-get-phrase',
 };
 
 export default ScreenNames;

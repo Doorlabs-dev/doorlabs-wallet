@@ -1,11 +1,11 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import React, { Fragment, useState } from 'react';
-import { Controller, FieldValues, useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
-import { Button, Text, Title } from '../../../components/ui';
+import { Button, Title } from '../../../components/ui';
 import useAuthentication from '../../auth/hooks/useAuthentication';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';

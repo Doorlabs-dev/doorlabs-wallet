@@ -1,71 +1,90 @@
-import React, { useEffect, useState } from 'react';
-import { useIsFocused } from '@react-navigation/native';
+import React, { Fragment, useEffect, useState } from 'react';
 import Toast from 'react-native-root-toast';
 import { ActivityIndicator } from 'react-native';
-import { Container, Spacer } from '../../../components/layout';
-import { Button, Title } from '../../../components/ui';
+import { Container, Row, SafeArea, Spacer } from '../../../components/layout';
+import { PrimaryButton, Text, Title } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import { colors } from '../../../styles';
 import * as Clipboard from 'expo-clipboard';
+import { PasswordValidationForm } from '@components/form';
+import styled from 'styled-components/native';
+
+const PhraseContainer = styled.View`
+  background-color: ${colors.greyScale700};
+  padding: 12px 41px 12px 16px;
+  border-radius: 8px;
+`;
 
 const GetSeedPhraseScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [phrase, setPhrase] = useState('');
-  const isFocused = useIsFocused();
+  const [passed, setPassed] = useState(false);
 
   useEffect(() => {
-    if (!isFocused) {
-      reset();
+    if (passed) {
+      getRecoveryPhrase();
     }
-  }, [isFocused]);
-
-  const reset = () => {
-    setPhrase('');
-    setIsLoading(false);
-  };
+  }, [passed]);
 
   const getRecoveryPhrase = async () => {
     setIsLoading(true);
     try {
-      if (wallet.hasSession()) {
-        setTimeout(async () => {
-          const phrase = await wallet.getSeedPhrase();
-          setPhrase(phrase || '');
+      setTimeout(async () => {
+        const phrase = await wallet.getSeedPhrase();
+        setPhrase(phrase || '');
 
-          setIsLoading(false);
-        }, 0);
-      }
+        setIsLoading(false);
+      }, 0);
     } catch (error) {
       setIsLoading(false);
     }
   };
 
-  const onClick = async () => {
+  const onCopy = async () => {
     if (phrase) {
       await Clipboard.setStringAsync(phrase);
       Toast.show('Copied');
-    } else {
-      getRecoveryPhrase();
     }
   };
 
+  if (!passed) {
+    return (
+      <SafeArea>
+        <Container center={false} alignItems="center">
+          <PasswordValidationForm onPass={() => setPassed(true)} />
+        </Container>
+      </SafeArea>
+    );
+  }
+
   return (
-    <Container>
-      {!!phrase && (
-        <Spacer width={300} height={80}>
-          <Title textAlign="center" size={16}>
-            {phrase}
-          </Title>
-        </Spacer>
-      )}
-      {isLoading && <ActivityIndicator color={colors.white} size="large" />}
-      <Spacer height={16} />
-      <Button onPress={onClick} width={300}>
-        <Title size={20}>
-          {phrase ? 'Copy to clipboard' : 'View recovery phrase'}
-        </Title>
-      </Button>
-    </Container>
+    <SafeArea>
+      <Container center={false}>
+        {isLoading ? (
+          <ActivityIndicator color={colors.white} size="small" />
+        ) : (
+          <>
+            <Text size={16} lineHeight={24}>
+              Typically 12 ( words separated by single spaces
+            </Text>
+            <Spacer height={16} />
+            <PhraseContainer>
+              {phrase.split('/s').map((word) => (
+                <Fragment key={word}>
+                  <Row>
+                    <Text size={18} lineHeight={36} weight={500}>
+                      {word}
+                    </Text>
+                  </Row>
+                </Fragment>
+              ))}
+            </PhraseContainer>
+            <Spacer height={24} />
+            <PrimaryButton label="Copy to clipboard" onPress={onCopy} />
+          </>
+        )}
+      </Container>
+    </SafeArea>
   );
 };
 

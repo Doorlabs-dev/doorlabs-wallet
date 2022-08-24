@@ -1,32 +1,37 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TodoScreen } from '@components/ui';
 import ScreenNames from './screenNames';
 import colors from '@styles/colors';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 import { ScreenNavigationProps } from './navigation-props';
 import IconClose from '@assets/svg/icon_close.svg';
+import SettingScreen from '@features/setting/screen/SettingScreen';
+import GetSeedPhraseScreen from '@features/recovery/screen/GetSeedPhraseScreen';
 
 const Stack = createNativeStackNavigator();
-const { ACCOUNT_STACK } = ScreenNames;
+const { ACCOUNT_STACK, RECOVERY_GET_PHRASE } = ScreenNames;
 
 const SettingStack = () => {
   const navigation = useNavigation<ScreenNavigationProps<any>>();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleStyle: {
+          fontSize: 24,
+          fontWeight: '500',
+        },
+        headerTintColor: colors.white,
+        headerStyle: {
+          backgroundColor: colors.primary,
+        },
+        headerBackTitle: '',
+      }}
+    >
       <Stack.Screen
         name={'settings'}
         options={{
           headerTitle: 'Settings',
-          headerTitleStyle: {
-            fontSize: 24,
-            fontWeight: '500',
-          },
-          headerTintColor: colors.white,
-          headerStyle: {
-            backgroundColor: colors.primary,
-          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
@@ -37,7 +42,14 @@ const SettingStack = () => {
             </TouchableOpacity>
           ),
         }}
-        component={TodoScreen}
+        component={SettingScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'View Recovery Phrase',
+        }}
+        name={RECOVERY_GET_PHRASE}
+        component={GetSeedPhraseScreen}
       />
     </Stack.Navigator>
   );

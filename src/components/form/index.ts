@@ -1,3 +1,4 @@
 import TextInput from './TextInput';
+import PasswordValidationForm from './PasswordValidationForm';
 
-export { TextInput };
+export { TextInput, PasswordValidationForm };
