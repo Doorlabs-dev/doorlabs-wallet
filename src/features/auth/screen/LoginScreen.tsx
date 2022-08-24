@@ -1,17 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Spacer } from '../../../components/layout';
-import useBiometrics from '../../../hooks/useBiometrics';
-import { Button, Text, Title } from '../../../components/ui';
-import { TextInput } from '../../../components/form';
-import { ActivityIndicator, Alert } from 'react-native';
-import useWalletPassword from '../../../services/wallet_password';
-import useAuthentication from '../hooks/useAuthentication';
-import { Controller, useForm } from 'react-hook-form';
-import wallet from '../../../services/wallet';
-import { colors } from '../../../styles';
-import { useNavigation } from '@react-navigation/native';
-import { ScreenNavigationProps } from '../../../router/navigation-props';
-import ScreenNames from '../../../router/screenNames';
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  StatusBar,
+  StyleSheet,
+  View,
+} from "react-native";
+import { TextInput } from "../../../components/form";
+import { Container, Spacer } from "../../../components/layout";
+import { Button, Text, Title } from "../../../components/ui";
+import useBiometrics from "../../../hooks/useBiometrics";
+import { ScreenNavigationProps } from "../../../router/navigation-props";
+import ScreenNames from "../../../router/screenNames";
+import wallet from "../../../services/wallet";
+import useWalletPassword from "../../../services/wallet_password";
+import { colors } from "../../../styles";
+import useAuthentication from "../hooks/useAuthentication";
+
+const LOGO = require("@assets/logo.png");
 
 const LoginScreen = () => {
   const { authenticateBiometrics, isBiometricsAvailable } = useBiometrics();
@@ -21,8 +30,13 @@ const LoginScreen = () => {
   const [isStarting, setIsStarting] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: { password: '' },
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FieldValues>({
+    defaultValues: { password: "" },
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -31,7 +45,7 @@ const LoginScreen = () => {
 
   const onSubmit = () => {
     handleSubmit(async ({ password }) => {
-      if (password !== savedPassword) return Alert.alert('Wrong password');
+      if (password !== savedPassword) return Alert.alert("Wrong password");
 
       if (wallet.hasSession()) return setIsAuthenticated(true);
 
@@ -52,32 +66,36 @@ const LoginScreen = () => {
     );
 
   return (
-    <Container>
-      <Title size={20}>Unlock your wallet to continue</Title>
-      <Spacer height={32} />
-      <Controller
+    <Container center={false} alignItems="center">
+      {/* LOGO */}
+      <View style={styles.logoWrap}>
+        <Image source={LOGO} style={styles.logo} />
+      </View>
+      <View style={styles.tileWrap}>
+        <Title size={20}>Unlock your wallet to continue</Title>
+      </View>
+      <TextInput
+        placeholder="Input your password"
+        label="Password"
         name="password"
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            value={value}
-            onChangeText={onChange}
-            secureTextEntry
-            placeholder="Password"
-          />
-        )}
+        errors={errors}
+        rules={{ required: "This field is required." }}
+        inputProps={{
+          secureTextEntry: true,
+        }}
       />
       <Spacer height={12} />
-      {isBiometricsAvailable && (
+      {/* {isBiometricsAvailable && (
         <Text
           onPress={() => authenticateBiometrics(() => setIsAuthenticated(true))}
         >
           Use Biometrics
         </Text>
-      )}
-      <Spacer height={16} />
-      <Button onPress={onSubmit} width={300}>
-        <Title size={20}>Unlock</Title>
+      )} */}
+      <Spacer height={12} />
+      <Button onPress={onSubmit} width={"100%"}>
+        <Title size={16}>Unlock</Title>
       </Button>
       <Spacer height={32} />
       <Text
@@ -85,10 +103,26 @@ const LoginScreen = () => {
           navigation.navigate({ name: ScreenNames.RESET_CONFIRMATION });
         }}
       >
-        Recover your wallet ?
+        Reset wallet
       </Text>
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  logoWrap: {
+    alignSelf: "center",
+    marginTop: (StatusBar?.currentHeight || 46) + 28,
+  },
+  logo: {
+    width: 126,
+    aspectRatio: 1,
+    borderRadius: 300,
+  },
+  tileWrap: {
+    alignItems: "center",
+    marginVertical: 24,
+  },
+});
 
 export default LoginScreen;

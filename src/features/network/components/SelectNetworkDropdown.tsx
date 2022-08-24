@@ -1,16 +1,15 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components/native';
-import { colors } from '../../../styles';
-import useNetwork from '../hooks/useNetwork';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Network } from '../../../services/network';
-import useSelectedAccount from '../../account/hooks/useSelectedAccount';
-import IconDropdown from '@assets/svg/icon_dropdown.svg';
-import { Row } from '@components/layout';
-import { Text } from '@components/ui';
-import SelectNetworkModal from './SelectNetworkModal';
-import useModal from '@hooks/useModal';
-import useAccounts from '@features/account/hooks/useAccounts';
+import IconDropdown from "@assets/svg/icon_dropdown.svg";
+import { Row } from "@components/layout";
+import { Text } from "@components/ui";
+import useAccounts from "@features/account/hooks/useAccounts";
+import useModal from "@hooks/useModal";
+import React, { useEffect } from "react";
+import styled from "styled-components/native";
+import { Network } from "../../../services/network";
+import { colors } from "../../../styles";
+import useSelectedAccount from "../../account/hooks/useSelectedAccount";
+import useNetwork from "../hooks/useNetwork";
+import SelectNetworkModal from "./SelectNetworkModal";
 
 const DropdownContainer = styled.TouchableOpacity`
   width: 160px;
