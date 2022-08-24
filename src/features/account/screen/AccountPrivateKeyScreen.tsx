@@ -3,7 +3,7 @@ import { Container, Spacer } from '@components/layout';
 import { PrimaryButton, Text } from '@components/ui';
 import { TextInput } from '@components/form';
 import useWalletPassword from '@services/wallet_password';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import * as Clipboard from 'expo-clipboard';
 import Toast from 'react-native-root-toast';
@@ -16,7 +16,7 @@ const AccountPrivateKeyScreen = (props: Props) => {
   const [passed, setPassed] = useState(false);
   const [privKey, setPrivKey] = useState('');
   const { getWalletSavedPassword } = useWalletPassword();
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit } = useForm<FieldValues>({
     defaultValues: {
       password: '',
     },
@@ -62,18 +62,14 @@ const AccountPrivateKeyScreen = (props: Props) => {
         </>
       ) : (
         <>
-          <Controller
-            name="password"
+          <TextInput
             control={control}
+            name="password"
             rules={{ required: true }}
-            render={({ field: { value, onChange } }) => (
-              <TextInput
-                value={value}
-                onChangeText={onChange}
-                secureTextEntry
-                placeholder="Password"
-              />
-            )}
+            inputProps={{
+              secureTextEntry: true,
+            }}
+            placeholder="Password"
           />
           <Spacer height={24} />
           <PrimaryButton label="Next" onPress={submit} />

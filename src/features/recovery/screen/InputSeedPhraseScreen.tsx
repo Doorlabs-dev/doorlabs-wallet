@@ -50,24 +50,16 @@ const InputSeedPhraseScreen = () => {
     <Container>
       <Title>Restore account</Title>
       <Spacer height={48} />
-      <Controller
-        name="phrase"
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <Fragment>
-            <TextInput
-              value={value}
-              multiline
-              onChangeText={onChange}
-              placeholder="Fill in your recovery phrase"
-            />
-            {error?.type === 'required' && (
-              <Text color={colors.red}>Required</Text>
-            )}
-          </Fragment>
-        )}
-      />
+      <Fragment>
+        <TextInput
+          name="phrase"
+          control={control}
+          inputProps={{
+            multiline: true,
+          }}
+          placeholder="Fill in your recovery phrase"
+        />
+      </Fragment>
       <Spacer height={32} />
       <Button onPress={onSubmit} width={300}>
         {isValidating ? (
