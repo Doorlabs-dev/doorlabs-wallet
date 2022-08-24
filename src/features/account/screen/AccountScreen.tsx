@@ -5,7 +5,6 @@ import { colors } from '../../../styles';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AccountInfoCard from '../components/AccountInfoCard';
 import { RoundButton } from '@components/ui';
-import IconAdd from '@assets/svg/icon_add.svg';
 import IconSend from '@assets/svg/icon_send.svg';
 import TokenItem from '@features/tokens/components/TokenItem';
 import SecondaryButton from '@components/ui/button/SecondaryButton';
@@ -57,8 +56,8 @@ const AccountScreen = () => {
         <AccountInfoCard onPress={() => open()} account={selectedAccount} />
         <Spacer height={24} />
         <Row justifyContent="space-between">
-          <RoundButton icon={<IconAdd />} title="Add funds" />
-          <Spacer width={61} />
+          {/* <RoundButton icon={<IconAdd />} title="Add funds" /> */}
+          {/* <Spacer width={61} /> */}
           <RoundButton
             icon={<View />}
             title="Receive"
@@ -67,7 +66,13 @@ const AccountScreen = () => {
             }
           />
           <Spacer width={61} />
-          <RoundButton icon={<IconSend />} title="Send" />
+          <RoundButton
+            icon={<IconSend />}
+            title="Send"
+            onPress={() =>
+              navigation.navigate({ name: ScreenNames.TOKEN_SELECT_TOKENS })
+            }
+          />
         </Row>
         <Spacer height={32} />
         <TokenItem

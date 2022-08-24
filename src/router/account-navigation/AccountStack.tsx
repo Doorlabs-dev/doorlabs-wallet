@@ -6,10 +6,17 @@ import AccountTabs from './AccountTabs';
 import AccountPrivateKeyScreen from '@features/account/screen/AccountPrivateKeyScreen';
 import colors from '@styles/colors';
 import AccountReceiveScreen from '@features/account/screen/AccountReceiveScreen';
+import SelectTokenScreen from '@features/tokens/screen/SelectTokenScreen';
 
 const Stack = createNativeStackNavigator();
 
-const { ACCOUNT_TABS, ACCOUNT_PRIVATE_KEY, ACCOUNT_RECEIVE } = ScreenNames;
+const {
+  ACCOUNT_TABS,
+  ACCOUNT_PRIVATE_KEY,
+  ACCOUNT_RECEIVE,
+  TOKEN_SELECT_TOKENS,
+  TOKEN_SEND,
+} = ScreenNames;
 
 const AccountStack = () => {
   return (
@@ -47,6 +54,20 @@ const AccountStack = () => {
         }}
         name={ACCOUNT_RECEIVE}
         component={AccountReceiveScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'Send',
+        }}
+        name={TOKEN_SELECT_TOKENS}
+        component={SelectTokenScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'Send',
+        }}
+        name={TOKEN_SEND}
+        component={TodoScreen}
       />
     </Stack.Navigator>
   );

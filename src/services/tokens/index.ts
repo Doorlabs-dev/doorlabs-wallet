@@ -13,3 +13,7 @@ export function getTokenInfo(
 
   return foundToken;
 }
+
+export function getTokensByNetworkId(networkId: string): Token[] {
+  return defaultTokens.filter((token) => token.network === networkId);
+}

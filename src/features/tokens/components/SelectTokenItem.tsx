@@ -1,4 +1,3 @@
-import { Dimensions, Image, View } from 'react-native';
 import React from 'react';
 import { Row, Spacer } from '@components/layout';
 import { Text } from '@components/ui';
@@ -9,32 +8,43 @@ import { useBalance } from '@features/account/hooks/useSelectedAccount';
 import { Token } from '@services/tokens/token.model';
 import { Account } from '@features/account/account.model';
 import formatEther from '@utils/formatEther';
+import IconRadio from '@assets/svg/icon_radio.svg';
+import IconRadioSelected from '@assets/svg/icon_radio_selected.svg';
+import { View } from 'react-native';
 
-const { width } = Dimensions.get('window');
-
-const ItemContainer = styled.View`
-  width: ${width - 32}px;
+const ItemContainer = styled.TouchableOpacity`
   background-color: ${colors.greyScale};
-  padding: 28px 16px;
-  border-radius: 12px;
+`;
+
+const IconImage = styled.Image`
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
 `;
 
 type Props = {
   token?: Token;
   account?: Account;
+  selected?: boolean;
+  onPress?: () => void;
 };
 
-const TokenItem = ({ token, account }: Props) => {
+const SelectTokenItem = ({
+  token,
+  account,
+  onPress,
+  selected = false,
+}: Props) => {
   const { data: tokenBalance } = useBalance(token?.address, account);
 
   return (
-    <ItemContainer>
+    <ItemContainer onPress={() => onPress?.()} activeOpacity={0.8}>
       <Row alignItems="center" justifyContent="space-between">
         <Row alignItems="center">
           {token?.symbol === 'ETH' ? (
             <IconEther />
           ) : token?.image ? (
-            <Image source={{ uri: token?.image }} />
+            <IconImage source={{ uri: token?.image }} />
           ) : null}
           <Spacer width={16} />
           <View>
@@ -51,12 +61,10 @@ const TokenItem = ({ token, account }: Props) => {
             </Text>
           </View>
         </Row>
-        <Text size={18} lineHeight={28} weight={500}>
-          $0.0
-        </Text>
+        {/* {selected ? <IconRadioSelected /> : <IconRadio />} */}
       </Row>
     </ItemContainer>
   );
 };
 
-export default TokenItem;
+export default SelectTokenItem;

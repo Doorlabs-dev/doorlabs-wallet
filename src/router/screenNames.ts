@@ -19,6 +19,9 @@ const ScreenNames = {
   ACCOUNT_PRIVATE_KEY: 'account-private-key',
   ACCOUNT_RECEIVE: 'account-receive',
   ACCOUNT_SEND: 'account-send',
+  // TOKEN
+  TOKEN_SELECT_TOKENS: 'token:select-tokens',
+  TOKEN_SEND: 'token:send',
   // Settings Stack
   SETTING_STACK: 'setting-stack',
   SETTINGS: 'settings',
