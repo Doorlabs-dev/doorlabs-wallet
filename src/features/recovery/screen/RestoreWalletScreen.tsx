@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { Fragment, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
@@ -12,7 +12,7 @@ import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
 
 const RestoreWalletScreen = () => {
-  const { control, handleSubmit, getValues } = useForm({
+  const { control, handleSubmit, getValues } = useForm<FieldValues>({
     defaultValues: {
       password: '',
       passwordConfirmation: '',
@@ -65,39 +65,24 @@ const RestoreWalletScreen = () => {
     <Container>
       <Title textAlign="center">New password{'\n'}for your wallet</Title>
       <Spacer height={32} />
-      <Controller
+      <TextInput
         name="password"
         control={control}
+        inputProps={{
+          secureTextEntry: true,
+        }}
         rules={{ required: true }}
-        render={({ field: { value, onChange } }) => (
-          <TextInput
-            value={value}
-            onChangeText={onChange}
-            secureTextEntry
-            placeholder="Password"
-          />
-        )}
+        placeholder="Password"
       />
       <Spacer height={32} />
-      <Controller
-        name="passwordConfirmation"
+      <TextInput
         control={control}
+        name="passwordConfirmation"
+        inputProps={{
+          secureTextEntry: true,
+        }}
         rules={{ required: true, validate: isSameValue }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <Fragment>
-            <TextInput
-              value={value}
-              onChangeText={onChange}
-              secureTextEntry
-              placeholder="Password confirmation"
-            />
-            <Text color="red" size={12}>
-              {error?.type == 'validate'
-                ? 'Password confirmation is not correct'
-                : null}
-            </Text>
-          </Fragment>
-        )}
+        placeholder="Password confirmation"
       />
       <Spacer height={32} />
       <Button onPress={onConfirm} width={300}>
