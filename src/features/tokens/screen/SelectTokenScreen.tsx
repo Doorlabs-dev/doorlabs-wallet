@@ -8,6 +8,9 @@ import { getTokenInfo } from '@services/tokens';
 import selectedAccountState from '@features/account/selected-account.state';
 import SelectTokenItem from '../components/SelectTokenItem';
 import { SearchBar, SecondaryButton, Text } from '@components/ui';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNavigationProps } from '@router/navigation-props';
+import ScreenNames from '@router/screenNames';
 
 type Props = {};
 
@@ -34,6 +37,7 @@ const SelectTokenScreen = (props: Props) => {
   const selectedNetwork = useRecoilValue(networkState);
   const selectedAccount = useRecoilValue(selectedAccountState);
   const ethToken = getTokenInfo('ETH', selectedNetwork.id);
+  const navigation = useNavigation<ScreenNavigationProps<any>>();
 
   return (
     <SafeArea>
@@ -55,7 +59,13 @@ const SelectTokenScreen = (props: Props) => {
         </Row>
         <Spacer height={24} />
         <TokenListContainer>
-          <SelectTokenItem token={ethToken} account={selectedAccount} />
+          <SelectTokenItem
+            onPress={() =>
+              navigation.navigate({ name: ScreenNames.TOKEN_SEND })
+            }
+            token={ethToken}
+            account={selectedAccount}
+          />
         </TokenListContainer>
         <SecondaryButton title="Add tokens" />
       </Container>
