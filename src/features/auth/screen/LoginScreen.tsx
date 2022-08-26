@@ -86,25 +86,31 @@ const LoginScreen = () => {
         }}
       />
       <Spacer height={12} />
-      {/* {isBiometricsAvailable && (
-        <Text
-          onPress={() => authenticateBiometrics(() => setIsAuthenticated(true))}
-        >
-          Use Biometrics
-        </Text>
-      )} */}
       <Spacer height={12} />
       <Button onPress={onSubmit} width={"100%"}>
         <Title size={16}>Unlock</Title>
       </Button>
       <Spacer height={32} />
-      <Text
+      <Title
+        size={16}
         onPress={() => {
           navigation.navigate({ name: ScreenNames.RESET_CONFIRMATION });
         }}
       >
         Reset wallet
-      </Text>
+      </Title>
+      {isBiometricsAvailable && (
+        <View style={styles.biometrics}>
+          <Title
+            size={16}
+            onPress={() =>
+              authenticateBiometrics(() => setIsAuthenticated(true))
+            }
+          >
+            Use Biometrics
+          </Title>
+        </View>
+      )}
     </Container>
   );
 };
@@ -122,6 +128,13 @@ const styles = StyleSheet.create({
   tileWrap: {
     alignItems: "center",
     marginVertical: 24,
+  },
+  biometrics: {
+    width: "100%",
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingBottom: 60,
   },
 });
 

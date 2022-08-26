@@ -31,6 +31,7 @@ interface Props {
   name: string;
   errors?: FieldErrors;
   control: Control<FieldValues>;
+  children?: React.ReactNode;
   rules?: Omit<
     RegisterOptions<FieldValues, FieldPath<FieldValues>>,
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
@@ -46,6 +47,7 @@ const TextInput = ({
   errors,
   control,
   rules,
+  children,
 }: Props) => {
   const {
     field: { value, onChange },
@@ -77,6 +79,7 @@ const TextInput = ({
           styles.textInputWrapper,
           wrapperStyles,
           isFocused && styles.textInputFocus,
+          inputProps?.multiline && { height: undefined },
         ]}
       >
         <RNTextInput
@@ -91,6 +94,7 @@ const TextInput = ({
           onBlur={_onBlur}
           style={[styles.textInput, inputProps?.style]}
         />
+        {children}
       </View>
       {!!errorMess ? (
         <View style={{ height: 20, justifyContent: "center" }}>

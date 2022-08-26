@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components/native";
 import { colors } from "../../styles";
-
 interface FixedLengthArray<T, L extends number> extends ArrayLike<T> {
   length: L;
 }
