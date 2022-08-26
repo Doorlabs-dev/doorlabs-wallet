@@ -25,8 +25,8 @@ type Props = {
 };
 
 const TokenItem = ({ token, account }: Props) => {
-  const { data: tokenBalance } = useBalance(token?.address, account);
-
+  const { data: tokenBalance, error } = useBalance(token?.address, account);
+  console.log(error);
   return (
     <ItemContainer>
       <Row alignItems="center" justifyContent="space-between">
@@ -51,9 +51,9 @@ const TokenItem = ({ token, account }: Props) => {
             </Text>
           </View>
         </Row>
-        <Text size={18} lineHeight={28} weight={500}>
+        {/* <Text size={18} lineHeight={28} weight={500}>
           $0.0
-        </Text>
+        </Text> */}
       </Row>
     </ItemContainer>
   );

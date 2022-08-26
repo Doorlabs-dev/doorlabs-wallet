@@ -1,4 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import useAuthentication from '../features/auth/hooks/useAuthentication';
 import SplashScreen from '../features/onboarding/screen/SplashScreen';

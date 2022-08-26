@@ -4,7 +4,7 @@ import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { ActivityIndicator, StyleSheet, Switch, View } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
-import { Container, SafeArea, Spacer } from '../../../components/layout';
+import { Container, Spacer } from '../../../components/layout';
 import { Button, Text, Title } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
@@ -69,72 +69,70 @@ const NewWalletScreen = () => {
   }
 
   return (
-    <SafeArea>
-      <Container style={{ justifyContent: 'flex-start' }}>
-        <Title textAlign="center" size={28}>
-          New password for your wallet
-        </Title>
-        <Spacer height={24} />
-        <TextInput
-          name="password"
-          placeholder="Password"
-          label="Password"
+    <Container style={{ justifyContent: 'flex-start' }}>
+      <Title textAlign="center" size={28}>
+        New password for your wallet
+      </Title>
+      <Spacer height={24} />
+      <TextInput
+        name="password"
+        placeholder="Password"
+        label="Password"
+        control={control}
+        rules={{ required: 'This field is required!' }}
+        inputProps={{
+          secureTextEntry: true,
+        }}
+      />
+      <TextInput
+        name="passwordConfirmation"
+        placeholder="Password confirmation"
+        label="Confirm password"
+        control={control}
+        rules={{
+          required: 'This field is required!',
+          validate: isSameValue,
+        }}
+        inputProps={{
+          secureTextEntry: true,
+        }}
+      />
+      <Spacer height={32} />
+      <Button onPress={onConfirm} width={'100%'}>
+        <Title size={16}>Confirm</Title>
+      </Button>
+      <View style={styles.faceIdSwitch}>
+        <Text size={16} color="white">
+          Unlock with FaceID
+        </Text>
+        <Controller
           control={control}
-          rules={{ required: 'This field is required!' }}
-          inputProps={{
-            secureTextEntry: true,
-          }}
+          name="useFaceId"
+          render={({ field: { value } }) => (
+            <Switch
+              value={value}
+              onChange={() => setValue('useFaceId', !value)}
+            />
+          )}
         />
-        <TextInput
-          name="passwordConfirmation"
-          placeholder="Password confirmation"
-          label="Confirm password"
+      </View>
+      <View style={styles.privacyWrapper}>
+        <Controller
           control={control}
-          rules={{
-            required: 'This field is required!',
-            validate: isSameValue,
-          }}
-          inputProps={{
-            secureTextEntry: true,
-          }}
+          name="agreedPrivacy"
+          rules={{ required: 'Need to accept the privacy!' }}
+          render={({ field: { value } }) => (
+            <Checkbox
+              checked={value}
+              onChange={() => setValue('agreedPrivacy', !value)}
+            />
+          )}
         />
-        <Spacer height={32} />
-        <Button onPress={onConfirm} width={'100%'}>
-          <Title size={16}>Confirm</Title>
-        </Button>
-        <View style={styles.faceIdSwitch}>
-          <Text size={16} color="white">
-            Unlock with FaceID
-          </Text>
-          <Controller
-            control={control}
-            name="useFaceId"
-            render={({ field: { value } }) => (
-              <Switch
-                value={value}
-                onChange={() => setValue('useFaceId', !value)}
-              />
-            )}
-          />
-        </View>
-        <View style={styles.privacyWrapper}>
-          <Controller
-            control={control}
-            name="agreedPrivacy"
-            rules={{ required: 'Need to accept the privacy!' }}
-            render={({ field: { value } }) => (
-              <Checkbox
-                checked={value}
-                onChange={() => setValue('agreedPrivacy', !value)}
-              />
-            )}
-          />
-          <Text size={16} color="white" style={styles.privacyTxt}>
-            I have read and agreed to the Terms and Conditions
-          </Text>
-        </View>
-      </Container>
-    </SafeArea>
+        <Text size={16} color="white" style={styles.privacyTxt}>
+          I have read and agreed to the Terms and Conditions
+        </Text>
+      </View>
+    </Container>
   );
 };
 

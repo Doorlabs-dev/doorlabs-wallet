@@ -17,7 +17,7 @@ const Text = styled.Text`
   }) => {
     return css`
       font-size: ${size}px;
-      color: ${color || colors.white};
+      color: ${color || colors.greyScale300};
       ${lineHeight &&
       css`
         line-height: ${lineHeight}px;
