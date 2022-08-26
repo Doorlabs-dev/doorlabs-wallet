@@ -7,6 +7,7 @@ import AccountPrivateKeyScreen from '@features/account/screen/AccountPrivateKeyS
 import colors from '@styles/colors';
 import AccountReceiveScreen from '@features/account/screen/AccountReceiveScreen';
 import SelectTokenScreen from '@features/tokens/screen/SelectTokenScreen';
+import SendTokenScreen from '@features/tokens/screen/SendTokenScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -67,7 +68,7 @@ const AccountStack = () => {
           headerTitle: 'Send',
         }}
         name={TOKEN_SEND}
-        component={TodoScreen}
+        component={SendTokenScreen}
       />
     </Stack.Navigator>
   );
