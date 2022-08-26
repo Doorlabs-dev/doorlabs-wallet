@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { FieldValues, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
   Alert,
@@ -8,19 +8,19 @@ import {
   StatusBar,
   StyleSheet,
   View,
-} from "react-native";
-import { TextInput } from "../../../components/form";
-import { Container, Spacer } from "../../../components/layout";
-import { Button, Text, Title } from "../../../components/ui";
-import useBiometrics from "../../../hooks/useBiometrics";
-import { ScreenNavigationProps } from "../../../router/navigation-props";
-import ScreenNames from "../../../router/screenNames";
-import wallet from "../../../services/wallet";
-import useWalletPassword from "../../../services/wallet_password";
-import { colors } from "../../../styles";
-import useAuthentication from "../hooks/useAuthentication";
+} from 'react-native';
+import { TextInput } from '../../../components/form';
+import { Container, Spacer } from '../../../components/layout';
+import { Button, Text, Title } from '../../../components/ui';
+import useBiometrics from '../../../hooks/useBiometrics';
+import { ScreenNavigationProps } from '../../../router/navigation-props';
+import ScreenNames from '../../../router/screenNames';
+import wallet from '../../../services/wallet';
+import useWalletPassword from '../../../services/wallet_password';
+import { colors } from '../../../styles';
+import useAuthentication from '../hooks/useAuthentication';
 
-const LOGO = require("@assets/logo.png");
+const LOGO = require('@assets/logo.png');
 
 const LoginScreen = () => {
   const { authenticateBiometrics, isBiometricsAvailable } = useBiometrics();
@@ -35,8 +35,8 @@ const LoginScreen = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
-    defaultValues: { password: "" },
-    mode: "onChange",
+    defaultValues: { password: '' },
+    mode: 'onChange',
   });
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const LoginScreen = () => {
 
   const onSubmit = () => {
     handleSubmit(async ({ password }) => {
-      if (password !== savedPassword) return Alert.alert("Wrong password");
+      if (password !== savedPassword) return Alert.alert('Wrong password');
 
       if (wallet.hasSession()) return setIsAuthenticated(true);
 
@@ -79,15 +79,14 @@ const LoginScreen = () => {
         label="Password"
         name="password"
         control={control}
-        errors={errors}
-        rules={{ required: "This field is required." }}
+        rules={{ required: 'This field is required.' }}
         inputProps={{
           secureTextEntry: true,
         }}
       />
       <Spacer height={12} />
       <Spacer height={12} />
-      <Button onPress={onSubmit} width={"100%"}>
+      <Button onPress={onSubmit} width={'100%'}>
         <Title size={16}>Unlock</Title>
       </Button>
       <Spacer height={32} />
@@ -117,7 +116,7 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   logoWrap: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: (StatusBar?.currentHeight || 46) + 28,
   },
   logo: {
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
     borderRadius: 300,
   },
   tileWrap: {
-    alignItems: "center",
+    alignItems: 'center',
     marginVertical: 24,
   },
   biometrics: {

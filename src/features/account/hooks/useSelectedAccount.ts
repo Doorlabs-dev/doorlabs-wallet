@@ -7,7 +7,6 @@ import { Account } from '../account.model';
 import useSWR from 'swr';
 import { useRecoilState } from 'recoil';
 import selectedAccountState from '../selected-account.state';
-import useAccounts from './useAccounts';
 
 export const useBalance = (tokenAddress?: string, account?: Account | null) => {
   return useSWR([tokenAddress, account], fetchBalance, {

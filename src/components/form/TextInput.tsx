@@ -1,15 +1,14 @@
-import { Spacer } from "@components/layout";
-import { Text } from "@components/ui";
-import { useState } from "react";
+import { Spacer } from '@components/layout';
+import { Text } from '@components/ui';
+import { FormEvent, useState } from 'react';
 import {
   Control,
   ControllerFieldState,
-  FieldErrors,
   FieldPath,
   FieldValues,
   RegisterOptions,
   useController,
-} from "react-hook-form";
+} from 'react-hook-form';
 import {
   NativeSyntheticEvent,
   StyleProp,
@@ -19,8 +18,8 @@ import {
   TextInputProps,
   View,
   ViewStyle,
-} from "react-native";
-import { colors } from "../../styles";
+} from 'react-native';
+import { colors } from '../../styles';
 
 interface Props {
   wrapperStyles?: StyleProp<ViewStyle>;
@@ -29,12 +28,14 @@ interface Props {
   label?: string;
   fieldState?: ControllerFieldState;
   name: string;
-  errors?: FieldErrors;
+  errorMessages?: {
+    [x: string]: string;
+  };
   control: Control<FieldValues>;
   children?: React.ReactNode;
   rules?: Omit<
     RegisterOptions<FieldValues, FieldPath<FieldValues>>,
-    "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
+    'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
   >;
 }
 
@@ -44,16 +45,18 @@ const TextInput = ({
   placeholder,
   label,
   name,
-  errors,
+  errorMessages = {},
   control,
   rules,
   children,
 }: Props) => {
   const {
     field: { value, onChange },
+    fieldState: { error },
   } = useController({ control, name, rules });
   const [isFocused, setFocused] = useState(false);
-  const errorMess = errors?.[name]?.message || "";
+  const errorMess =
+    error?.message || (error?.type ? errorMessages[error.type] : '');
 
   const _onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
     setFocused(true);
@@ -84,7 +87,7 @@ const TextInput = ({
       >
         <RNTextInput
           placeholderTextColor={colors.greyScale400}
-          underlineColorAndroid={colors.white}
+          underlineColorAndroid={'transparent'}
           selectionColor={colors.white}
           placeholder={placeholder}
           value={value}
@@ -97,7 +100,7 @@ const TextInput = ({
         {children}
       </View>
       {!!errorMess ? (
-        <View style={{ height: 20, justifyContent: "center" }}>
+        <View style={{ height: 20, justifyContent: 'center' }}>
           <Text color="red" size={10}>
             {errorMess}
           </Text>
@@ -111,19 +114,19 @@ const TextInput = ({
 
 const styles = StyleSheet.create({
   textInputContainer: {
-    width: "100%",
+    width: '100%',
   },
   textInputWrapper: {
-    width: "100%",
+    width: '100%',
     height: 48,
     backgroundColor: colors.greyScale,
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 16,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
   },
   textInput: {
-    width: "100%",
+    width: '100%',
     color: colors.white,
     fontSize: 16,
     padding: 0,

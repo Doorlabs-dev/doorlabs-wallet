@@ -1,36 +1,32 @@
-import styled, { css } from "styled-components/native";
-import { colors } from "../../styles";
-interface FixedLengthArray<T, L extends number> extends ArrayLike<T> {
-  length: L;
-}
+import styled, { css } from 'styled-components/native';
+import { colors } from '../../styles';
 
-type PaddingType =
-  | string
-  | FixedLengthArray<string, 2>
-  | FixedLengthArray<string, 4>;
+type PaddingType = number | [number, number] | [number, number, number, number];
 
 type Props = {
   center?: boolean;
   color?: string;
-  flexDirection?: "row" | "column";
-  justifyContent?: "center" | "flex-end" | "flex-start" | "space-between";
-  alignItems?: "center" | "flex-end" | "flex-start" | "space-between";
+  flexDirection?: 'row' | 'column';
+  justifyContent?: 'center' | 'flex-end' | 'flex-start' | 'space-between';
+  alignItems?: 'center' | 'flex-end' | 'flex-start' | 'space-between';
   padding?: PaddingType;
 };
 
 const getPadding = (padding: PaddingType): any => {
   if (padding instanceof Array) {
     return padding.length === 2
-      ? `padding-vertical: ${padding[0]}; padding-horizontal: ${padding[1]}`
-      : `
-        padding-top: ${padding[0]}; 
-        padding-right: ${padding[1]}; 
-        padding-bottom: ${padding[2]}; 
-        padding-left: ${padding[3]};
+      ? css`
+          padding: ${padding[0]}px ${padding[1]}px;
+        `
+      : css`
+          padding-top: ${padding[0]}px;
+          padding-right: ${padding[1]}px;
+          padding-bottom: ${padding[2]}px;
+          padding-left: ${padding[3]}px;
         `;
   } else {
     return css`
-      padding: ${padding as string}px;
+      padding: ${padding as number}px;
     `;
   }
 };
@@ -41,7 +37,7 @@ const Container = styled.View`
     justifyContent,
     alignItems,
     color = colors.primary,
-    padding,
+    padding = [0, 16],
   }: Props) => {
     return css`
       flex: 1;
@@ -58,12 +54,10 @@ const Container = styled.View`
         justify-content: center;
         align-items: center;
       `}
+      ${!!padding && getPadding(padding)}
       background-color: ${color};
-      padding-right: 16px;
-      padding-left: 16px;
     `;
   }}
 `;
-// ${!!padding && getPadding(padding)}
 
 export default Container;

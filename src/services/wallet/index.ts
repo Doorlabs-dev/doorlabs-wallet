@@ -183,8 +183,6 @@ class Wallet {
 
     if (!account) throw Error('No selected account');
 
-    console.log(account.signer.derivationPath);
-
     const starkPair = getStarkPair(
       account?.signer.derivationPath,
       this.session?.secret
@@ -222,6 +220,13 @@ class Wallet {
     if (!result) return [];
 
     return JSON.parse(result) as WalletAccount[];
+  }
+
+  public getKeyPairByDerivationPath(derivationPath: string) {
+    if (!this.session?.secret) {
+      throw Error('session is not open');
+    }
+    return getStarkPair(derivationPath, this.session.secret);
   }
 
   private async addWalletAccounts(accounts: WalletAccount[]) {

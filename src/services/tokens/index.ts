@@ -1,5 +1,17 @@
+import { Account } from '@features/account/account.model';
+import {
+  Abi,
+  Contract,
+  Account as SNAccount,
+  number,
+  uint256,
+  Call,
+} from 'starknet';
+import { BigNumberish } from 'starknet/dist/utils/number';
 import defaultTokens from './default_tokens.json';
 import { Token } from './token.model';
+import ERC20ABI from '../../abi/ERC20.json';
+import { BigNumber } from 'ethers';
 
 export function getTokenInfo(
   symbol: string,
@@ -12,4 +24,44 @@ export function getTokenInfo(
   );
 
   return foundToken;
+}
+
+export function getTokensByNetworkId(networkId: string): Token[] {
+  return defaultTokens.filter((token) => token.network === networkId);
+}
+
+export function transfer({
+  fromAccount,
+  to,
+  token,
+  amount,
+}: {
+  fromAccount: Account;
+  to: string;
+  token: Token;
+  amount: BigNumber;
+}) {
+  const contract = new Contract(
+    ERC20ABI as Abi,
+    token.address,
+    fromAccount.provider
+  );
+  const snAccount = fromAccount.getStarknetAccount();
+
+  contract.connect(snAccount);
+  return contract.transfer(to, uint256.bnToUint256(amount.toHexString()));
+}
+
+export async function getEstimatedFee(
+  account: Account,
+  call: Call
+): Promise<{ amount: string; suggestedMaxFee: string }> {
+  const starknetAccount = account.getStarknetAccount();
+
+  const result = await starknetAccount.estimateFee(call);
+
+  return {
+    amount: number.toHex(result.amount),
+    suggestedMaxFee: number.toHex(result.suggestedMaxFee),
+  };
 }

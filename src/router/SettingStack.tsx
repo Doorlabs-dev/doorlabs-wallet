@@ -32,6 +32,7 @@ const SettingStack = () => {
         name={'settings'}
         options={{
           headerTitle: 'Settings',
+          headerTitleAlign: 'center',
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
