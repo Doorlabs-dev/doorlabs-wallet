@@ -1,5 +1,5 @@
 import wallet from '@services/wallet';
-import { ProviderInterface } from 'starknet';
+import { ProviderInterface, Account as SNAccount, ec } from 'starknet';
 import { Network } from '../../services/network';
 import { getProvider } from '../../services/provider';
 import { WalletAccountSigner } from '../../services/wallet/wallet.model';
@@ -25,6 +25,13 @@ export class Account {
     this.signer = signer;
     this.provider = getProvider(network);
     this.txHash = txHash;
+  }
+
+  getStarknetAccount() {
+    const starkPair = wallet.getKeyPairByDerivationPath(
+      this.signer.derivationPath
+    );
+    return new SNAccount(this.provider, this.address, starkPair);
   }
 
   static async addAccount(networkId: string): Promise<Account> {
