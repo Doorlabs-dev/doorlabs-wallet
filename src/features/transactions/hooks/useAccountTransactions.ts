@@ -43,6 +43,7 @@ const useAccountTransactions = ({ account, triggerReload }: Props) => {
 
   return {
     allTransactions,
+    sortedTransactions,
     pendingTransactions,
     setAllTransactions,
   };
