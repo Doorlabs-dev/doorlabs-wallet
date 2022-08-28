@@ -53,6 +53,13 @@ class ArrayStore<T> {
     await this._store.set(newAll);
   }
 
+  async push(item: T) {
+    const all = await this._store.get();
+    const newAll = mergeArrayStableWith(all, [item], this.compareFn);
+
+    await this._store.set(newAll);
+  }
+
   async setItem(selector: SelectorFn<T>, data: T) {
     const all = await this._store.get();
     const newAll = all.map((i) => {

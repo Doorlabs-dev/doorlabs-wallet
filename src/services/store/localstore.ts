@@ -7,6 +7,14 @@ class LocalStorage<T> {
   constructor({ name, defaultValue }: { name: string; defaultValue: T }) {
     this.name = name;
     this.defaultValue = defaultValue;
+    this.init();
+  }
+
+  async init() {
+    const value = AsyncStorage.getItem(this.name);
+    if (!value) {
+      this.set(this.defaultValue);
+    }
   }
 
   serialize(data: T): string {
