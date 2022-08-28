@@ -8,12 +8,6 @@ import useSWR from 'swr';
 import { useRecoilState } from 'recoil';
 import selectedAccountState from '../selected-account.state';
 
-export const useBalance = (tokenAddress?: string, account?: Account | null) => {
-  return useSWR([tokenAddress, account], fetchBalance, {
-    refreshInterval: 5000,
-  });
-};
-
 const useSelectedAccount = (fetchOnMount = true) => {
   const [selectedAccount, setSelectedAccount] = useRecoilState<
     Account | undefined

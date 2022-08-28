@@ -18,6 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 import ScreenNames from '../../../router/screenNames';
 import { ScreenNavigationProps } from 'src/router/navigation-props';
 import NoAccount from '../components/NoAccount';
+import PendingTransactions from '@features/transactions/components/PendingTransactions';
 
 const AccountScreen = () => {
   const { selectedAccount, isLoading } = useSelectedAccount();
@@ -80,6 +81,7 @@ const AccountScreen = () => {
           account={selectedAccount}
         />
         <SecondaryButton title={'Add tokens'} />
+        <PendingTransactions />
         <AccountActionsModal
           actions={[
             {
