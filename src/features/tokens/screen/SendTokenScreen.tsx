@@ -1,9 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
-import {
-  ActivityIndicator,
-  TextInput as RNTextInput,
-  View,
-} from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import { Container, SafeArea, Spacer } from '@components/layout';
 import { FieldValues, useForm } from 'react-hook-form';
 import { TextInput } from '@components/form';
@@ -12,9 +8,7 @@ import { getTokenInfo, transfer } from '@services/tokens';
 import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
 import networkState from '@features/network/network.state';
-import Toast from 'react-native-root-toast';
 import { utils } from 'ethers';
-import { useBalance } from '@features/account/hooks/useSelectedAccount';
 import { parseAmount } from '@services/tokens/amount';
 import { isAllowedNumericInputValue, isValidAddress } from '@utils/validator';
 import colors from '@styles/colors';
@@ -23,6 +17,8 @@ import useMaxFeeEstimateForTransfer from '../hooks/useMaxFeeForTransfer';
 import { number } from 'starknet';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
+import { addTransaction } from '@services/transaction';
+import { useBalance } from '../hooks/useBalance';
 
 type Props = {};
 
@@ -41,11 +37,12 @@ const SendTokenScreen = (props: Props) => {
   } = useForm<FieldValues>({
     defaultValues: {
       amount: '',
-      recipient:
-        '0x0303664190A1Fa7a74Cd4D977d34cad2b40fa61980d3876FD268Dd815c71bfc5',
+      recipient: '',
+      // for testing only '0x5f58b8c805d731030405eb45bac702af41f47cdf70ec54756fce03884b67816',
     },
     mode: 'onChange',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
   const selectedAccount = useRecoilValue(selectedAccountState);
   const selectedNetwork = useRecoilValue(networkState);
@@ -94,15 +91,26 @@ const SendTokenScreen = (props: Props) => {
 
   const submit = () => {
     handleSubmit(async (values) => {
-      const txRes = await transfer({
-        fromAccount: selectedAccount!,
-        to: values.recipient,
-        token: getTokenInfo('ETH', selectedNetwork.id)!,
-        amount: utils.parseUnits(values.amount, token?.decimals),
-      });
-      console.log(txRes);
-      Toast.show('Transfer success');
-      navigation.goBack();
+      try {
+        setIsSubmitting(true);
+        const txRes = await transfer({
+          fromAccount: selectedAccount!,
+          to: values.recipient,
+          token: getTokenInfo('ETH', selectedNetwork.id)!,
+          amount: utils.parseUnits(values.amount, token?.decimals),
+        });
+        await addTransaction({
+          hash: txRes.transaction_hash,
+          account: selectedAccount?.getWalletAccount()!,
+          meta: {
+            title: 'Transfer',
+            type: 'transfer',
+          },
+        });
+        navigation.goBack();
+      } catch (error) {}
+
+      setIsSubmitting(false);
     })();
   };
 
@@ -158,7 +166,7 @@ const SendTokenScreen = (props: Props) => {
 
         <Spacer height={8} />
 
-        <PrimaryButton label="Next" onPress={submit} />
+        <PrimaryButton loading={isSubmitting} label="Next" onPress={submit} />
       </Container>
     </SafeArea>
   );
