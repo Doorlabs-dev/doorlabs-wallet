@@ -51,8 +51,6 @@ const AccountScreen = () => {
 
   return (
     <SafeArea>
-      <AccountScreenHeader />
-      <Spacer height={48} />
       <Container alignItems="center" center={false}>
         <AccountInfoCard onPress={() => open()} account={selectedAccount} />
         <Spacer height={24} />
