@@ -30,7 +30,7 @@ export function getTokensByNetworkId(networkId: string): Token[] {
   return defaultTokens.filter((token) => token.network === networkId);
 }
 
-export function transfer({
+export async function transfer({
   fromAccount,
   to,
   token,
@@ -47,9 +47,9 @@ export function transfer({
     fromAccount.provider
   );
   const snAccount = fromAccount.getStarknetAccount();
-
   contract.connect(snAccount);
-  return contract.transfer(to, uint256.bnToUint256(amount.toHexString()));
+
+  return await contract.transfer(to, uint256.bnToUint256(amount.toHexString()));
 }
 
 export async function getEstimatedFee(
