@@ -5,7 +5,6 @@ import {
   TRANSACTION_STATUSES_TO_TRACK,
 } from '@services/transaction/transaction.type';
 import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
 import { TransactionReceiptResponse } from 'starknet';
 import useSWR from 'swr';
 import { getAccountTransaction } from './useAccountTransactions';
