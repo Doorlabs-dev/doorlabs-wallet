@@ -6,7 +6,13 @@ import Text from './Text';
 import IconCopy from '@assets/svg/icon_copy.svg';
 import { Row, Spacer } from '@components/layout';
 
-const ShortAddress = ({ address }: { address: string }) => {
+const ShortAddress = ({
+  address,
+  color,
+}: {
+  address: string;
+  color?: string;
+}) => {
   if (!address) {
     return null;
   }
@@ -20,7 +26,7 @@ const ShortAddress = ({ address }: { address: string }) => {
       }}
     >
       <Row alignItems="center">
-        <Text color={colors.periwinkle} size={18} lineHeight={28}>
+        <Text color={color || colors.periwinkle} size={18} lineHeight={28}>
           {address.substring(0, 6)} ... {address.substring(address.length - 4)}
         </Text>
         <Spacer width={8} />

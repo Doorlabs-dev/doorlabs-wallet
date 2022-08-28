@@ -1,7 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ScreenNames from '../screenNames';
-import { TodoScreen } from '@components/ui';
 import AccountTabs from './AccountTabs';
 import AccountPrivateKeyScreen from '@features/account/screen/AccountPrivateKeyScreen';
 import colors from '@styles/colors';

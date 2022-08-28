@@ -2,15 +2,21 @@ import React from 'react';
 import { Row } from '@components/layout';
 import IconBurger from '@assets/svg/icon_burger.svg';
 import SelectNetworkDropdown from '@features/network/components/SelectNetworkDropdown';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from 'src/router/navigation-props';
+import colors from '@styles/colors';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = {};
 
 const Overlay = styled.View`
-  z-index: 1000;
-  padding: 0px 16px;
+  ${(props: { top: number }) => css`
+    padding: 0px 16px;
+    padding-top: ${props.top}px;
+    background-color: ${colors.primary};
+    top: 0;
+  `};
 `;
 
 const Button = styled.TouchableOpacity`
@@ -19,9 +25,9 @@ const Button = styled.TouchableOpacity`
 
 const AccountScreenHeader = (props: Props) => {
   const navigation = useNavigation<ScreenNavigationProps<any>>();
-
+  const insets = useSafeAreaInsets();
   return (
-    <Overlay>
+    <Overlay top={insets.top}>
       <Row alignItems="center" justifyContent="space-between">
         <Button onPress={navigation.openDrawer}>
           <IconBurger />

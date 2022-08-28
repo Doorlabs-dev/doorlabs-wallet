@@ -5,10 +5,10 @@ import { Text } from '@components/ui';
 import styled from 'styled-components/native';
 import colors from '@styles/colors';
 import IconEther from '@assets/svg/icon_ether.svg';
-import { useBalance } from '@features/account/hooks/useSelectedAccount';
 import { Token } from '@services/tokens/token.model';
 import { Account } from '@features/account/account.model';
 import formatEther from '@utils/formatEther';
+import { useBalance } from '../hooks/useBalance';
 
 const { width } = Dimensions.get('window');
 
@@ -26,7 +26,7 @@ type Props = {
 
 const TokenItem = ({ token, account }: Props) => {
   const { data: tokenBalance, error } = useBalance(token?.address, account);
-  console.log(error);
+
   return (
     <ItemContainer>
       <Row alignItems="center" justifyContent="space-between">

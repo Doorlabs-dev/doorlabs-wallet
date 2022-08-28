@@ -4,13 +4,11 @@ import { Text } from '@components/ui';
 import styled from 'styled-components/native';
 import colors from '@styles/colors';
 import IconEther from '@assets/svg/icon_ether.svg';
-import { useBalance } from '@features/account/hooks/useSelectedAccount';
 import { Token } from '@services/tokens/token.model';
 import { Account } from '@features/account/account.model';
 import formatEther from '@utils/formatEther';
-import IconRadio from '@assets/svg/icon_radio.svg';
-import IconRadioSelected from '@assets/svg/icon_radio_selected.svg';
 import { View } from 'react-native';
+import { useBalance } from '../hooks/useBalance';
 
 const ItemContainer = styled.TouchableOpacity`
   background-color: ${colors.greyScale};
