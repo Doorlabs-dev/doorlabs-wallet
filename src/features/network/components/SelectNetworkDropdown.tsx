@@ -1,15 +1,15 @@
-import IconDropdown from "@assets/svg/icon_dropdown.svg";
-import { Row } from "@components/layout";
-import { Text } from "@components/ui";
-import useAccounts from "@features/account/hooks/useAccounts";
-import useModal from "@hooks/useModal";
-import React, { useEffect } from "react";
-import styled from "styled-components/native";
-import { Network } from "../../../services/network";
-import { colors } from "../../../styles";
-import useSelectedAccount from "../../account/hooks/useSelectedAccount";
-import useNetwork from "../hooks/useNetwork";
-import SelectNetworkModal from "./SelectNetworkModal";
+import IconDropdown from '@assets/svg/icon_dropdown.svg';
+import { Row } from '@components/layout';
+import { Text } from '@components/ui';
+import useAccounts from '@features/account/hooks/useAccounts';
+import useModal from '@hooks/useModal';
+import React, { useEffect } from 'react';
+import styled from 'styled-components/native';
+import { Network } from '../../../services/network';
+import { colors } from '../../../styles';
+import useSelectedAccount from '../../account/hooks/useSelectedAccount';
+import useNetwork from '../hooks/useNetwork';
+import SelectNetworkModal from './SelectNetworkModal';
 
 const DropdownContainer = styled.TouchableOpacity`
   width: 160px;
@@ -23,17 +23,20 @@ const DropdownContainer = styled.TouchableOpacity`
 
 const SelectNetworkDropdown = () => {
   const { selectNetwork, selectedNetwork, getNetworks } = useNetwork();
-  const { selectAccount } = useSelectedAccount(false);
+  const { selectAccount, selectedAccount } = useSelectedAccount(false);
   const { getDefaultAccountByNetwork } = useAccounts();
   const { visible, open, close } = useModal();
 
   useEffect(() => {
+    if (!selectedAccount) return;
+    if (selectedNetwork.id === selectedAccount?.networkId) return;
+
     if (selectedNetwork.id) {
       getDefaultAccountByNetwork(selectedNetwork.id).then((defaultAcc) =>
         selectAccount(defaultAcc)
       );
     }
-  }, [selectedNetwork?.id]);
+  }, [selectedNetwork?.id, selectedAccount?.networkId]);
 
   const onSelectNetwork = (network: Network) => {
     close();
