@@ -37,13 +37,14 @@ const Footer = styled.View`
 const BottomSheet = ({ visible, onClose, children }: Props) => {
   return (
     <BottomModal
-      useNativeDriver
-      useNativeDriverForBackdrop
       backdropTransitionOutTiming={0}
+      hideModalContentWhileAnimating
       isVisible={visible}
       onBackdropPress={onClose}
       onSwipeComplete={onClose}
       swipeDirection={['down']}
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
     >
       <ModalContainer>
         <Indicator />
