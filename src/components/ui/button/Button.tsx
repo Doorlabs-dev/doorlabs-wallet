@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components/native";
-import { colors } from "../../../styles";
+import styled, { css } from 'styled-components/native';
+import { colors } from '../../../styles';
 
 type Props = {
   width?: number | string;
@@ -18,7 +18,7 @@ const Button = styled.TouchableOpacity`
     return css`
       ${width &&
       css`
-        width: ${width};
+        width: ${typeof width == 'string' ? width : `${width}px`};
       `}
       height: ${height}px;
       background-color: ${color};

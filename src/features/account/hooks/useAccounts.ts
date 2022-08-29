@@ -1,6 +1,6 @@
 import wallet from '../../../services/wallet';
 import { Account } from '../account.model';
-import { mapWalletAccountToAccount } from './useSelectedAccount';
+import { mapWalletAccountToAccount } from '../utils/mapWalletAccountToAccount';
 
 const useAccounts = () => {
   const getAllWalletAccounts = async (): Promise<Account[]> => {

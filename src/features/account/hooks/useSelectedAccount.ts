@@ -1,30 +1,45 @@
 import { useEffect, useState } from 'react';
 import wallet from '../../../services/wallet';
-import { WalletAccount } from '../../../services/wallet/wallet.model';
-import { fetchBalance } from '../../../services/balance';
-import { getNetwork } from '../../../services/network';
 import { Account } from '../account.model';
-import useSWR from 'swr';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import selectedAccountState from '../selected-account.state';
+import networkState from '@features/network/network.state';
+import useAccounts from './useAccounts';
+import { mapWalletAccountToAccount } from '../utils/mapWalletAccountToAccount';
 
-const useSelectedAccount = (fetchOnMount = true) => {
+const useSelectedAccount = (fetchOnMount = false) => {
   const [selectedAccount, setSelectedAccount] = useRecoilState<
     Account | undefined
   >(selectedAccountState);
   const [isLoading, setIsLoading] = useState(false);
+  const selectedNetwork = useRecoilValue(networkState);
+  const { getDefaultAccountByNetwork } = useAccounts();
 
   useEffect(() => {
     if (fetchOnMount) {
       getSelectedAccount();
     }
-  }, [fetchOnMount]);
+  }, [selectedNetwork?.id, fetchOnMount]);
 
   const getSelectedAccount = async () => {
     setIsLoading(true);
-    const res = await wallet.getSelectedAccount();
-    setSelectedAccount(res ? mapWalletAccountToAccount(res) : undefined);
-    setIsLoading(false);
+    let res = await wallet.getSelectedAccount();
+
+    // if account network is the same with selected network
+    if (!!res && res.networkId === selectedNetwork.id) {
+      setIsLoading(false);
+      setSelectedAccount(mapWalletAccountToAccount(res));
+      return;
+    }
+
+    if (!res || res.networkId !== selectedNetwork.id) {
+      const defaultAcc = await getDefaultAccountByNetwork(selectedNetwork.id);
+      await selectAccount(
+        defaultAcc ? mapWalletAccountToAccount(defaultAcc) : undefined
+      );
+
+      setIsLoading(false);
+    }
   };
 
   const selectAccount = async (account?: Account) => {
@@ -52,13 +67,3 @@ const useSelectedAccount = (fetchOnMount = true) => {
 };
 
 export default useSelectedAccount;
-
-export function mapWalletAccountToAccount(
-  walletAccount: WalletAccount
-): Account {
-  return new Account(
-    walletAccount.address,
-    getNetwork(walletAccount.networkId),
-    walletAccount.signer
-  );
-}
