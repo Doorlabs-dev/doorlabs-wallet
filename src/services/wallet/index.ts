@@ -159,6 +159,7 @@ class Wallet {
     const networks = DEFAULT_NETWORKS.map((network) => network.id).filter(
       (networkId) => networkId !== 'localhost'
     );
+
     const accountsResults = await Promise.all(
       networks.map(async (networkId) => {
         const network = getNetwork(networkId);
@@ -394,7 +395,7 @@ class Wallet {
             contractClassHash,
             stark.compileCalldata({
               implementation: accountClassHash,
-              selector: getSelectorFromName('initialize'),
+              selector: SELECTOR_FROM_NAME_INITIALIZE,
               calldata: stark.compileCalldata({
                 signer: starkPub,
                 guardian: '0',
@@ -402,7 +403,6 @@ class Wallet {
             }),
             0
           );
-
           const code = await provider.getCode(address);
 
           if (code.bytecode.length > 0) {
