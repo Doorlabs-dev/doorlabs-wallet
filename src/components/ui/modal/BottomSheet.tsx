@@ -39,6 +39,7 @@ const BottomSheet = ({ visible, onClose, children }: Props) => {
     <BottomModal
       useNativeDriver
       useNativeDriverForBackdrop
+      backdropTransitionOutTiming={0}
       isVisible={visible}
       onBackdropPress={onClose}
       onSwipeComplete={onClose}
