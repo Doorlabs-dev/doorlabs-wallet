@@ -8,7 +8,6 @@ import { RoundButton } from '@components/ui';
 import IconSend from '@assets/svg/icon_send.svg';
 import TokenItem from '@features/tokens/components/TokenItem';
 import SecondaryButton from '@components/ui/button/SecondaryButton';
-import AccountScreenHeader from '../components/AccountScreenHeader';
 import { getTokenInfo } from '@services/tokens';
 import useNetwork from '@features/network/hooks/useNetwork';
 import useModal from '../../../hooks/useModal';
@@ -21,7 +20,7 @@ import NoAccount from '../components/NoAccount';
 import PendingTransactions from '@features/transactions/components/PendingTransactions';
 
 const AccountScreen = () => {
-  const { selectedAccount, isLoading } = useSelectedAccount();
+  const { selectedAccount, isLoading } = useSelectedAccount(true);
   const { selectedNetwork } = useNetwork();
   const { exploreAccount } = useExploreAccount(
     selectedNetwork,
@@ -43,7 +42,6 @@ const AccountScreen = () => {
   if (!selectedAccount) {
     return (
       <SafeArea>
-        <AccountScreenHeader />
         <NoAccount />
       </SafeArea>
     );
