@@ -15,6 +15,13 @@ import { getNetwork, Network } from '../network';
 import { getProvider } from '../provider';
 import { DEFAULT_NETWORKS } from '../network/default_networks';
 import ProxyContract from '../../contracts/ProxyContract';
+import {
+  calculateContractAddressFromHash,
+  getSelectorFromName,
+} from 'starknet/dist/utils/hash';
+import { union } from 'lodash-es';
+import { mergeArrayStableWith } from '@services/store';
+import { compareEqualAccount } from '@services/account';
 
 const BACKUP_KEY = 'backup';
 const ACCOUNTS_KEY = 'accounts';
@@ -143,14 +150,35 @@ class Wallet {
     return wallet.mnemonic.phrase;
   }
 
+  public async discoverAccounts() {
+    if (!this.session?.secret) {
+      throw new Error('Wallet is not initialized');
+    }
+    const wallet = new ethers.Wallet(this.session?.secret);
+
+    const networks = DEFAULT_NETWORKS.map((network) => network.id).filter(
+      (networkId) => networkId !== 'localhost'
+    );
+    const accountsResults = await Promise.all(
+      networks.map(async (networkId) => {
+        const network = getNetwork(networkId);
+        if (!network) {
+          throw new Error(`Network ${networkId} not found`);
+        }
+        return this.restoreAccountsFromWallet(wallet.privateKey, network);
+      })
+    );
+    const accounts = accountsResults.flatMap((x) => x);
+
+    await this.addWalletAccounts(accounts);
+  }
+
   async restoreSeedPhrase(seedPhrase: string, newPassword: string) {
     const wallet = ethers.Wallet.fromMnemonic(seedPhrase);
     const newBackup = await wallet.encrypt(newPassword, encryptOptions);
     this.backup = newBackup;
     this.setSession(wallet.privateKey, newPassword);
-    // TODO:
-    // await this.restoreAccountFromWallet();
-
+    await this.discoverAccounts();
     await this.storeBackup();
   }
 
@@ -232,7 +260,11 @@ class Wallet {
   private async addWalletAccounts(accounts: WalletAccount[]) {
     const oldAccounts = await this.getWalletAccounts();
 
-    const result = [...oldAccounts, ...accounts];
+    const result = mergeArrayStableWith(
+      oldAccounts,
+      accounts,
+      compareEqualAccount
+    );
 
     await SecureStorage.setItemAsync(ACCOUNTS_KEY, JSON.stringify(result));
   }
@@ -319,6 +351,81 @@ class Wallet {
     await this.selectAccount(account);
 
     return { account, txHash: txResponse.transaction_hash };
+  }
+
+  private async restoreAccountsFromWallet(
+    secret: string,
+    network: Network,
+    offset: number = 10
+  ): Promise<WalletAccount[]> {
+    const provider = getProvider(network);
+
+    const accounts: WalletAccount[] = [];
+
+    const accountClassHashes = union(
+      ARGENT_ACCOUNT_CONTRACT_CLASS_HASHES,
+      network?.accountClassHash ? [network.accountClassHash] : []
+    );
+    const proxyClassHashes = PROXY_CONTRACT_CLASS_HASHES;
+
+    if (!accountClassHashes?.length) {
+      console.error(`No known account class hashes for network ${network.id}`);
+      return accounts;
+    }
+
+    const proxyClassHashAndAccountClassHash2DMap = proxyClassHashes.flatMap(
+      (contractHash) =>
+        accountClassHashes.map(
+          (implementation: string) => [contractHash, implementation] as const
+        )
+    );
+
+    const promises = proxyClassHashAndAccountClassHash2DMap.map(
+      async ([contractClassHash, accountClassHash]) => {
+        let lastHit = 0;
+        let lastCheck = 0;
+
+        while (lastHit + offset > lastCheck) {
+          const starkPair = getStarkPair(lastCheck, secret, baseDerivationPath);
+          const starkPub = ec.getStarkKey(starkPair);
+
+          const address = calculateContractAddressFromHash(
+            starkPub,
+            contractClassHash,
+            stark.compileCalldata({
+              implementation: accountClassHash,
+              selector: getSelectorFromName('initialize'),
+              calldata: stark.compileCalldata({
+                signer: starkPub,
+                guardian: '0',
+              }),
+            }),
+            0
+          );
+
+          const code = await provider.getCode(address);
+
+          if (code.bytecode.length > 0) {
+            lastHit = lastCheck;
+            accounts.push({
+              address,
+              networkId: network.id,
+              network,
+              signer: {
+                type: 'local_secret',
+                derivationPath: getPathForIndex(lastCheck, baseDerivationPath),
+              },
+            });
+          }
+
+          ++lastCheck;
+        }
+      }
+    );
+
+    await Promise.all(promises);
+
+    return accounts;
   }
 }
 
