@@ -6,20 +6,16 @@ import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
-import { Button, Text, Title } from '../../../components/ui';
-import { ScreenNavigationProps } from '../../../router/navigation-props';
+import { Button, Title } from '../../../components/ui';
 import { colors } from '../../../styles';
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as Clipboard from 'expo-clipboard';
+import useWalletPassword from '@services/wallet_password';
+import useAuthentication from '@features/auth/hooks/useAuthentication';
+import wallet from '@services/wallet';
 
 const InputSeedPhraseScreen = () => {
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-    getValues,
-    setValue,
-  } = useForm<FieldValues>({
+  const { control, handleSubmit, getValues, setValue } = useForm<FieldValues>({
     defaultValues: {
       password: '',
       passwordConfirmation: '',
@@ -27,7 +23,6 @@ const InputSeedPhraseScreen = () => {
     },
     mode: 'onChange',
   });
-  const navigation = useNavigation<ScreenNavigationProps<{ phrase: string }>>();
   const [isValidating, setIsValidating] = useState(false);
 
   const validatePhrase = (phrase: string): Promise<boolean> => {
@@ -49,21 +44,30 @@ const InputSeedPhraseScreen = () => {
       : undefined;
   };
 
+  const { setWalletPassword } = useWalletPassword();
+  const { setIsAuthenticated, setIsAccountAvailable } = useAuthentication();
+
   const onSubmit = () => {
-    handleSubmit(async ({ phrase }) => {
+    handleSubmit(async ({ phrase, password }) => {
       setIsValidating(true);
       const success = await validatePhrase(phrase);
-      setIsValidating(false);
       if (!success) {
+        setIsValidating(false);
         return Toast.show('Invalid phrase');
       }
+      try {
+        setIsValidating(true);
 
-      navigation.navigate({
-        name: 'restore-wallet',
-        params: {
-          phrase: phrase,
-        },
-      });
+        await setWalletPassword(password);
+        await wallet.restoreSeedPhrase(phrase, password);
+
+        setTimeout(() => {
+          setIsAuthenticated(true);
+          setIsAccountAvailable(true);
+        }, 300);
+      } catch (error) {}
+
+      setIsValidating(false);
     })();
   };
 

@@ -1,13 +1,14 @@
-import InputSeedPhraseScreen from "@features/recovery/screen/InputSeedPhraseScreen";
+import InputSeedPhraseScreen from '@features/recovery/screen/InputSeedPhraseScreen';
 import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
-} from "@react-navigation/native-stack";
-import React from "react";
-import NewWalletScreen from "../features/onboarding/screen/NewWalletScreen";
-import WelcomeScreen from "../features/onboarding/screen/WelcomeScreen";
-import RestoreWalletScreen from "../features/recovery/screen/RestoreWalletScreen";
-import ScreenNames from "./screenNames";
+} from '@react-navigation/native-stack';
+import colors from '@styles/colors';
+import React from 'react';
+import NewWalletScreen from '../features/onboarding/screen/NewWalletScreen';
+import WelcomeScreen from '../features/onboarding/screen/WelcomeScreen';
+import RestoreWalletScreen from '../features/recovery/screen/RestoreWalletScreen';
+import ScreenNames from './screenNames';
 const { WELCOME, CREATE_WALLET_PASSWORD, INPUT_PHRASE, RESTORE_WALLET } =
   ScreenNames;
 
@@ -20,10 +21,11 @@ export const defaultScreenOptions: NativeStackNavigationOptions = {
   headerShadowVisible: false,
   headerShown: false,
   headerTitleStyle: {
-    color: "white",
+    color: colors.white,
     fontSize: 24,
   },
-  headerTitleAlign: "left",
+  headerTintColor: colors.white,
+  headerTitleAlign: 'left',
 };
 
 const OnboardingStack = () => {
@@ -36,7 +38,7 @@ const OnboardingStack = () => {
         component={InputSeedPhraseScreen}
         options={{
           headerShown: true,
-          headerTitle: "Restore wallet",
+          headerTitle: 'Restore wallet',
         }}
       />
       <Stack.Screen name={RESTORE_WALLET} component={RestoreWalletScreen} />

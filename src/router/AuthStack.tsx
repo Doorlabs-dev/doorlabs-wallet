@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
 import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
-} from "@react-navigation/native-stack";
+} from '@react-navigation/native-stack';
 
-import InputSeedPhraseScreen from "../features/recovery/screen/InputSeedPhraseScreen";
-import RestoreWalletScreen from "../features/recovery/screen/RestoreWalletScreen";
-import ResetConfirmationScreen from "../features/recovery/screen/ResetConfirmationScreen";
-import LoginScreen from "../features/auth/screen/LoginScreen";
-import ScreenNames from "./screenNames";
+import InputSeedPhraseScreen from '../features/recovery/screen/InputSeedPhraseScreen';
+import RestoreWalletScreen from '../features/recovery/screen/RestoreWalletScreen';
+import ResetConfirmationScreen from '../features/recovery/screen/ResetConfirmationScreen';
+import LoginScreen from '../features/auth/screen/LoginScreen';
+import ScreenNames from './screenNames';
+import colors from '@styles/colors';
 
 const { LOGIN, INPUT_PHRASE, RESTORE_WALLET, RESET_CONFIRMATION } = ScreenNames;
 
@@ -21,10 +22,11 @@ const defaultScreenOptions: NativeStackNavigationOptions = {
   headerShadowVisible: false,
   headerShown: false,
   headerTitleStyle: {
-    color: "white",
+    color: colors.white,
     fontSize: 24,
   },
-  headerTitleAlign: "left",
+  headerTintColor: colors.white,
+  headerTitleAlign: 'left',
 };
 
 const AuthStack = () => {
@@ -36,14 +38,15 @@ const AuthStack = () => {
         component={InputSeedPhraseScreen}
         options={{
           headerShown: true,
-          headerTitle: "Restore wallet",
+          headerTitle: 'Restore wallet',
+          headerTintColor: colors.white,
         }}
       />
       <Stack.Screen name={RESTORE_WALLET} component={RestoreWalletScreen} />
       <Stack.Screen
         name={RESET_CONFIRMATION}
         component={ResetConfirmationScreen}
-        options={{ headerShown: true, headerTitle: "Reset wallet" }}
+        options={{ headerShown: true, headerTitle: 'Reset wallet' }}
       />
     </Stack.Navigator>
   );
