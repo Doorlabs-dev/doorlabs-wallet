@@ -5,7 +5,6 @@ import { colors } from '../../../styles';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AccountInfoCard from '../components/AccountInfoCard';
 import { RoundButton } from '@components/ui';
-import IconSend from '@assets/svg/icon_send.svg';
 import TokenItem from '@features/tokens/components/TokenItem';
 import SecondaryButton from '@components/ui/button/SecondaryButton';
 import { getTokenInfo } from '@services/tokens';
@@ -19,6 +18,11 @@ import { ScreenNavigationProps } from 'src/router/navigation-props';
 import NoAccount from '../components/NoAccount';
 import PendingTransactions from '@features/transactions/components/PendingTransactions';
 
+import IconSend from '@assets/svg/icon_send.svg';
+import IconReceive from '@assets/svg/icon_receive.svg';
+import IconAdd from '@assets/svg/icon_add.svg';
+import ReceiveAddressModal from '../components/ReceiveAddressModal';
+
 const AccountScreen = () => {
   const { selectedAccount, isLoading } = useSelectedAccount(true);
   const { selectedNetwork } = useNetwork();
@@ -27,6 +31,12 @@ const AccountScreen = () => {
     selectedAccount?.address
   );
   const { visible, close, open } = useModal();
+  const {
+    visible: receiveModalVisible,
+    close: closeReceiveModal,
+    open: openReceiveModal,
+  } = useModal();
+
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
   if (isLoading) {
@@ -52,25 +62,28 @@ const AccountScreen = () => {
       <Container alignItems="center" center={false}>
         <AccountInfoCard onPress={() => open()} account={selectedAccount} />
         <Spacer height={24} />
-        <Row justifyContent="space-between">
-          {/* <RoundButton icon={<IconAdd />} title="Add funds" /> */}
-          {/* <Spacer width={61} /> */}
-          <RoundButton
-            icon={<View />}
-            title="Receive"
-            onPress={() =>
-              navigation.navigate({ name: ScreenNames.ACCOUNT_RECEIVE })
-            }
-          />
-          <Spacer width={61} />
-          <RoundButton
-            icon={<IconSend />}
-            title="Send"
-            onPress={() =>
-              navigation.navigate({ name: ScreenNames.TOKEN_SELECT_TOKENS })
-            }
-          />
-        </Row>
+        <View style={{ width: '90%' }}>
+          <Row justifyContent="space-between">
+            <RoundButton icon={<IconAdd />} title="Add funds" />
+            {/* <Spacer width={60} /> */}
+            <RoundButton
+              icon={<IconReceive />}
+              title="Receive"
+              onPress={() => {
+                // navigation.navigate({ name: ScreenNames.ACCOUNT_RECEIVE })
+                openReceiveModal();
+              }}
+            />
+            {/* <Spacer width={60} /> */}
+            <RoundButton
+              icon={<IconSend />}
+              title="Send"
+              onPress={() =>
+                navigation.navigate({ name: ScreenNames.TOKEN_SELECT_TOKENS })
+              }
+            />
+          </Row>
+        </View>
         <Spacer height={32} />
         <TokenItem
           token={getTokenInfo('ETH', selectedNetwork.id)}
@@ -106,6 +119,11 @@ const AccountScreen = () => {
           onClose={close}
         />
       </Container>
+      <ReceiveAddressModal
+        visible={receiveModalVisible}
+        onClose={closeReceiveModal}
+        address={selectedAccount?.address || ''}
+      />
     </SafeArea>
   );
 };

@@ -1,5 +1,6 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, providers } from 'ethers';
 import { Abi, Contract, uint256 } from 'starknet';
+
 import ERC20ABI from '../../abi/ERC20.json';
 import { Account } from '../../features/account/account.model';
 
