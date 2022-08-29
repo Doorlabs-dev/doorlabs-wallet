@@ -10,7 +10,7 @@ type Props = {};
 const AddAccountButton = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const { addNewAccount } = useAccounts();
-  const { selectAccount } = useSelectedAccount(false);
+  const { selectAccount } = useSelectedAccount();
   const selectedNetwork = useRecoilValue(networkState);
 
   const onAddNewAccount = async () => {

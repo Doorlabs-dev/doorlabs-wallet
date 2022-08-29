@@ -17,7 +17,7 @@ type Props = {
 const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const { getAccountsByNetwork } = useAccounts();
-  const { selectAccount, selectedAccount } = useSelectedAccount(false);
+  const { selectAccount, selectedAccount } = useSelectedAccount();
 
   useEffect(() => {
     if (visible) {
