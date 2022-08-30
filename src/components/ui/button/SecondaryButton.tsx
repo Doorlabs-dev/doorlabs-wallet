@@ -6,6 +6,7 @@ import styled from 'styled-components/native';
 
 type Props = {
   title: string;
+  onPress: () => void;
 };
 
 const Button = styled.TouchableOpacity`
@@ -14,9 +15,9 @@ const Button = styled.TouchableOpacity`
   padding: 12px 20px;
 `;
 
-const SecondaryButton = ({ title }: Props) => {
+const SecondaryButton = ({ title, onPress }: Props) => {
   return (
-    <Button style={{ width: '100%' }}>
+    <Button onPress={onPress} style={{ width: '100%' }}>
       <Text size={16} lineHeight={24} color={colors.blue}>
         {title}
       </Text>

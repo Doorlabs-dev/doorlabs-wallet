@@ -22,6 +22,7 @@ import IconSend from '@assets/svg/icon_send.svg';
 import IconReceive from '@assets/svg/icon_receive.svg';
 import IconAdd from '@assets/svg/icon_add.svg';
 import ReceiveAddressModal from '../components/ReceiveAddressModal';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const AccountScreen = () => {
   const { selectedAccount, isLoading } = useSelectedAccount(true);
@@ -59,66 +60,72 @@ const AccountScreen = () => {
 
   return (
     <SafeArea>
-      <Container alignItems="center" center={false}>
-        <AccountInfoCard onPress={() => open()} account={selectedAccount} />
-        <Spacer height={24} />
-        <View style={{ width: '90%' }}>
-          <Row justifyContent="space-between">
-            <RoundButton icon={<IconAdd />} title="Add funds" />
-            {/* <Spacer width={60} /> */}
-            <RoundButton
-              icon={<IconReceive />}
-              title="Receive"
-              onPress={() => {
-                // navigation.navigate({ name: ScreenNames.ACCOUNT_RECEIVE })
-                openReceiveModal();
-              }}
-            />
-            {/* <Spacer width={60} /> */}
-            <RoundButton
-              icon={<IconSend />}
-              title="Send"
-              onPress={() =>
-                navigation.navigate({ name: ScreenNames.TOKEN_SELECT_TOKENS })
-              }
-            />
-          </Row>
-        </View>
-        <Spacer height={32} />
-        <TokenItem
-          token={getTokenInfo('ETH', selectedNetwork.id)}
-          account={selectedAccount}
-        />
-        <SecondaryButton title={'Add tokens'} />
-        <PendingTransactions />
-        <AccountActionsModal
-          actions={[
-            {
-              label: 'View on voyager',
-              onPress: () => {
-                exploreAccount();
+      <ScrollView>
+        <Container alignItems="center" center={false}>
+          <AccountInfoCard onPress={() => open()} account={selectedAccount} />
+          <Spacer height={24} />
+          <View style={{ width: '90%' }}>
+            <Row justifyContent="space-between">
+              <RoundButton icon={<IconAdd />} title="Add funds" />
+              <RoundButton
+                icon={<IconReceive />}
+                title="Receive"
+                onPress={() => {
+                  openReceiveModal();
+                }}
+              />
+              <RoundButton
+                icon={<IconSend />}
+                title="Send"
+                onPress={() =>
+                  navigation.navigate({ name: ScreenNames.TOKEN_SELECT_TOKENS })
+                }
+              />
+            </Row>
+          </View>
+          <Spacer height={32} />
+          <TokenItem
+            token={getTokenInfo('ETH', selectedNetwork.id)}
+            account={selectedAccount}
+          />
+          <SecondaryButton
+            title={'Add tokens'}
+            onPress={() =>
+              navigation.navigate({ name: ScreenNames.TOKEN_ADD_TOKEN })
+            }
+          />
+          <PendingTransactions />
+          <AccountActionsModal
+            actions={[
+              {
+                label: 'View on voyager',
+                onPress: () => {
+                  exploreAccount();
+                },
               },
-            },
-            {
-              label: 'Export private key',
-              onPress: () => {
-                close();
-                navigation.navigate({ name: ScreenNames.ACCOUNT_PRIVATE_KEY });
+              {
+                label: 'Export private key',
+                onPress: () => {
+                  close();
+                  navigation.navigate({
+                    name: ScreenNames.ACCOUNT_PRIVATE_KEY,
+                  });
+                },
               },
-            },
-            {
-              label: 'Hide account',
-              onPress: () => {},
-            },
-            {
-              label: 'Edit name',
-              onPress: () => {},
-            },
-          ]}
-          visible={visible}
-          onClose={close}
-        />
-      </Container>
+              {
+                label: 'Hide account',
+                onPress: () => {},
+              },
+              {
+                label: 'Edit name',
+                onPress: () => {},
+              },
+            ]}
+            visible={visible}
+            onClose={close}
+          />
+        </Container>
+      </ScrollView>
       <ReceiveAddressModal
         visible={receiveModalVisible}
         onClose={closeReceiveModal}
