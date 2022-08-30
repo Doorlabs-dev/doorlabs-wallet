@@ -25,10 +25,21 @@ class ArrayStore<T> {
   public compareFn: CompareFn<T>;
   private _store: LocalStorage<T[]>;
 
-  constructor({ name, compareFn }: { name: string; compareFn: CompareFn<T> }) {
+  constructor({
+    name,
+    compareFn,
+    defaultValue,
+  }: {
+    name: string;
+    compareFn: CompareFn<T>;
+    defaultValue?: T[];
+  }) {
     this.name = name;
     this.compareFn = compareFn;
-    this._store = new LocalStorage({ name: this.name, defaultValue: [] });
+    this._store = new LocalStorage({
+      name: this.name,
+      defaultValue: defaultValue || [],
+    });
   }
 
   async get(selector?: SelectorFn<T>) {
