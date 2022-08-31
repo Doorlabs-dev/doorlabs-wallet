@@ -65,7 +65,7 @@ const GetSeedPhraseScreen = () => {
         ) : (
           <>
             <Text size={16} lineHeight={24}>
-              Typically 12 ( words separated by single spaces
+              Typically 12 words separated by single spaces
             </Text>
             <Spacer height={16} />
             <PhraseContainer>
