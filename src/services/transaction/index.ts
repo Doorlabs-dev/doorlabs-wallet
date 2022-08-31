@@ -2,12 +2,36 @@ import { getNetwork } from '@services/network';
 import { getProvider } from '@services/provider';
 import ArrayStore from '@services/store';
 import { BigNumber } from 'ethers';
-import { Provider, uint256 } from 'starknet';
+import { lowerCase, upperFirst } from 'lodash-es';
+import { Call, Provider, uint256 } from 'starknet';
 import {
   compareTransactions,
   Transaction,
+  TransactionMeta,
   TransactionRequest,
 } from './transaction.type';
+
+export function entryPointToHumanReadable(entryPoint: string): string {
+  try {
+    return upperFirst(lowerCase(entryPoint));
+  } catch {
+    return entryPoint;
+  }
+}
+
+export function nameTransaction(calls: Call | Call[]): TransactionMeta {
+  const callsArray = Array.isArray(calls) ? calls : [calls];
+  const entrypointNames = callsArray.map((call) =>
+    entryPointToHumanReadable(call.entrypoint)
+  );
+  const lastName = entrypointNames.pop();
+  return {
+    title: entrypointNames.length
+      ? `${entrypointNames.join(', ')} and ${lastName}`
+      : lastName,
+    type: lowerCase(lastName),
+  };
+}
 
 const timestampInSeconds = (): number => Math.floor(Date.now() / 1000);
 
