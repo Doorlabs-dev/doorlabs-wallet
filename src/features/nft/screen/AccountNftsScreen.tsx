@@ -1,11 +1,10 @@
-import { View, Text } from 'react-native';
 import React from 'react';
 import { Container, SafeArea } from '@components/layout';
 import NftsList from '../components/NftsList';
 
 type Props = {};
 
-const AccountNfts = (props: Props) => {
+const AccountNftsScreen = (props: Props) => {
   return (
     <SafeArea>
       <Container center={false}>
@@ -15,4 +14,4 @@ const AccountNfts = (props: Props) => {
   );
 };
 
-export default AccountNfts;
+export default AccountNftsScreen;

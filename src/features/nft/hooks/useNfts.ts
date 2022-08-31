@@ -9,7 +9,10 @@ type Props = {
 const useNfts = ({ account }: Props) => {
   const { data: nfts = [], ...rest } = useSWR(
     !!account && [account],
-    (acc) => !!acc && fetchAspectNfts(acc)
+    (acc) => !!acc && fetchAspectNfts(acc),
+    {
+      refreshInterval: 30e3,
+    }
   );
 
   return {
