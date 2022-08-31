@@ -4,7 +4,7 @@ import { Container, SafeArea, Spacer } from '@components/layout';
 import { FieldValues, useForm } from 'react-hook-form';
 import { TextInput } from '@components/form';
 import { PrimaryButton, Text } from '@components/ui';
-import { getTokenInfo, transfer } from '@services/tokens';
+import { transfer } from '@services/tokens';
 import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
 import networkState from '@features/network/network.state';
@@ -15,10 +15,11 @@ import colors from '@styles/colors';
 import styled from 'styled-components/native';
 import useMaxFeeEstimateForTransfer from '../hooks/useMaxFeeForTransfer';
 import { number } from 'starknet';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import { addTransaction } from '@services/transaction';
 import { useBalance } from '../hooks/useBalance';
+import { Token } from '@services/tokens/token.model';
 
 type Props = {};
 
@@ -27,6 +28,12 @@ const Floating = styled.TouchableOpacity`
   top: 0px;
   right: 0px;
 `;
+
+type ParamsList = {
+  'send:token': {
+    token: Token;
+  };
+};
 
 const SendTokenScreen = (props: Props) => {
   const {
@@ -38,15 +45,16 @@ const SendTokenScreen = (props: Props) => {
     defaultValues: {
       amount: '',
       recipient: '',
-      // for testing only '0x5f58b8c805d731030405eb45bac702af41f47cdf70ec54756fce03884b67816',
+      // '0x3eae8126702bbf06de496dbf9b745ee423a3b4836aa35dd2b3d2e6c10323f9d',
+      // for testing only
     },
     mode: 'onChange',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
+  const route = useRoute<RouteProp<ParamsList>>();
   const selectedAccount = useRecoilValue(selectedAccountState);
-  const selectedNetwork = useRecoilValue(networkState);
-  const token = getTokenInfo('ETH', selectedNetwork?.id);
+  const token = route.params.token;
 
   const { data: balance } = useBalance(token?.address, selectedAccount);
 
@@ -96,7 +104,7 @@ const SendTokenScreen = (props: Props) => {
         const txRes = await transfer({
           fromAccount: selectedAccount!,
           to: values.recipient,
-          token: getTokenInfo('ETH', selectedNetwork.id)!,
+          token,
           amount: utils.parseUnits(values.amount, token?.decimals),
         });
         await addTransaction({
@@ -108,7 +116,9 @@ const SendTokenScreen = (props: Props) => {
           },
         });
         navigation.goBack();
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
 
       setIsSubmitting(false);
     })();
