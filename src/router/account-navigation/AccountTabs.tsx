@@ -5,7 +5,7 @@ import ScreenNames from '../screenNames';
 import AccountScreen from '@features/account/screen/AccountScreen';
 import AccountActivityScreen from '@features/account/screen/AccountActivityScreen';
 import AccountScreenHeader from '@features/account/components/AccountScreenHeader';
-import AccountNfts from '@features/nft/screen/AccountNfts';
+import AccountNfts from '@features/nft/screen/AccountNftsScreen';
 
 const Tabs = createBottomTabNavigator();
 
