@@ -1,7 +1,7 @@
 import { Account } from '@features/account/account.model';
 import { getNonce, increaseStoredNonce } from '@services/nonce';
 import { Abi, Call, constants, InvocationsDetails, number } from 'starknet';
-import { addTransaction, nameTransaction } from '.';
+import { addTransaction, nameTransaction } from './index';
 
 export const checkTransactionHash = (
   transactionHash?: number.BigNumberish

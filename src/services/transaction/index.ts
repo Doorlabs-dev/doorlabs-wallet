@@ -29,7 +29,6 @@ export function nameTransaction(calls: Call | Call[]): TransactionMeta {
     title: entrypointNames.length
       ? `${entrypointNames.join(', ')} and ${lastName}`
       : lastName,
-    type: lowerCase(lastName),
   };
 }
 

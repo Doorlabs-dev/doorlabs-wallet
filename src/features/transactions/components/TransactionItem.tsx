@@ -27,7 +27,7 @@ const Container = styled.View`
 const TransactionItem = ({ transaction }: Props) => {
   const Icon = transaction.meta?.type
     ? IconByType[transaction.meta?.type]
-    : IconTransactionDeploy;
+    : () => null;
 
   return (
     <Container>
