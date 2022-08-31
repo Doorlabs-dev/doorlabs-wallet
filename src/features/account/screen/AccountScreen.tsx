@@ -23,6 +23,7 @@ import IconReceive from '@assets/svg/icon_receive.svg';
 import IconAdd from '@assets/svg/icon_add.svg';
 import ReceiveAddressModal from '../components/ReceiveAddressModal';
 import { ScrollView } from 'react-native-gesture-handler';
+import TokensList from '@features/tokens/components/TokensList';
 
 const AccountScreen = () => {
   const { selectedAccount, isLoading } = useSelectedAccount(true);
@@ -84,12 +85,9 @@ const AccountScreen = () => {
             </Row>
           </View>
           <Spacer height={32} />
-          <TokenItem
-            token={getTokenInfo('ETH', selectedNetwork.id)}
-            account={selectedAccount}
-          />
+          <TokensList />
           <SecondaryButton
-            title={'Add tokens'}
+            title="Add tokens"
             onPress={() =>
               navigation.navigate({ name: ScreenNames.TOKEN_ADD_TOKEN })
             }
@@ -125,6 +123,7 @@ const AccountScreen = () => {
             onClose={close}
           />
         </Container>
+        <Spacer height={100} />
       </ScrollView>
       <ReceiveAddressModal
         visible={receiveModalVisible}

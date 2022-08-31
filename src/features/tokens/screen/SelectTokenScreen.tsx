@@ -7,18 +7,13 @@ import networkState from '@features/network/network.state';
 import { getTokenInfo } from '@services/tokens';
 import selectedAccountState from '@features/account/selected-account.state';
 import SelectTokenItem from '../components/SelectTokenItem';
-import { SearchBar, SecondaryButton, Text } from '@components/ui';
+import { SearchBar, Text } from '@components/ui';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
+import TokensList from '../components/TokensList';
 
 type Props = {};
-
-const TokenListContainer = styled.View`
-  padding: 24px 16px;
-  background-color: ${colors.greyScale700};
-  border-radius: 12px;
-`;
 
 const SelectedTabButton = styled.TouchableOpacity`
   align-self: flex-start;
@@ -58,16 +53,23 @@ const SelectTokenScreen = (props: Props) => {
           </TabButton>
         </Row>
         <Spacer height={24} />
-        <TokenListContainer>
-          <SelectTokenItem
-            onPress={() =>
-              navigation.navigate({ name: ScreenNames.TOKEN_SEND })
-            }
-            token={ethToken}
-            account={selectedAccount}
-          />
-        </TokenListContainer>
-        <SecondaryButton title="Add tokens" />
+
+        <TokensList
+          renderItem={(t) => (
+            <SelectTokenItem
+              token={t}
+              account={selectedAccount}
+              onPress={() =>
+                navigation.navigate({
+                  name: ScreenNames.TOKEN_SEND,
+                  params: {
+                    token: t,
+                  },
+                })
+              }
+            />
+          )}
+        />
       </Container>
     </SafeArea>
   );
