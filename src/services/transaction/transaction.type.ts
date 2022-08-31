@@ -15,7 +15,7 @@ export const TRANSACTION_STATUSES_TO_TRACK: Status[] = [
 export interface TransactionMeta {
   title?: string;
   subTitle?: string;
-  type: 'deploy' | 'transfer';
+  type?: 'deploy' | 'transfer' | string;
 }
 
 export interface TransactionBase {
