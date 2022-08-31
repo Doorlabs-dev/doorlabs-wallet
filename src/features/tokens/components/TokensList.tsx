@@ -1,17 +1,14 @@
-import { FlatList, ScrollView, View } from 'react-native';
+import { FlatList, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
 import { Token } from '@services/tokens/token.model';
 import TokenItem from './TokenItem';
-
 import { fetchTokensByNetwork } from '@services/tokens';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Spacer } from '@components/layout';
-import { SecondaryButton } from '@components/ui';
 import styled from 'styled-components/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
-import ScreenNames from '@router/screenNames';
 
 type Props = {
   renderItem?: (token: Token) => JSX.Element;
@@ -31,7 +28,7 @@ const TokensList = ({ renderItem }: Props) => {
   const fetchTokens = async () => {
     if (!selectedAccount) return;
     const result = await fetchTokensByNetwork(selectedAccount?.networkId);
-    setTokens(result);
+    setTokens(result || []);
   };
 
   useEffect(() => {

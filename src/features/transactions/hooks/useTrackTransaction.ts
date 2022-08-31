@@ -35,7 +35,9 @@ const useTrackTransaction = ({ transaction, onTransactionSuccess }: Props) => {
       { ...transaction, status: newTx.status }
     );
 
-    onTransactionSuccess(await getAccountTransaction(transaction.account));
+    onTransactionSuccess(
+      (await getAccountTransaction(transaction.account)) || []
+    );
   };
 
   useEffect(() => {
