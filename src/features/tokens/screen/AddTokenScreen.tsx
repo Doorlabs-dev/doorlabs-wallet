@@ -26,7 +26,13 @@ type TokenInfo = {
 
 const AddTokenScreen = (props: Props) => {
   const selectedAccount = useRecoilValue(selectedAccountState);
-  const { control, watch, setValue, handleSubmit } = useForm<FieldValues>({
+  const {
+    control,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<FieldValues>({
     defaultValues: {
       address: '',
       name: '',
@@ -89,14 +95,14 @@ const AddTokenScreen = (props: Props) => {
   }, [formValues.address]);
 
   // For test only
-  useEffect(() => {
-    setTimeout(() => {
-      setValue(
-        'address',
-        '0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9'
-      );
-    }, 1000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setValue(
+  //       'address',
+  //       '0x07394cbe418daa16e42b87ba67372d4ab4a5df0b05c6e554d158458ce245bc10'
+  //     );
+  //   }, 1000);
+  // }, []);
 
   return (
     <Container center={false}>
@@ -144,7 +150,11 @@ const AddTokenScreen = (props: Props) => {
             }}
           />
           <Spacer height={16} />
-          <PrimaryButton label="Continue" onPress={submit} />
+          <PrimaryButton
+            loading={isSubmitting}
+            label="Continue"
+            onPress={submit()}
+          />
         </>
       ) : null}
     </Container>
