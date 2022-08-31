@@ -5,6 +5,9 @@ import styled from 'styled-components/native';
 import { PrimaryButton, Text } from '@components/ui';
 import colors from '@styles/colors';
 import IconInfo from '@assets/svg/icon_info.svg';
+import PhraseExplainPopup from '../components/PhraseExplainPopup';
+import useModal from '@hooks/useModal';
+import SecurityImportantExplainPopup from '../components/SecurityImportantExplainPopup';
 
 type Props = {};
 
@@ -14,6 +17,16 @@ const Image = styled.Image`
 `;
 
 const SecureWalletScreen = (props: Props) => {
+  const {
+    visible: phraseModalVisible,
+    open: openPhraseModal,
+    close: closePhraseModal,
+  } = useModal();
+  const {
+    visible: explainModalVisible,
+    open: openExplainModal,
+    close: closeExplainModal,
+  } = useModal();
   return (
     <SafeArea>
       <Spacer height={40} />
@@ -31,7 +44,7 @@ const SecureWalletScreen = (props: Props) => {
             Secure your wallet's
           </Text>
           <Spacer width={7} />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => openPhraseModal()}>
             <Text size={16} lineHeight={24} color={colors.blue}>
               Secret Recovery Phrase
             </Text>
@@ -41,7 +54,7 @@ const SecureWalletScreen = (props: Props) => {
         <Row alignItems="center">
           <IconInfo />
           <Spacer width={8} />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => openExplainModal()}>
             <Text size={16} lineHeight={24} color={colors.blue}>
               Why is it important ?
             </Text>
@@ -50,6 +63,14 @@ const SecureWalletScreen = (props: Props) => {
         <View style={{ flex: 1 }} />
         <PrimaryButton label="Start" onPress={() => {}} />
       </Container>
+      <PhraseExplainPopup
+        visible={phraseModalVisible}
+        onClose={closePhraseModal}
+      />
+      <SecurityImportantExplainPopup
+        visible={explainModalVisible}
+        onClose={closeExplainModal}
+      />
     </SafeArea>
   );
 };
