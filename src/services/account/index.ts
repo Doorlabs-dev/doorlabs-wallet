@@ -6,3 +6,7 @@ export function compareEqualAccount(
 ) {
   return a.address === b.address && a.networkId === b.networkId;
 }
+
+export function getAccountIdentifier(account: BaseWalletAccount) {
+  return `${account.networkId}:${account.address}`;
+}
