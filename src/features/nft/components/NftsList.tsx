@@ -5,21 +5,14 @@ import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
 import { Text } from '@components/ui';
 import NftItem from './NftItem';
-import { Spacer } from '@components/layout';
+import { Container, Spacer } from '@components/layout';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
+import IconEmptySearch from '@assets/svg/icon_empty_search.svg';
 
 type Props = {};
-
-const FloatingCenter = styled.View`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-`;
 
 const NftsList = (props: Props) => {
   const selectedAccount = useRecoilValue(selectedAccountState);
@@ -29,9 +22,15 @@ const NftsList = (props: Props) => {
   return (
     <View style={{ flex: 1 }}>
       <FlatList
-        contentContainerStyle={{
-          alignItems: 'flex-start',
-        }}
+        contentContainerStyle={
+          nfts.length
+            ? { alignItems: 'flex-start' }
+            : {
+                flexGrow: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }
+        }
         data={nfts}
         renderItem={({ item: nft }) => (
           <>
@@ -54,11 +53,15 @@ const NftsList = (props: Props) => {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() =>
           isValidating ? (
-            <FloatingCenter>
+            <Container>
               <ActivityIndicator />
-            </FloatingCenter>
+            </Container>
           ) : (
-            <Text size={16}>You do not have any nfts yet</Text>
+            <Container>
+              <IconEmptySearch />
+              <Spacer height={16} />
+              <Text size={16}>You do not have any nfts yet</Text>
+            </Container>
           )
         }
         ItemSeparatorComponent={() => <Spacer height={16} />}
