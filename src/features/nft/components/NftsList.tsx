@@ -7,6 +7,9 @@ import { Text } from '@components/ui';
 import NftItem from './NftItem';
 import { Spacer } from '@components/layout';
 import styled from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNavigationProps } from '@router/navigation-props';
+import ScreenNames from '@router/screenNames';
 
 type Props = {};
 
@@ -21,6 +24,7 @@ const FloatingCenter = styled.View`
 const NftsList = (props: Props) => {
   const selectedAccount = useRecoilValue(selectedAccountState);
   const { nfts, isValidating } = useNfts({ account: selectedAccount });
+  const navigation = useNavigation<ScreenNavigationProps<any>>();
 
   return (
     <View style={{ flex: 1 }}>
@@ -31,7 +35,17 @@ const NftsList = (props: Props) => {
         data={nfts}
         renderItem={({ item: nft }) => (
           <>
-            <NftItem nft={nft} />
+            <NftItem
+              nft={nft}
+              onPress={() =>
+                navigation.navigate({
+                  name: ScreenNames.NFT_SEND_NFT,
+                  params: {
+                    nft,
+                  },
+                })
+              }
+            />
             <Spacer width={16} />
           </>
         )}
