@@ -2,9 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class LocalStorage<T> {
   public name: string;
-  public defaultValue: T;
+  public defaultValue?: T;
 
-  constructor({ name, defaultValue }: { name: string; defaultValue: T }) {
+  constructor({ name, defaultValue }: { name: string; defaultValue?: T }) {
     this.name = name;
     this.defaultValue = defaultValue;
     this.init();
@@ -12,7 +12,7 @@ class LocalStorage<T> {
 
   async init() {
     const value = AsyncStorage.getItem(this.name);
-    if (!value) {
+    if (!value && !!this.defaultValue) {
       this.set(this.defaultValue);
     }
   }
@@ -39,6 +39,10 @@ class LocalStorage<T> {
     }
 
     return this.defaultValue;
+  }
+
+  async delete() {
+    await AsyncStorage.removeItem(this.name);
   }
 }
 
