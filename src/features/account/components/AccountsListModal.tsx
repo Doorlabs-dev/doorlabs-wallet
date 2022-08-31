@@ -7,6 +7,7 @@ import { Text } from '@components/ui';
 import { Spacer } from '@components/layout';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AddAccountButton from './AddAccountButton';
+import { FlatList } from 'react-native';
 
 type Props = {
   visible: boolean;
@@ -17,7 +18,7 @@ type Props = {
 const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const { getAccountsByNetwork } = useAccounts();
-  const { selectAccount, selectedAccount } = useSelectedAccount();
+  const { selectAccount, selectedAccount } = useSelectedAccount(false);
 
   useEffect(() => {
     if (visible) {
@@ -36,17 +37,23 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
 
       {!!accounts.length ? (
         <>
-          {accounts.map((acc) => (
-            <AccountItem
-              key={acc.address}
-              account={acc}
-              selected={selectedAccount?.address === acc.address}
-              onPress={() => {
-                onClose();
-                selectAccount(acc);
-              }}
-            />
-          ))}
+          <FlatList
+            data={accounts}
+            keyExtractor={(item) => item.address}
+            renderItem={({ item: acc }) => (
+              <AccountItem
+                account={acc}
+                selected={selectedAccount?.address === acc.address}
+                onPress={async () => {
+                  await selectAccount(acc);
+                  setTimeout(() => {
+                    onClose();
+                  }, 0);
+                }}
+              />
+            )}
+          />
+
           <AddAccountButton />
         </>
       ) : (
