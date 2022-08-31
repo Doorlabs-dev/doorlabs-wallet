@@ -7,6 +7,7 @@ import colors from '@styles/colors';
 import AccountReceiveScreen from '@features/account/screen/AccountReceiveScreen';
 import SelectTokenScreen from '@features/tokens/screen/SelectTokenScreen';
 import SendTokenScreen from '@features/tokens/screen/SendTokenScreen';
+import AddTokenScreen from '@features/tokens/screen/AddTokenScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ const {
   ACCOUNT_RECEIVE,
   TOKEN_SELECT_TOKENS,
   TOKEN_SEND,
+  TOKEN_ADD_TOKEN,
 } = ScreenNames;
 
 const AccountStack = () => {
@@ -68,6 +70,13 @@ const AccountStack = () => {
         }}
         name={TOKEN_SEND}
         component={SendTokenScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'Add tokens',
+        }}
+        name={TOKEN_ADD_TOKEN}
+        component={AddTokenScreen}
       />
     </Stack.Navigator>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Spacer } from '@components/layout';
-import { Text } from '@components/ui';
+import { DefaultAvatar, Text } from '@components/ui';
 import styled from 'styled-components/native';
 import colors from '@styles/colors';
 import IconEther from '@assets/svg/icon_ether.svg';
@@ -12,6 +12,8 @@ import { useBalance } from '../hooks/useBalance';
 
 const ItemContainer = styled.TouchableOpacity`
   background-color: ${colors.greyScale};
+  padding: 28px 16px;
+  border-radius: 12px;
 `;
 
 const IconImage = styled.Image`
@@ -43,7 +45,9 @@ const SelectTokenItem = ({
             <IconEther />
           ) : token?.image ? (
             <IconImage source={{ uri: token?.image }} />
-          ) : null}
+          ) : (
+            <DefaultAvatar text={token?.symbol} />
+          )}
           <Spacer width={16} />
           <View>
             <Text

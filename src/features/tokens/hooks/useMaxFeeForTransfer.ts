@@ -1,5 +1,5 @@
 import { Account } from '@features/account/account.model';
-import { getEstimatedFee } from '@services/tokens';
+import { getEstimatedFee, getTokenInfo } from '@services/tokens';
 import { getUint256CalldataFromBN } from '@services/transaction';
 import { BigNumber, utils } from 'ethers';
 import { Call, number } from 'starknet';
@@ -15,7 +15,15 @@ type Props = {
   balance: BigNumber;
 };
 
-const fetcher = async (account: Account, call: Call) => {
+const fetcher = async (account: Account, call: Call, tokenAddress: string) => {
+  const feeToken = getTokenInfo('ETH', account.networkId);
+  if (feeToken?.address !== tokenAddress) {
+    return {
+      amount: BigNumber.from(0),
+      suggestedMaxFee: BigNumber.from(0),
+      unit: 'wei',
+    };
+  }
   return await getEstimatedFee(account, call);
 };
 
@@ -41,7 +49,7 @@ const useMaxFeeEstimateForTransfer = ({
     data: estimatedFee,
     error,
     isValidating,
-  } = useSWR([account, call], fetcher, {
+  } = useSWR([account, call, tokenAddress], fetcher, {
     suspense: false,
     refreshInterval: 30e3,
   });

@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "buildAndroid": "cd android && ./gradlew assembleRelease",
     "installApk": "cd android/app/build/outputs/apk/release && adb install app-release.apk",
-    "bundleIos": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios"
+    "bundleIos": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle"
   },
   "dependencies": {
     "@ethersproject/shims": "^5.6.0",

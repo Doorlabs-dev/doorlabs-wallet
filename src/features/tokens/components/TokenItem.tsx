@@ -1,7 +1,7 @@
 import { Dimensions, Image, View } from 'react-native';
 import React from 'react';
 import { Row, Spacer } from '@components/layout';
-import { Text } from '@components/ui';
+import { DefaultAvatar, Text } from '@components/ui';
 import styled from 'styled-components/native';
 import colors from '@styles/colors';
 import IconEther from '@assets/svg/icon_ether.svg';
@@ -35,7 +35,9 @@ const TokenItem = ({ token, account }: Props) => {
             <IconEther />
           ) : token?.image ? (
             <Image source={{ uri: token?.image }} />
-          ) : null}
+          ) : (
+            <DefaultAvatar text={token?.symbol} />
+          )}
           <Spacer width={16} />
           <View>
             <Text

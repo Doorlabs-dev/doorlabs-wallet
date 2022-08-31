@@ -1,17 +1,10 @@
 import { Account } from '@features/account/account.model';
-import {
-  Abi,
-  Contract,
-  Account as SNAccount,
-  number,
-  uint256,
-  Call,
-} from 'starknet';
-import { BigNumberish } from 'starknet/dist/utils/number';
+import { Abi, Contract, number, uint256, Call, shortString } from 'starknet';
 import defaultTokens from './default_tokens.json';
 import { Token } from './token.model';
 import ERC20ABI from '../../abi/ERC20.json';
 import { BigNumber } from 'ethers';
+import { tokensStore } from './token.store';
 
 export function getTokenInfo(
   symbol: string,
@@ -63,5 +56,38 @@ export async function getEstimatedFee(
   return {
     amount: number.toHex(result.amount),
     suggestedMaxFee: number.toHex(result.suggestedMaxFee),
+  };
+}
+
+export async function fetchTokensByNetwork(networkId: string) {
+  return await tokensStore.get((t) => t.network === networkId);
+}
+
+export async function fetchToken(tokenAddress: string, account: Account) {
+  const contract = new Contract(
+    ERC20ABI as Abi,
+    tokenAddress,
+
+    account.provider
+  );
+
+  const [name, symbol, decimals] = await Promise.all([
+    contract
+      .call('name')
+      .then((x) => shortString.decodeShortString(number.toHex(x.name))),
+    contract
+      .call('symbol')
+      .then((x) => shortString.decodeShortString(number.toHex(x.symbol))),
+    contract.call('decimals').then((x) => number.toHex(x.decimals)),
+  ]);
+
+  const decimalsBigNumber = BigNumber.from(decimals);
+
+  return {
+    address: tokenAddress,
+    name,
+    symbol,
+    network: account.networkId,
+    decimals: decimalsBigNumber.toNumber(),
   };
 }
