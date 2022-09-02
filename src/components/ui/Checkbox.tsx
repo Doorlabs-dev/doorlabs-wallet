@@ -1,12 +1,12 @@
-import colors from "@styles/colors";
-import { TouchableOpacity } from "react-native";
-import Icon from "./Icon";
+import colors from '@styles/colors';
+import { TouchableOpacity } from 'react-native';
+import Icon from './Icon';
 
 type CheckboxProps = {
   size?: number;
   checked?: boolean;
   borderColor?: string;
-  onChange?: () => void;
+  onChange?: (checked: boolean) => void;
   disabled?: boolean;
 };
 
@@ -14,7 +14,7 @@ export const Checkbox = ({
   size = 20,
   checked = false,
   borderColor = colors.orange,
-  onChange = () => {},
+  onChange = (checked) => {},
   disabled = false,
 }: CheckboxProps) => {
   const backgroundColor = checked ? colors.orange : colors.primary;
@@ -23,7 +23,7 @@ export const Checkbox = ({
   return (
     <TouchableOpacity
       disabled={disabled}
-      onPress={onChange}
+      onPress={() => onChange(!checked)}
       style={{
         width: size,
         height: size,
@@ -31,8 +31,8 @@ export const Checkbox = ({
         borderWidth: 1,
         borderColor: _borderColor,
         backgroundColor,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       {checked && (
