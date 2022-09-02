@@ -1,4 +1,6 @@
+import SecureWalletScreen from '@features/onboarding/screen/SecureWalletScreen';
 import InputSeedPhraseScreen from '@features/recovery/screen/InputSeedPhraseScreen';
+import VerifySeedPhraseScreen from '@features/recovery/screen/VerifySeedPhraseScreen';
 import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
@@ -9,15 +11,20 @@ import NewWalletScreen from '../features/onboarding/screen/NewWalletScreen';
 import WelcomeScreen from '../features/onboarding/screen/WelcomeScreen';
 import RestoreWalletScreen from '../features/recovery/screen/RestoreWalletScreen';
 import ScreenNames from './screenNames';
-const { WELCOME, CREATE_WALLET_PASSWORD, INPUT_PHRASE, RESTORE_WALLET } =
-  ScreenNames;
+const {
+  WELCOME,
+  CREATE_WALLET_PASSWORD,
+  SECURE_WALLET,
+  INPUT_PHRASE,
+  RESTORE_WALLET,
+  RECOVERY_VERIFY_PHRASE,
+} = ScreenNames;
 
 const Stack = createNativeStackNavigator();
 
 export const defaultScreenOptions: NativeStackNavigationOptions = {
   headerBackTitleVisible: false,
-  gestureEnabled: true,
-  headerTransparent: true,
+  gestureEnabled: false,
   headerShadowVisible: false,
   headerShown: false,
   headerTitleStyle: {
@@ -25,6 +32,9 @@ export const defaultScreenOptions: NativeStackNavigationOptions = {
     fontSize: 24,
   },
   headerTintColor: colors.white,
+  headerStyle: {
+    backgroundColor: colors.primary,
+  },
   headerTitleAlign: 'left',
 };
 
@@ -33,6 +43,15 @@ const OnboardingStack = () => {
     <Stack.Navigator screenOptions={defaultScreenOptions}>
       <Stack.Screen name={WELCOME} component={WelcomeScreen} />
       <Stack.Screen name={CREATE_WALLET_PASSWORD} component={NewWalletScreen} />
+      <Stack.Screen name={SECURE_WALLET} component={SecureWalletScreen} />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: 'Show Recovery Phrase',
+        }}
+        name={RECOVERY_VERIFY_PHRASE}
+        component={VerifySeedPhraseScreen}
+      />
       <Stack.Screen
         name={INPUT_PHRASE}
         component={InputSeedPhraseScreen}

@@ -8,6 +8,9 @@ import IconInfo from '@assets/svg/icon_info.svg';
 import PhraseExplainPopup from '../components/PhraseExplainPopup';
 import useModal from '@hooks/useModal';
 import SecurityImportantExplainPopup from '../components/SecurityImportantExplainPopup';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNavigationProps } from '@router/navigation-props';
+import ScreenNames from '@router/screenNames';
 
 type Props = {};
 
@@ -27,6 +30,7 @@ const SecureWalletScreen = (props: Props) => {
     open: openExplainModal,
     close: closeExplainModal,
   } = useModal();
+  const navigation = useNavigation<ScreenNavigationProps<any>>();
   return (
     <SafeArea>
       <Spacer height={40} />
@@ -61,7 +65,12 @@ const SecureWalletScreen = (props: Props) => {
           </TouchableOpacity>
         </Row>
         <View style={{ flex: 1 }} />
-        <PrimaryButton label="Start" onPress={() => {}} />
+        <PrimaryButton
+          label="Start"
+          onPress={() =>
+            navigation.navigate({ name: ScreenNames.RECOVERY_VERIFY_PHRASE })
+          }
+        />
       </Container>
       <PhraseExplainPopup
         visible={phraseModalVisible}
