@@ -1,47 +1,31 @@
+import BiometricsLoginButton from '@features/biometrics/components/BiometricsLoginButton';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Alert, Image, StatusBar, StyleSheet, View } from 'react-native';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
-import { Button, Text, Title } from '../../../components/ui';
-import useBiometrics from '../../../hooks/useBiometrics';
+import { PrimaryButton, Title } from '../../../components/ui';
 import { ScreenNavigationProps } from '../../../router/navigation-props';
 import ScreenNames from '../../../router/screenNames';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
-import { colors } from '../../../styles';
 import useAuthentication from '../hooks/useAuthentication';
 
 const LOGO = require('@assets/logo.png');
 
 const LoginScreen = () => {
-  const { authenticateBiometrics, isBiometricsAvailable } = useBiometrics();
   const { getWalletSavedPassword } = useWalletPassword();
   const { setIsAuthenticated } = useAuthentication();
   const [savedPassword, setSavedPassword] = useState<string | null>();
   const [isStarting, setIsStarting] = useState(false);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const { control, handleSubmit, setValue } = useForm<FieldValues>({
     defaultValues: { password: '' },
     mode: 'onChange',
   });
-
-  useEffect(() => {
-    getWalletSavedPassword().then((value) => setSavedPassword(value));
-  }, []);
 
   const onSubmit = () => {
     handleSubmit(async ({ password }) => {
@@ -54,20 +38,23 @@ const LoginScreen = () => {
       const success = await wallet.startSession(password);
 
       setIsStarting(false);
-      if (success) return setIsAuthenticated(true);
+      if (success) {
+        setIsLoginSuccess(true);
+      }
     })();
   };
+  useEffect(() => {
+    getWalletSavedPassword().then((value) => setSavedPassword(value));
+  }, []);
 
-  if (isStarting)
-    return (
-      <Container>
-        <ActivityIndicator size="large" color={colors.white} />
-      </Container>
-    );
+  useEffect(() => {
+    if (isLoginSuccess) {
+      setIsAuthenticated(true);
+    }
+  }, [isLoginSuccess]);
 
   return (
     <Container center={false} alignItems="center">
-      {/* LOGO */}
       <View style={styles.logoWrap}>
         <Image source={LOGO} style={styles.logo} />
       </View>
@@ -85,11 +72,14 @@ const LoginScreen = () => {
         }}
       />
       <Spacer height={12} />
-      <Spacer height={12} />
-      <Button onPress={onSubmit} width={'100%'}>
-        <Title size={16}>Unlock</Title>
-      </Button>
-      <Spacer height={32} />
+      <PrimaryButton loading={isStarting} onPress={onSubmit} label="Unlock" />
+      <BiometricsLoginButton
+        onSuccess={() => {
+          setValue('password', savedPassword);
+          onSubmit();
+        }}
+      />
+      <Spacer height={16} />
       <Title
         size={16}
         onPress={() => {
@@ -98,18 +88,6 @@ const LoginScreen = () => {
       >
         Reset wallet
       </Title>
-      {isBiometricsAvailable && (
-        <View style={styles.biometrics}>
-          <Title
-            size={16}
-            onPress={() =>
-              authenticateBiometrics(() => setIsAuthenticated(true))
-            }
-          >
-            Use Biometrics
-          </Title>
-        </View>
-      )}
     </Container>
   );
 };
@@ -129,10 +107,10 @@ const styles = StyleSheet.create({
     marginVertical: 24,
   },
   biometrics: {
-    width: "100%",
+    width: '100%',
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     paddingBottom: 60,
   },
 });
