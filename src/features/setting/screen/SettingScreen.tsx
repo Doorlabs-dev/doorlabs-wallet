@@ -4,6 +4,7 @@ import SettingItem from '../components/SettingItem';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from 'src/router/navigation-props';
 import ScreenNames from '@router/screenNames';
+import BiometricsSetting from '../components/BiometricsSetting';
 
 const SettingScreen = () => {
   const navigation = useNavigation<ScreenNavigationProps<any>>();
@@ -19,6 +20,7 @@ const SettingScreen = () => {
             })
           }
         />
+        <BiometricsSetting />
       </Container>
     </SafeArea>
   );

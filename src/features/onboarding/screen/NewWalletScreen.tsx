@@ -1,16 +1,12 @@
 import { Checkbox } from '@components/ui/Checkbox';
+import BiometricsEnableSwitch from '@features/biometrics/components/BiometricsEnableSwitch';
+import useBiometrics, { biometricsStore } from '@hooks/useBiometrics';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
 import React, { useState } from 'react';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  View,
-} from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
 import {
@@ -23,16 +19,9 @@ import { Button, Text, Title } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
-import useAuthentication from '../../auth/hooks/useAuthentication';
 
 const NewWalletScreen = () => {
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-    setValue,
-  } = useForm<FieldValues>({
+  const { control, handleSubmit, getValues, setValue } = useForm<FieldValues>({
     defaultValues: {
       password: '',
       passwordConfirmation: '',
@@ -47,9 +36,27 @@ const NewWalletScreen = () => {
   const [isCreatingWallet, setIsCreatingWallet] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
+  const { authenticateBiometrics, supportedTypes } = useBiometrics();
+
+  const validateBiometrics = async (useFaceId: boolean): Promise<boolean> => {
+    if (!useFaceId) return true;
+
+    const result = await authenticateBiometrics();
+
+    await biometricsStore.set(result);
+
+    return result;
+  };
+
   const onConfirm = () => {
-    handleSubmit(async ({ password }) => {
+    handleSubmit(async ({ password, useFaceId }) => {
       try {
+        const biometricsSuccess = await validateBiometrics(useFaceId);
+
+        if (!biometricsSuccess) {
+          return;
+        }
+
         setIsCreatingWallet(true);
 
         await setWalletPassword(password);
@@ -122,21 +129,19 @@ const NewWalletScreen = () => {
             <Button onPress={onConfirm} width={'100%'}>
               <Title size={16}>Confirm</Title>
             </Button>
-            <View style={styles.faceIdSwitch}>
-              <Text size={16} color="white">
-                Unlock with FaceID
-              </Text>
-              <Controller
-                control={control}
-                name="useFaceId"
-                render={({ field: { value } }) => (
-                  <Switch
-                    value={value}
-                    onChange={() => setValue('useFaceId', !value)}
-                  />
-                )}
-              />
-            </View>
+            <Spacer height={27} />
+            <Controller
+              control={control}
+              name="useFaceId"
+              render={({ field: { value } }) => (
+                <BiometricsEnableSwitch
+                  supportedTypes={supportedTypes}
+                  enabled={value}
+                  onChange={(v) => setValue('useFaceId', v)}
+                />
+              )}
+            />
+            <Spacer height={27} />
             <View style={styles.privacyWrapper}>
               <Controller
                 control={control}
