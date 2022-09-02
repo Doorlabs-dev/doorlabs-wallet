@@ -2,6 +2,7 @@ const ScreenNames = {
   // ONBOARDING STACK
   WELCOME: 'welcome',
   CREATE_WALLET_PASSWORD: 'create-wallet-password',
+  SECURE_WALLET: 'secure-wallet',
   // AUTH STACK
   LOGIN: 'login',
   INPUT_PHRASE: 'input-phrase',
@@ -27,7 +28,9 @@ const ScreenNames = {
   // Settings Stack
   SETTING_STACK: 'setting-stack',
   SETTINGS: 'settings',
+  // RECOVERY
   RECOVERY_GET_PHRASE: 'recovery-get-phrase',
+  RECOVERY_VERIFY_PHRASE: 'recovery-verify-phrase',
 };
 
 export default ScreenNames;

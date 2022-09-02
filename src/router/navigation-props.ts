@@ -6,6 +6,8 @@ type ScreenNavigationProps<T> = {
   dispatch: (actions: StackActionType) => void;
   openDrawer: () => void;
   closeDrawer: () => void;
+  setParams: (params?: T) => void;
+  setOptions: (options: any) => void;
 };
 
 export { ScreenNavigationProps };

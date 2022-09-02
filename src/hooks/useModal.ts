@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react';
 
-type Props = {};
+export type CustomModalProps = {
+  visible: boolean;
+  onClose: () => void;
+};
 
 const useModal = () => {
   const [visible, setVisible] = useState(false);
