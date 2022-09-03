@@ -1,3 +1,44 @@
+diff --git a/node_modules/starknet/dist/provider/default.js b/node_modules/starknet/dist/provider/default.js
+index 0009eb2..130540a 100644
+--- a/node_modules/starknet/dist/provider/default.js
++++ b/node_modules/starknet/dist/provider/default.js
+@@ -77,6 +77,11 @@ var stark_1 = require("../utils/stark");
+ var errors_1 = require("./errors");
+ var interface_1 = require("./interface");
+ var utils_1 = require("./utils");
++/* -----------------------------  Walletme--------------------------------------------- */
++var jsonbig =  require('json-bigint')({ parseAlwaysAsBig: true, useNativeBigInt: false })
++var RNPlatform = require('react-native').Platform;
++/* ----------------------------------------------------------------------------- */
++
+ function wait(delay) {
+     return new Promise(function (res) {
+         setTimeout(res, delay);
+@@ -220,12 +225,22 @@ var Provider = /** @class */ (function () {
+                             throw new errors_1.GatewayError(responseBody.message, errorCode); // Caught locally, and re-thrown for the user
+                         }
+                         if (endpoint === 'estimate_fee') {
+-                            return [2 /*return*/, (0, json_1.parseAlwaysAsBig)(textResponse, function (_, v) {
+-                                    if (v && typeof v === 'bigint') {
++                            if(RNPlatform.OS === 'android') {
++                                 return [2 /*return*/, jsonbig.parse(textResponse, (_, v) => {
++                                    if(v && typeof v === 'number') {
++                                        return (0, number_1.toBN)(v);
++                                    }
++                                    return v;
++                                })];
++                            }
++
++                             return [2 /*return*/, (0, json_1.parseAlwaysAsBig)(textResponse, function (_, v) {
++                                    if (v && (typeof v === 'bigint')) {
+                                         return (0, number_1.toBN)(v.toString());
+                                     }
+                                     return v;
+                                 })];
++                                
+                         }
+                         return [2 /*return*/, (0, json_1.parse)(textResponse)];
+                     case 4:
 diff --git a/node_modules/starknet/dist/utils/hash.js b/node_modules/starknet/dist/utils/hash.js
 index 38d0a36..dff7afc 100644
 --- a/node_modules/starknet/dist/utils/hash.js

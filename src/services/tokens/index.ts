@@ -50,7 +50,6 @@ export async function getEstimatedFee(
   call: Call
 ): Promise<{ amount: string; suggestedMaxFee: string }> {
   const starknetAccount = account.getStarknetAccount();
-
   const result = await starknetAccount.estimateFee(call);
 
   return {

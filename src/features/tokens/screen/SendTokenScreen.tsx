@@ -20,6 +20,7 @@ import { ScreenNavigationProps } from '@router/navigation-props';
 import { addTransaction } from '@services/transaction';
 import { useBalance } from '../hooks/useBalance';
 import { Token } from '@services/tokens/token.model';
+import Toast from 'react-native-root-toast';
 
 type Props = {};
 
@@ -117,6 +118,7 @@ const SendTokenScreen = (props: Props) => {
         });
         navigation.goBack();
       } catch (error) {
+        Toast.show(`${error}`);
         console.log(error);
       }
 
