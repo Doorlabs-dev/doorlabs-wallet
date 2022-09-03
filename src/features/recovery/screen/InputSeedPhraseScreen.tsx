@@ -65,7 +65,9 @@ const InputSeedPhraseScreen = () => {
           setIsAuthenticated(true);
           setIsAccountAvailable(true);
         }, 300);
-      } catch (error) {}
+      } catch (error) {
+        Toast.show(`${error}`);
+      }
 
       setIsValidating(false);
     })();

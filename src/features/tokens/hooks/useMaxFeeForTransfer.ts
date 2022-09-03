@@ -1,8 +1,8 @@
 import { Account } from '@features/account/account.model';
 import { getEstimatedFee, getTokenInfo } from '@services/tokens';
 import { getUint256CalldataFromBN } from '@services/transaction';
-import { BigNumber, utils } from 'ethers';
-import { Call, number } from 'starknet';
+import { BigNumber } from 'ethers';
+import { Call } from 'starknet';
 import {
   compileCalldata,
   estimatedFeeToMaxFee,

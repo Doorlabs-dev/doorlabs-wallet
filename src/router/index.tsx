@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import useAuthentication from '../features/auth/hooks/useAuthentication';
 import SplashScreen from '../features/onboarding/screen/SplashScreen';
 import useAppState from '../hooks/useAppState';
@@ -28,21 +28,15 @@ const AppNavigation = () => {
     checkAccountAvailable();
   }, []);
 
+  const renderNavigator = useCallback(() => {
+    if (!isAccountAvailable) return <OnboardingStack />;
+
+    return isAuthenticated ? <AppDrawer /> : <AuthStack />;
+  }, [isAccountAvailable, isAuthenticated]);
+
   if (isCheckingAccount) return <SplashScreen />;
 
-  return (
-    <NavigationContainer>
-      {isAccountAvailable ? (
-        isAuthenticated ? (
-          <AppDrawer />
-        ) : (
-          <AuthStack />
-        )
-      ) : (
-        <OnboardingStack />
-      )}
-    </NavigationContainer>
-  );
+  return <NavigationContainer>{renderNavigator()}</NavigationContainer>;
 };
 
 export default AppNavigation;
