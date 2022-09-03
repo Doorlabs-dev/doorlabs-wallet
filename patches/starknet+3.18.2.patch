@@ -1,0 +1,25 @@
+diff --git a/node_modules/starknet/dist/utils/hash.js b/node_modules/starknet/dist/utils/hash.js
+index 38d0a36..dff7afc 100644
+--- a/node_modules/starknet/dist/utils/hash.js
++++ b/node_modules/starknet/dist/utils/hash.js
+@@ -30,6 +30,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.calculateContractAddressFromHash = exports.calculcateTransactionHash = exports.calculateDeployTransactionHash = exports.calculateTransactionHashCommon = exports.computeHashOnElements = exports.pedersen = exports.getSelectorFromName = exports.starknetKeccak = exports.feeTransactionVersion = exports.transactionVersion = void 0;
+ var keccak_1 = require("ethereum-cryptography/keccak");
++// Walletme fix
++var RNPlatform = require("react-native").Platform;
++var walletme_keccak256 = require('js-sha3').keccak256;
++
+ var minimalistic_assert_1 = __importDefault(require("minimalistic-assert"));
+ var constants_1 = require("../constants");
+ var ellipticCurve_1 = require("./ellipticCurve");
+@@ -38,6 +42,9 @@ var number_1 = require("./number");
+ exports.transactionVersion = 0;
+ exports.feeTransactionVersion = (0, number_1.toBN)(2).pow((0, number_1.toBN)(128)).add((0, number_1.toBN)(exports.transactionVersion));
+ function keccakHex(value) {
++    if(RNPlatform.OS === 'android') {
++        return (0, encode_1.addHexPrefix)((0, walletme_keccak256)((0, encode_1.utf8ToArray)(value)));
++    }
+     return (0, encode_1.addHexPrefix)((0, encode_1.buf2hex)((0, keccak_1.keccak256)((0, encode_1.utf8ToArray)(value))));
+ }
+ /**
