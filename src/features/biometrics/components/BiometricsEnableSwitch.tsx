@@ -14,7 +14,7 @@ type Props = {
 const BiometricsEnableSwitch = ({
   enabled = false,
   onChange = (value) => null,
-  supportedTypes,
+  supportedTypes = [],
 }: Props) => {
   if (!supportedTypes.length) return null;
 
