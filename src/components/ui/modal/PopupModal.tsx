@@ -7,6 +7,7 @@ import IconClose from '@assets/svg/icon_close.svg';
 type Props = {
   visible: boolean;
   onClose: () => void;
+  closeIconVisible?: boolean;
   children: any;
 };
 
@@ -28,7 +29,12 @@ const ModalContainer = styled.View`
   padding: 24px 24px;
 `;
 
-const PopupModal = ({ visible, onClose, children }: Props) => {
+const PopupModal = ({
+  visible,
+  onClose,
+  closeIconVisible = true,
+  children,
+}: Props) => {
   return (
     <Modal
       backdropTransitionOutTiming={0}
@@ -40,9 +46,11 @@ const PopupModal = ({ visible, onClose, children }: Props) => {
     >
       <ModalContainer>
         {children}
-        <Float onPress={onClose}>
-          <IconClose />
-        </Float>
+        {closeIconVisible ? (
+          <Float onPress={onClose}>
+            <IconClose />
+          </Float>
+        ) : null}
       </ModalContainer>
     </Modal>
   );
