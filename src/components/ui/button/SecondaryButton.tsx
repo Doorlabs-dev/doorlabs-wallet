@@ -18,7 +18,7 @@ const Button = styled.TouchableOpacity`
 
 const SecondaryButton = ({ title, onPress, color }: Props) => {
   return (
-    <Button onPress={onPress} style={{ width: '100%' }}>
+    <Button onPress={onPress}>
       <Text size={16} lineHeight={24} color={color || colors.blue}>
         {title}
       </Text>

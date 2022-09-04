@@ -31,6 +31,8 @@ const ScreenNames = {
   // RECOVERY
   RECOVERY_GET_PHRASE: 'recovery-get-phrase',
   RECOVERY_VERIFY_PHRASE: 'recovery-verify-phrase',
+  // UTILS
+  WEBVIEW: 'webview',
 };
 
 export default ScreenNames;

@@ -9,6 +9,7 @@ import SelectTokenScreen from '@features/tokens/screen/SelectTokenScreen';
 import SendTokenScreen from '@features/tokens/screen/SendTokenScreen';
 import AddTokenScreen from '@features/tokens/screen/AddTokenScreen';
 import SendNftScreen from '@features/nft/screen/SendNftScreen';
+import WebViewScreen from '@components/ui/WebViewScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ const {
   TOKEN_SEND,
   TOKEN_ADD_TOKEN,
   NFT_SEND_NFT,
+  WEBVIEW,
 } = ScreenNames;
 
 const AccountStack = () => {
@@ -86,6 +88,13 @@ const AccountStack = () => {
         }}
         name={NFT_SEND_NFT}
         component={SendNftScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name={WEBVIEW}
+        component={WebViewScreen}
       />
     </Stack.Navigator>
   );
