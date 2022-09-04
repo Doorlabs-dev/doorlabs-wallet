@@ -1,21 +1,19 @@
-import InAppBrowser from 'react-native-inappbrowser-reborn';
+import { useMemo } from 'react';
 import { getExploreAccountURL } from '../../../services/explore';
 import { Network } from '../../../services/network';
 
 const useExploreAccount = (network?: Network, address?: string) => {
-  const exploreAccount = async () => {
-    if (!network || !address) return;
-    if (!network.explorerUrl) return;
-    const exploreUrl = getExploreAccountURL(network.explorerUrl, address);
+  const exploredAccountUrl = useMemo(
+    () =>
+      !!network && !!address
+        ? getExploreAccountURL(network.explorerUrl, address)
+        : '',
+    [network?.explorerUrl, address]
+  );
 
-    if (await InAppBrowser.isAvailable()) {
-      InAppBrowser.open(exploreUrl, {
-        animated: true,
-      });
-    }
+  return {
+    exploredAccountUrl,
   };
-
-  return { exploreAccount };
 };
 
 export default useExploreAccount;

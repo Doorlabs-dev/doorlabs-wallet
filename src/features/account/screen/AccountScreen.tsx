@@ -5,9 +5,7 @@ import { colors } from '../../../styles';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AccountInfoCard from '../components/AccountInfoCard';
 import { RoundButton } from '@components/ui';
-import TokenItem from '@features/tokens/components/TokenItem';
 import SecondaryButton from '@components/ui/button/SecondaryButton';
-import { getTokenInfo } from '@services/tokens';
 import useNetwork from '@features/network/hooks/useNetwork';
 import useModal from '../../../hooks/useModal';
 import AccountActionsModal from '../components/AccountActionsModal';
@@ -17,7 +15,6 @@ import ScreenNames from '../../../router/screenNames';
 import { ScreenNavigationProps } from 'src/router/navigation-props';
 import NoAccount from '../components/NoAccount';
 import PendingTransactions from '@features/transactions/components/PendingTransactions';
-
 import IconSend from '@assets/svg/icon_send.svg';
 import IconReceive from '@assets/svg/icon_receive.svg';
 import IconAdd from '@assets/svg/icon_add.svg';
@@ -28,11 +25,16 @@ import TokensList from '@features/tokens/components/TokensList';
 const AccountScreen = () => {
   const { selectedAccount, isLoading } = useSelectedAccount(true);
   const { selectedNetwork } = useNetwork();
-  const { exploreAccount } = useExploreAccount(
+  const { exploredAccountUrl } = useExploreAccount(
     selectedNetwork,
     selectedAccount?.address
   );
-  const { visible, close, open } = useModal();
+
+  const {
+    visible: actionModalVisible,
+    close: closeActionModal,
+    open: openActionModal,
+  } = useModal();
   const {
     visible: receiveModalVisible,
     close: closeReceiveModal,
@@ -63,7 +65,10 @@ const AccountScreen = () => {
     <SafeArea>
       <ScrollView>
         <Container alignItems="center" center={false}>
-          <AccountInfoCard onPress={() => open()} account={selectedAccount} />
+          <AccountInfoCard
+            onPress={() => openActionModal()}
+            account={selectedAccount}
+          />
           <Spacer height={24} />
           <View style={{ width: '90%' }}>
             <Row justifyContent="space-between">
@@ -98,13 +103,19 @@ const AccountScreen = () => {
               {
                 label: 'View on voyager',
                 onPress: () => {
-                  exploreAccount();
+                  closeActionModal();
+                  navigation.navigate({
+                    name: ScreenNames.WEBVIEW,
+                    params: {
+                      url: exploredAccountUrl,
+                    },
+                  });
                 },
               },
               {
                 label: 'Export private key',
                 onPress: () => {
-                  close();
+                  closeActionModal();
                   navigation.navigate({
                     name: ScreenNames.ACCOUNT_PRIVATE_KEY,
                   });
@@ -119,8 +130,8 @@ const AccountScreen = () => {
                 onPress: () => {},
               },
             ]}
-            visible={visible}
-            onClose={close}
+            visible={actionModalVisible}
+            onClose={closeActionModal}
           />
         </Container>
         <Spacer height={100} />
