@@ -9,9 +9,13 @@ import { Row, Spacer } from '@components/layout';
 const ShortAddress = ({
   address,
   color,
+  size,
+  lineHeight,
 }: {
   address: string;
   color?: string;
+  size?: number;
+  lineHeight?: number;
 }) => {
   if (!address) {
     return null;
@@ -26,7 +30,11 @@ const ShortAddress = ({
       }}
     >
       <Row alignItems="center">
-        <Text color={color || colors.periwinkle} size={18} lineHeight={28}>
+        <Text
+          color={color || colors.periwinkle}
+          size={size || 18}
+          lineHeight={lineHeight || 28}
+        >
           {address.substring(0, 6)} ... {address.substring(address.length - 4)}
         </Text>
         <Spacer width={8} />

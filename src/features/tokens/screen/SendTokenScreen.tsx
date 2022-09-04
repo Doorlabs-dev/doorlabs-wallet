@@ -7,7 +7,6 @@ import { PrimaryButton, Text } from '@components/ui';
 import { transfer } from '@services/tokens';
 import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
-import networkState from '@features/network/network.state';
 import { utils } from 'ethers';
 import { parseAmount } from '@services/tokens/amount';
 import { isAllowedNumericInputValue, isValidAddress } from '@utils/validator';
@@ -21,6 +20,8 @@ import { addTransaction } from '@services/transaction';
 import { useBalance } from '../hooks/useBalance';
 import { Token } from '@services/tokens/token.model';
 import Toast from 'react-native-root-toast';
+import useModal from '@hooks/useModal';
+import SendTokenConfirmationModal from '../components/SendTokenConfirmationModal';
 
 type Props = {};
 
@@ -42,11 +43,12 @@ const SendTokenScreen = (props: Props) => {
     handleSubmit,
     setValue,
     formState: { errors },
+    getValues,
   } = useForm<FieldValues>({
     defaultValues: {
       amount: '',
-      recipient: '',
-      // '0x3eae8126702bbf06de496dbf9b745ee423a3b4836aa35dd2b3d2e6c10323f9d',
+      recipient:
+        '0x3eae8126702bbf06de496dbf9b745ee423a3b4836aa35dd2b3d2e6c10323f9d',
       // for testing only
     },
     mode: 'onChange',
@@ -56,6 +58,11 @@ const SendTokenScreen = (props: Props) => {
   const route = useRoute<RouteProp<ParamsList>>();
   const selectedAccount = useRecoilValue(selectedAccountState);
   const token = route.params.token;
+  const {
+    visible: confirmationModalVisible,
+    close: closeConfirmationModal,
+    open: openConfirmationModal,
+  } = useModal();
 
   const { data: balance } = useBalance(token?.address, selectedAccount);
 
@@ -98,31 +105,36 @@ const SendTokenScreen = (props: Props) => {
     return parsedAmount.lte(parsedBalance);
   };
 
-  const submit = () => {
-    handleSubmit(async (values) => {
-      try {
-        setIsSubmitting(true);
-        const txRes = await transfer({
-          fromAccount: selectedAccount!,
-          to: values.recipient,
-          token,
-          amount: utils.parseUnits(values.amount, token?.decimals),
-        });
-        await addTransaction({
-          hash: txRes.transaction_hash,
-          account: selectedAccount?.getWalletAccount()!,
-          meta: {
-            title: 'Transfer',
-            type: 'transfer',
-          },
-        });
-        navigation.goBack();
-      } catch (error) {
-        Toast.show(`${error}`);
-        console.log(error);
-      }
+  const submit = async () => {
+    const values = getValues();
+    try {
+      setIsSubmitting(true);
+      const txRes = await transfer({
+        fromAccount: selectedAccount!,
+        to: values.recipient,
+        token,
+        amount: utils.parseUnits(values.amount, token?.decimals),
+      });
+      await addTransaction({
+        hash: txRes.transaction_hash,
+        account: selectedAccount?.getWalletAccount()!,
+        meta: {
+          title: 'Transfer',
+          type: 'transfer',
+        },
+      });
+      navigation.goBack();
+    } catch (error) {
+      Toast.show(`${error}`);
+      console.log(error);
+    }
 
-      setIsSubmitting(false);
+    setIsSubmitting(false);
+  };
+
+  const onNext = () => {
+    handleSubmit(async (values) => {
+      openConfirmationModal();
     })();
   };
 
@@ -175,10 +187,18 @@ const SendTokenScreen = (props: Props) => {
             validate: { isValidAddress: isValidAddress },
           }}
         />
-
         <Spacer height={8} />
-
-        <PrimaryButton loading={isSubmitting} label="Next" onPress={submit} />
+        <PrimaryButton label="Next" onPress={onNext} />
+        <SendTokenConfirmationModal
+          token={token}
+          account={selectedAccount}
+          amount={getValues('amount')}
+          recipient={getValues('recipient')}
+          visible={confirmationModalVisible}
+          onClose={closeConfirmationModal}
+          onApprove={submit}
+          isLoading={isSubmitting}
+        />
       </Container>
     </SafeArea>
   );
