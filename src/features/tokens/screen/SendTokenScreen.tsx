@@ -47,8 +47,8 @@ const SendTokenScreen = (props: Props) => {
   } = useForm<FieldValues>({
     defaultValues: {
       amount: '',
-      recipient:
-        '0x3eae8126702bbf06de496dbf9b745ee423a3b4836aa35dd2b3d2e6c10323f9d',
+      recipient: '',
+      // '0x3eae8126702bbf06de496dbf9b745ee423a3b4836aa35dd2b3d2e6c10323f9d',
       // for testing only
     },
     mode: 'onChange',
