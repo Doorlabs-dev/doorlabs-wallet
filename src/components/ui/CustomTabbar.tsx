@@ -9,6 +9,7 @@ import IconToken from '@assets/svg/icon_token.svg';
 import IconNft from '@assets/svg/icon_ntf.svg';
 import IconActivity from '@assets/svg/icon_activity.svg';
 import { Spacer } from '@components/layout';
+import Reanimated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 
@@ -92,17 +93,22 @@ const TabBarItem = ({
 
 const CustomTabBar = (props: BottomTabBarProps) => {
   return (
-    <TabBarContainer>
-      {props.state.routes.map((route, index) => (
-        <TabBarItem
-          key={route.key}
-          active={index == props.state.index}
-          iconName={route.name as IconNames}
-          label={LABELS[route.name]}
-          onPress={() => props.navigation.navigate(route.name)}
-        />
-      ))}
-    </TabBarContainer>
+    <Reanimated.View
+      entering={SlideInDown.duration(500)}
+      exiting={SlideOutDown.duration(500)}
+    >
+      <TabBarContainer>
+        {props.state.routes.map((route, index) => (
+          <TabBarItem
+            key={route.key}
+            active={index == props.state.index}
+            iconName={route.name as IconNames}
+            label={LABELS[route.name]}
+            onPress={() => props.navigation.navigate(route.name)}
+          />
+        ))}
+      </TabBarContainer>
+    </Reanimated.View>
   );
 };
 
