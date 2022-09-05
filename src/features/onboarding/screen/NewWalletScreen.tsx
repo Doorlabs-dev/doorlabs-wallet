@@ -67,7 +67,9 @@ const NewWalletScreen = () => {
         navigation.dispatch(StackActions.replace(ScreenNames.SECURE_WALLET));
       } catch (e) {
         setIsCreatingWallet(false);
-        Toast.show(`${e}`);
+        Toast.show(`${e}`, {
+          position: Toast.positions.CENTER,
+        });
       }
     })();
   };

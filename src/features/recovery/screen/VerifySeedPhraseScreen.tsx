@@ -72,7 +72,9 @@ const VerifySeedPhraseScreen = () => {
       if (values.input_phrase === phrase) {
         goToApp();
       } else {
-        Toast.show('Invalid phrase');
+        Toast.show('Invalid phrase', {
+          position: Toast.positions.CENTER,
+        });
       }
     });
 
