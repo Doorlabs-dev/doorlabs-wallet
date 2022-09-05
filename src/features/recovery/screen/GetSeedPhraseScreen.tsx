@@ -8,6 +8,7 @@ import { colors } from '../../../styles';
 import * as Clipboard from 'expo-clipboard';
 import { PasswordValidationForm } from '@components/form';
 import styled from 'styled-components/native';
+import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 const PhraseContainer = styled.View`
   background-color: ${colors.greyScale700};
@@ -49,42 +50,40 @@ const GetSeedPhraseScreen = () => {
 
   if (!passed) {
     return (
-      <SafeArea>
-        <Container center={false} alignItems="center">
-          <PasswordValidationForm onPass={() => setPassed(true)} />
-        </Container>
-      </SafeArea>
+      <Container center={false} alignItems="center">
+        <AndroidHeaderFix />
+        <PasswordValidationForm onPass={() => setPassed(true)} />
+      </Container>
     );
   }
 
   return (
-    <SafeArea>
-      <Container center={false}>
-        {isLoading ? (
-          <ActivityIndicator color={colors.white} size="small" />
-        ) : (
-          <>
-            <Text size={16} lineHeight={24}>
-              Typically 12 words separated by single spaces
-            </Text>
-            <Spacer height={16} />
-            <PhraseContainer>
-              {phrase.split('/s').map((word) => (
-                <Fragment key={word}>
-                  <Row>
-                    <Text size={18} lineHeight={36} weight={500}>
-                      {word}
-                    </Text>
-                  </Row>
-                </Fragment>
-              ))}
-            </PhraseContainer>
-            <Spacer height={24} />
-            <PrimaryButton label="Copy to clipboard" onPress={onCopy} />
-          </>
-        )}
-      </Container>
-    </SafeArea>
+    <Container center={false}>
+      <AndroidHeaderFix />
+      {isLoading ? (
+        <ActivityIndicator color={colors.white} size="small" />
+      ) : (
+        <>
+          <Text size={16} lineHeight={24}>
+            Typically 12 words separated by single spaces
+          </Text>
+          <Spacer height={16} />
+          <PhraseContainer>
+            {phrase.split('/s').map((word) => (
+              <Fragment key={word}>
+                <Row>
+                  <Text size={18} lineHeight={36} weight={500}>
+                    {word}
+                  </Text>
+                </Row>
+              </Fragment>
+            ))}
+          </PhraseContainer>
+          <Spacer height={24} />
+          <PrimaryButton label="Copy to clipboard" onPress={onCopy} />
+        </>
+      )}
+    </Container>
   );
 };
 

@@ -1,3 +1,5 @@
+import { useHeaderHeight } from '@react-navigation/elements';
+import { Platform } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { colors } from '../../styles';
 

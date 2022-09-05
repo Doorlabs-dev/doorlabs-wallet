@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Container, Row, SafeArea, Spacer } from '@components/layout';
+import { Container, Row, Spacer } from '@components/layout';
 import colors from '@styles/colors';
 import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
@@ -11,6 +11,7 @@ import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
 import TokensList from '../components/TokensList';
 import NftsList from '@features/nft/components/NftsList';
+import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Props = {};
 
@@ -43,46 +44,46 @@ const SelectTokenScreen = (props: Props) => {
   const tokenTabSelected = selectedTab == 0;
 
   return (
-    <SafeArea>
-      <Container center={false}>
-        <SearchBar />
-        <Spacer height={24} />
-        <Row>
-          <TabButton
-            onPress={() => setSelectedTab(0)}
-            label="Tokens"
-            selected={tokenTabSelected}
-          />
-          <Spacer width={16} />
-          <TabButton
-            onPress={() => setSelectedTab(1)}
-            label="Collectibles"
-            selected={!tokenTabSelected}
-          />
-        </Row>
-        <Spacer height={24} />
-        {tokenTabSelected ? (
-          <TokensList
-            renderItem={(t) => (
-              <SelectTokenItem
-                token={t}
-                account={selectedAccount}
-                onPress={() =>
-                  navigation.navigate({
-                    name: ScreenNames.TOKEN_SEND,
-                    params: {
-                      token: t,
-                    },
-                  })
-                }
-              />
-            )}
-          />
-        ) : (
-          <NftsList />
-        )}
-      </Container>
-    </SafeArea>
+    <Container center={false}>
+      <AndroidHeaderFix />
+      <Spacer height={36} />
+      <SearchBar />
+      <Spacer height={24} />
+      <Row>
+        <TabButton
+          onPress={() => setSelectedTab(0)}
+          label="Tokens"
+          selected={tokenTabSelected}
+        />
+        <Spacer width={16} />
+        <TabButton
+          onPress={() => setSelectedTab(1)}
+          label="Collectibles"
+          selected={!tokenTabSelected}
+        />
+      </Row>
+      <Spacer height={24} />
+      {tokenTabSelected ? (
+        <TokensList
+          renderItem={(t) => (
+            <SelectTokenItem
+              token={t}
+              account={selectedAccount}
+              onPress={() =>
+                navigation.navigate({
+                  name: ScreenNames.TOKEN_SEND,
+                  params: {
+                    token: t,
+                  },
+                })
+              }
+            />
+          )}
+        />
+      ) : (
+        <NftsList />
+      )}
+    </Container>
   );
 };
 

@@ -1,16 +1,16 @@
 import React from 'react';
 import { Container, SafeArea } from '@components/layout';
 import NftsList from '../components/NftsList';
+import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Props = {};
 
 const AccountNftsScreen = (props: Props) => {
   return (
-    <SafeArea>
-      <Container center={false}>
-        <NftsList />
-      </Container>
-    </SafeArea>
+    <Container center={false}>
+      <AndroidHeaderFix />
+      <NftsList />
+    </Container>
   );
 };
 

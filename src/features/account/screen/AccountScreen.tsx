@@ -55,15 +55,17 @@ const AccountScreen = () => {
 
   if (!selectedAccount) {
     return (
-      <SafeArea>
+      <Container center={false}>
+        <Spacer height={48} />
         <NoAccount />
-      </SafeArea>
+      </Container>
     );
   }
 
   return (
-    <SafeArea>
-      <ScrollView>
+    <Container center={false} padding={null}>
+      <Spacer height={48} />
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Container alignItems="center" center={false}>
           <AccountInfoCard
             onPress={() => openActionModal()}
@@ -133,15 +135,15 @@ const AccountScreen = () => {
             visible={actionModalVisible}
             onClose={closeActionModal}
           />
+          <Spacer height={100} />
         </Container>
-        <Spacer height={100} />
       </ScrollView>
       <ReceiveAddressModal
         visible={receiveModalVisible}
         onClose={closeReceiveModal}
         address={selectedAccount?.address || ''}
       />
-    </SafeArea>
+    </Container>
   );
 };
 
