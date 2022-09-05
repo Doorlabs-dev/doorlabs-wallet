@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { Container, SafeArea, Spacer } from '@components/layout';
+import { Container, Spacer } from '@components/layout';
 import { FieldValues, useForm } from 'react-hook-form';
 import { TextInput } from '@components/form';
 import { PrimaryButton, Text } from '@components/ui';
@@ -22,6 +22,7 @@ import { Token } from '@services/tokens/token.model';
 import Toast from 'react-native-root-toast';
 import useModal from '@hooks/useModal';
 import SendTokenConfirmationModal from '../components/SendTokenConfirmationModal';
+import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Props = {};
 
@@ -47,8 +48,8 @@ const SendTokenScreen = (props: Props) => {
   } = useForm<FieldValues>({
     defaultValues: {
       amount: '',
-      recipient:
-        '0x3eae8126702bbf06de496dbf9b745ee423a3b4836aa35dd2b3d2e6c10323f9d',
+      recipient: '',
+      // '0x3eae8126702bbf06de496dbf9b745ee423a3b4836aa35dd2b3d2e6c10323f9d',
       // for testing only
     },
     mode: 'onChange',
@@ -139,68 +140,67 @@ const SendTokenScreen = (props: Props) => {
   };
 
   return (
-    <SafeArea>
-      <Container center={false}>
-        <View>
-          <TextInput
-            name="amount"
-            placeholder="Ex: 0.00002"
-            control={control}
-            label="Amount"
-            inputProps={{
-              keyboardType: 'decimal-pad',
-            }}
-            errorMessages={{
-              isAllowedNumericInputValue: 'Invalid amount',
-              isSufficientAmount: 'Insufficient amount',
-            }}
-            rules={{
-              required: 'Required',
-              validate: {
-                isAllowedNumericInputValue,
-                isSufficientAmount,
-              },
-            }}
-          />
-          {maxFeeLoading ? (
-            <Floating>
-              <ActivityIndicator color={colors.white} size="small" />
-            </Floating>
-          ) : (
-            <Floating onPress={onUseMax}>
-              <Text size={16} weight={500} color={colors.blue}>
-                Use max
-              </Text>
-            </Floating>
-          )}
-        </View>
+    <Container center={false}>
+      <AndroidHeaderFix />
+      <View>
         <TextInput
-          name="recipient"
-          placeholder="Address"
+          name="amount"
+          placeholder="Ex: 0.00002"
           control={control}
-          label="Recipient's address"
+          label="Amount"
+          inputProps={{
+            keyboardType: 'decimal-pad',
+          }}
           errorMessages={{
-            isValidAddress: 'Invalid address',
+            isAllowedNumericInputValue: 'Invalid amount',
+            isSufficientAmount: 'Insufficient amount',
           }}
           rules={{
             required: 'Required',
-            validate: { isValidAddress: isValidAddress },
+            validate: {
+              isAllowedNumericInputValue,
+              isSufficientAmount,
+            },
           }}
         />
-        <Spacer height={8} />
-        <PrimaryButton label="Next" onPress={onNext} />
-        <SendTokenConfirmationModal
-          token={token}
-          account={selectedAccount}
-          amount={getValues('amount')}
-          recipient={getValues('recipient')}
-          visible={confirmationModalVisible}
-          onClose={closeConfirmationModal}
-          onApprove={submit}
-          isLoading={isSubmitting}
-        />
-      </Container>
-    </SafeArea>
+        {maxFeeLoading ? (
+          <Floating>
+            <ActivityIndicator color={colors.white} size="small" />
+          </Floating>
+        ) : (
+          <Floating onPress={onUseMax}>
+            <Text size={16} weight={500} color={colors.blue}>
+              Use max
+            </Text>
+          </Floating>
+        )}
+      </View>
+      <TextInput
+        name="recipient"
+        placeholder="Address"
+        control={control}
+        label="Recipient's address"
+        errorMessages={{
+          isValidAddress: 'Invalid address',
+        }}
+        rules={{
+          required: 'Required',
+          validate: { isValidAddress: isValidAddress },
+        }}
+      />
+      <Spacer height={8} />
+      <PrimaryButton label="Next" onPress={onNext} />
+      <SendTokenConfirmationModal
+        token={token}
+        account={selectedAccount}
+        amount={getValues('amount')}
+        recipient={getValues('recipient')}
+        visible={confirmationModalVisible}
+        onClose={closeConfirmationModal}
+        onApprove={submit}
+        isLoading={isSubmitting}
+      />
+    </Container>
   );
 };
 

@@ -1,13 +1,12 @@
 import { View, FlatList, ActivityIndicator } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useNfts from '../hooks/useNfts';
 import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
 import { Text } from '@components/ui';
 import NftItem from './NftItem';
 import { Container, Spacer } from '@components/layout';
-import styled from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
 import IconEmptySearch from '@assets/svg/icon_empty_search.svg';
@@ -16,8 +15,15 @@ type Props = {};
 
 const NftsList = (props: Props) => {
   const selectedAccount = useRecoilValue(selectedAccountState);
-  const { nfts, isValidating } = useNfts({ account: selectedAccount });
+  const { nfts, isValidating, mutate } = useNfts({ account: selectedAccount });
   const navigation = useNavigation<ScreenNavigationProps<any>>();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      mutate();
+    }
+  }, [isFocused]);
 
   return (
     <View style={{ flex: 1 }}>

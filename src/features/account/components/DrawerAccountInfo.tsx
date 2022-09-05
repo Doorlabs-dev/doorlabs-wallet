@@ -19,17 +19,21 @@ const DrawerAccountInfo = ({ selectedAccount, onPress }: Props) => {
       <Row>
         <DefaultAvatar text={!!selectedAccount ? symbol : 'N/A'} />
         <Spacer width={16} />
-        <View style={{ width: 150 }}>
+        <View style={{ width: 180 }}>
           <Row justifyContent="space-between" alignItems="center">
-            <Text size={20} lineHeight={30} weight={400}>
+            <Text size={18} lineHeight={30} weight={400}>
               {!!selectedAccount ? name : 'Select account'}
             </Text>
             <IconDropdown />
           </Row>
-          <Spacer height={5} />
-          <Text size={14} lineHeight={20} weight={400}>
-            {formatAddress(selectedAccount?.address)}
-          </Text>
+          {!!selectedAccount && (
+            <>
+              <Spacer height={5} />
+              <Text size={14} lineHeight={20} weight={400}>
+                {formatAddress(selectedAccount?.address)}
+              </Text>
+            </>
+          )}
         </View>
       </Row>
     </TouchableOpacity>

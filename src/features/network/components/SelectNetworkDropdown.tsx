@@ -10,7 +10,7 @@ import useNetwork from '../hooks/useNetwork';
 import SelectNetworkModal from './SelectNetworkModal';
 
 const DropdownContainer = styled.TouchableOpacity`
-  width: 160px;
+  width: 180px;
   height: 32px;
   z-index: 1000;
   padding: 6px 8px;
@@ -31,8 +31,8 @@ const SelectNetworkDropdown = () => {
   return (
     <>
       <DropdownContainer onPress={open}>
-        <Row justifyContent="space-between">
-          <Text size={14} weight={500}>
+        <Row alignItems="center" justifyContent="space-between">
+          <Text color={colors.white} size={14} weight={500}>
             {selectedNetwork?.name}
           </Text>
           <IconDropdown />

@@ -91,7 +91,8 @@ const AccountStack = () => {
       />
       <Stack.Screen
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerTitle: '',
         }}
         name={WEBVIEW}
         component={WebViewScreen}

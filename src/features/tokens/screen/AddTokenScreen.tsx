@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Spacer } from '@components/layout';
+import { Container, SafeArea, Spacer } from '@components/layout';
 import { TextInput } from '@components/form';
 import { FieldValues, useForm } from 'react-hook-form';
 import { PrimaryButton } from '@components/ui';
@@ -13,6 +13,7 @@ import { tokensStore } from '@services/tokens/token.store';
 import Toast from 'react-native-root-toast';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
+import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Props = {};
 
@@ -106,6 +107,7 @@ const AddTokenScreen = (props: Props) => {
 
   return (
     <Container center={false}>
+      <AndroidHeaderFix />
       <Spacer height={36} />
       <TextInput
         name="address"
