@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, SafeArea } from '@components/layout';
+import { Container } from '@components/layout';
 import SettingItem from '../components/SettingItem';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from 'src/router/navigation-props';

@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import Toast from 'react-native-root-toast';
 import { ActivityIndicator } from 'react-native';
-import { Container, Row, SafeArea, Spacer } from '../../../components/layout';
-import { PrimaryButton, Text, Title } from '../../../components/ui';
+import { Container, Row, Spacer } from '../../../components/layout';
+import { PrimaryButton, Text } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import { colors } from '../../../styles';
 import * as Clipboard from 'expo-clipboard';

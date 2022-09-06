@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, Platform, ScrollView } from 'react-native';
-import { Container, Row, SafeArea, Spacer } from '../../../components/layout';
+import { ActivityIndicator, Platform } from 'react-native';
+import { Container, Row, Spacer } from '../../../components/layout';
 import { PrimaryButton, SecondaryButton, Text } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import { colors } from '../../../styles';
