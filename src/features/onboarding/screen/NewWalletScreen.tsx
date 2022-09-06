@@ -15,7 +15,7 @@ import {
   SafeArea,
   Spacer,
 } from '../../../components/layout';
-import { Button, Text, Title } from '../../../components/ui';
+import { Button, PrimaryButton, Text, Title } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
@@ -128,9 +128,11 @@ const NewWalletScreen = () => {
               }}
             />
             <Spacer height={16} />
-            <Button onPress={onConfirm} width={'100%'}>
-              <Title size={16}>Confirm</Title>
-            </Button>
+            <PrimaryButton
+              textColor={colors.white}
+              label="Confirm"
+              onPress={onConfirm}
+            />
             <Spacer height={27} />
             <Controller
               control={control}
