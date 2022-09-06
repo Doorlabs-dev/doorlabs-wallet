@@ -162,6 +162,7 @@ const SendTokenScreen = (props: Props) => {
               isSufficientAmount,
             },
           }}
+          transformValue={(v) => v.replaceAll(',', '.')}
         />
         {maxFeeLoading ? (
           <Floating>

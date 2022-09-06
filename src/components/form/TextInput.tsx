@@ -37,6 +37,7 @@ interface Props {
     RegisterOptions<FieldValues, FieldPath<FieldValues>>,
     'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
   >;
+  transformValue?: (v: string) => string;
 }
 
 const TextInput = ({
@@ -49,6 +50,7 @@ const TextInput = ({
   control,
   rules,
   children,
+  transformValue,
 }: Props) => {
   const {
     field: { value, onChange },
@@ -91,7 +93,9 @@ const TextInput = ({
           selectionColor={colors.white}
           placeholder={placeholder}
           value={value}
-          onChangeText={onChange}
+          onChangeText={(v) => {
+            onChange(transformValue?.(v) || v);
+          }}
           {...inputProps}
           onFocus={_onFocus}
           onBlur={_onBlur}
