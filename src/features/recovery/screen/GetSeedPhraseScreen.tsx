@@ -52,6 +52,7 @@ const GetSeedPhraseScreen = () => {
     return (
       <Container center={false} alignItems="center">
         <AndroidHeaderFix />
+        <Spacer height={20} />
         <PasswordValidationForm onPass={() => setPassed(true)} />
       </Container>
     );
@@ -60,6 +61,7 @@ const GetSeedPhraseScreen = () => {
   return (
     <Container center={false}>
       <AndroidHeaderFix />
+      <Spacer height={20} />
       {isLoading ? (
         <ActivityIndicator color={colors.white} size="small" />
       ) : (

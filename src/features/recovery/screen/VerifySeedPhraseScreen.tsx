@@ -118,6 +118,7 @@ const VerifySeedPhraseScreen = () => {
     return (
       <Container center={false}>
         <AndroidHeaderFix />
+        <Spacer height={20} />
         <Text size={16} lineHeight={24}>
           Typically 12 (sometimes 24) words separated by single spaces
         </Text>
@@ -149,6 +150,7 @@ const VerifySeedPhraseScreen = () => {
   return (
     <Container center={false}>
       <AndroidHeaderFix />
+      <Spacer height={20} />
       {isLoading ? (
         <ActivityIndicator color={colors.white} size="small" />
       ) : (

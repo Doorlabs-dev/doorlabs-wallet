@@ -71,6 +71,7 @@ const AccountPrivateKeyScreen = (props: Props) => {
             inputProps={{
               secureTextEntry: true,
             }}
+            label="Password"
             placeholder="Password"
           />
           <PrimaryButton label="Next" onPress={submit} />

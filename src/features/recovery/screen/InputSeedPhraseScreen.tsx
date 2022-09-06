@@ -13,6 +13,7 @@ import * as Clipboard from 'expo-clipboard';
 import useWalletPassword from '@services/wallet_password';
 import useAuthentication from '@features/auth/hooks/useAuthentication';
 import wallet from '@services/wallet';
+import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 const InputSeedPhraseScreen = () => {
   const { control, handleSubmit, getValues, setValue } = useForm<FieldValues>({
@@ -78,13 +79,10 @@ const InputSeedPhraseScreen = () => {
     setValue('phrase', txtClipboard);
   };
 
-  const headerHeight = useHeaderHeight();
-
   return (
     <Container center={false} alignItems={'center'}>
-      <Spacer height={headerHeight} />
+      <AndroidHeaderFix />
       <Spacer height={20} />
-
       <TextInput
         name="phrase"
         control={control}
