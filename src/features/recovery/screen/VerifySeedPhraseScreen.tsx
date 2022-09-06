@@ -180,7 +180,6 @@ const VerifySeedPhraseScreen = () => {
               />
             )}
           </PhraseContainer>
-
           <Spacer height={24} />
           <PrimaryButton
             label="Next"
@@ -193,11 +192,13 @@ const VerifySeedPhraseScreen = () => {
               );
             }}
           />
-          <SecondaryButton
-            color={colors.white}
-            title="Click to reveal"
-            onPress={() => setIsisRevealed(true)}
-          />
+          {!isRevealed && (
+            <SecondaryButton
+              color={colors.white}
+              title="Click to reveal"
+              onPress={() => setIsisRevealed(true)}
+            />
+          )}
           <Container />
           <SecondaryButton title="Remind me later" onPress={() => open()} />
         </>
