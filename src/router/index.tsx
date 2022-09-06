@@ -1,4 +1,3 @@
-import useScreenLayoutAnimation from '@hooks/useScreenLayoutAnimation';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useCallback, useEffect } from 'react';
 import useAuthentication from '../features/auth/hooks/useAuthentication';
@@ -7,9 +6,6 @@ import useAppState from '../hooks/useAppState';
 import AppDrawer from './AppDrawer';
 import AuthStack from './AuthStack';
 import OnboardingStack from './OnboardingStack';
-
-const AnimatedAppDrawer = useScreenLayoutAnimation(AppDrawer);
-const AnimatedAuthStack = useScreenLayoutAnimation(AuthStack);
 
 const AppNavigation = () => {
   const {
@@ -36,11 +32,7 @@ const AppNavigation = () => {
     if (!isAccountAvailable) {
       navigator = <OnboardingStack />;
     } else {
-      navigator = isAuthenticated ? (
-        <AnimatedAppDrawer />
-      ) : (
-        <AnimatedAuthStack />
-      );
+      navigator = isAuthenticated ? <AppDrawer /> : <AuthStack />;
     }
 
     return navigator;
