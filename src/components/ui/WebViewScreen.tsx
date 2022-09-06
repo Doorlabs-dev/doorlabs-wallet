@@ -1,10 +1,9 @@
 import React from 'react';
 import Webview from 'react-native-webview';
-import { Container, SafeArea } from '@components/layout';
-import styled from 'styled-components/native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { ScreenNavigationProps } from '@router/navigation-props';
+import { Container } from '@components/layout';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import Text from './Text';
+import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Params = {
   webview: {
@@ -23,7 +22,12 @@ const WebViewScreen = () => {
       </Container>
     );
 
-  return <Webview containerStyle={{ flex: 1 }} source={{ uri: url }} />;
+  return (
+    <>
+      <AndroidHeaderFix />
+      <Webview containerStyle={{ flex: 1 }} source={{ uri: url }} />
+    </>
+  );
 };
 
 export default WebViewScreen;

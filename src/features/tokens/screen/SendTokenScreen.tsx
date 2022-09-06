@@ -142,6 +142,7 @@ const SendTokenScreen = (props: Props) => {
   return (
     <Container center={false}>
       <AndroidHeaderFix />
+      <Spacer height={20} />
       <View>
         <TextInput
           name="amount"
