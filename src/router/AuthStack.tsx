@@ -46,7 +46,6 @@ const AuthStack = () => {
       <Stack.Screen
         name={RESET_CONFIRMATION}
         component={ResetConfirmationScreen}
-        options={{ headerShown: true, headerTitle: 'Reset wallet' }}
       />
     </Stack.Navigator>
   );
