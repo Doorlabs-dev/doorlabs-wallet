@@ -1,0 +1,12 @@
+diff --git a/node_modules/@react-navigation/native-stack/src/views/NativeStackView.native.tsx b/node_modules/@react-navigation/native-stack/src/views/NativeStackView.native.tsx
+index 08e52cb..6ab5ade 100644
+--- a/node_modules/@react-navigation/native-stack/src/views/NativeStackView.native.tsx
++++ b/node_modules/@react-navigation/native-stack/src/views/NativeStackView.native.tsx
+@@ -323,6 +323,7 @@ const SceneView = ({
+                 headerHeight={headerHeight}
+               >
+                 <HeaderBackContext.Provider value={headerBack}>
++                  {headerShown !== false && isAndroid && <View style={{marginTop:headerHeight}}></View>}
+                   {render()}
+                 </HeaderBackContext.Provider>
+               </MaybeNestedStack>
