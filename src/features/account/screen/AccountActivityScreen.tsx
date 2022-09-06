@@ -8,6 +8,7 @@ import TransactionItem from '@features/transactions/components/TransactionItem';
 import { getTransactionsBySection } from '../utils/getTransactionsBySection';
 import { Text } from '@components/ui';
 import colors from '@styles/colors';
+import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Props = {};
 
@@ -21,6 +22,7 @@ const AccountActivityScreen = (props: Props) => {
 
   return (
     <Container center={false}>
+      <AndroidHeaderFix />
       <SectionList
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <Spacer height={16} />}

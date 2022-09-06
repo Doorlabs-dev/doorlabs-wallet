@@ -8,6 +8,7 @@ type Props = {
   label: string;
   onPress: () => void;
   loading?: boolean;
+  textColor?: string;
 };
 
 const Container = styled.TouchableOpacity`
@@ -19,13 +20,18 @@ const Container = styled.TouchableOpacity`
   border-radius: 8px;
 `;
 
-const PrimaryButton = ({ label, onPress, loading = false }: Props) => {
+const PrimaryButton = ({
+  label,
+  onPress,
+  loading = false,
+  textColor,
+}: Props) => {
   return (
     <Container disabled={loading} activeOpacity={0.8} onPress={onPress}>
       {loading ? (
         <ActivityIndicator color={colors.white} />
       ) : (
-        <Text size={16} lineHeight={24} weight={500}>
+        <Text color={textColor} size={16} lineHeight={24} weight={500}>
           {label}
         </Text>
       )}
