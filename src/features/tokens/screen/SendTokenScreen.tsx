@@ -22,7 +22,6 @@ import { Token } from '@services/tokens/token.model';
 import Toast from 'react-native-root-toast';
 import useModal from '@hooks/useModal';
 import SendTokenConfirmationModal from '../components/SendTokenConfirmationModal';
-import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Props = {};
 
@@ -141,7 +140,6 @@ const SendTokenScreen = (props: Props) => {
 
   return (
     <Container center={false}>
-      <AndroidHeaderFix />
       <View>
         <TextInput
           name="amount"
@@ -162,6 +160,7 @@ const SendTokenScreen = (props: Props) => {
               isSufficientAmount,
             },
           }}
+          transformValue={(v) => v.replaceAll(',', '.')}
         />
         {maxFeeLoading ? (
           <Floating>

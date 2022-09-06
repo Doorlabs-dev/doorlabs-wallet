@@ -9,7 +9,6 @@ import * as Clipboard from 'expo-clipboard';
 import Toast from 'react-native-root-toast';
 import colors from '@styles/colors';
 import { View } from 'react-native';
-import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Props = {};
 
@@ -47,7 +46,6 @@ const AccountPrivateKeyScreen = (props: Props) => {
 
   return (
     <Container center={false} alignItems="center">
-      <AndroidHeaderFix />
       <Spacer height={36} />
       {passed ? (
         <>
