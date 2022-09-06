@@ -8,7 +8,6 @@ type Props = {};
 const AccountNftsScreen = (props: Props) => {
   return (
     <Container center={false}>
-      <AndroidHeaderFix />
       <NftsList />
     </Container>
   );

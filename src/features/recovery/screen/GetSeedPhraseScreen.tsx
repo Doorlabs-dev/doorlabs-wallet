@@ -8,7 +8,6 @@ import { colors } from '../../../styles';
 import * as Clipboard from 'expo-clipboard';
 import { PasswordValidationForm } from '@components/form';
 import styled from 'styled-components/native';
-import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 const PhraseContainer = styled.View`
   background-color: ${colors.greyScale700};
@@ -51,7 +50,6 @@ const GetSeedPhraseScreen = () => {
   if (!passed) {
     return (
       <Container center={false} alignItems="center">
-        <AndroidHeaderFix />
         <PasswordValidationForm onPass={() => setPassed(true)} />
       </Container>
     );
@@ -59,7 +57,6 @@ const GetSeedPhraseScreen = () => {
 
   return (
     <Container center={false}>
-      <AndroidHeaderFix />
       {isLoading ? (
         <ActivityIndicator color={colors.white} size="small" />
       ) : (

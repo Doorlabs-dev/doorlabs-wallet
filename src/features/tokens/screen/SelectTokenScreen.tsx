@@ -11,7 +11,6 @@ import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
 import TokensList from '../components/TokensList';
 import NftsList from '@features/nft/components/NftsList';
-import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 type Props = {};
 
@@ -45,7 +44,6 @@ const SelectTokenScreen = (props: Props) => {
 
   return (
     <Container center={false}>
-      <AndroidHeaderFix />
       <Spacer height={36} />
       <SearchBar />
       <Spacer height={24} />

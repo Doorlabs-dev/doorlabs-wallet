@@ -20,7 +20,6 @@ import useModal from '@hooks/useModal';
 import SkipVerifyPhrasePopup from './components/SkipVerifyPhrasePopup';
 import useAuthentication from '@features/auth/hooks/useAuthentication';
 import Toast from 'react-native-root-toast';
-import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 
 const PhraseContainer = styled.View`
   background-color: ${colors.greyScale700};
@@ -117,7 +116,6 @@ const VerifySeedPhraseScreen = () => {
   if (screenMode === 'verify') {
     return (
       <Container center={false}>
-        <AndroidHeaderFix />
         <Text size={16} lineHeight={24}>
           Typically 12 (sometimes 24) words separated by single spaces
         </Text>
@@ -148,7 +146,6 @@ const VerifySeedPhraseScreen = () => {
 
   return (
     <Container center={false}>
-      <AndroidHeaderFix />
       {isLoading ? (
         <ActivityIndicator color={colors.white} size="small" />
       ) : (
