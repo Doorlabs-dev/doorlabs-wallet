@@ -37,16 +37,6 @@ const BlurView = styled(RNBlurView)`
   border-radius: 8px;
 `;
 
-const BlurViewAndroid = styled.View`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  border-radius: 8px;
-  background-color: ${colors.secondary};
-`;
-
 type VerifyPhraseScreenMode = 'display' | 'verify';
 
 type ParamList = {
@@ -173,7 +163,12 @@ const VerifySeedPhraseScreen = () => {
               </Fragment>
             ))}
             {isRevealed ? null : Platform.OS === 'android' ? (
-              <BlurViewAndroid />
+              <BlurView
+                reducedTransparencyFallbackColor="black"
+                blurAmount={3}
+                blurType="light"
+                overlayColor={'transparent'}
+              />
             ) : (
               <BlurView
                 reducedTransparencyFallbackColor="black"
