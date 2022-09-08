@@ -14,6 +14,8 @@ import useWalletPassword from '@services/wallet_password';
 import useAuthentication from '@features/auth/hooks/useAuthentication';
 import wallet from '@services/wallet';
 import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
+import { ActivityIndicator } from 'react-native';
+import colors from '@styles/colors';
 
 const InputSeedPhraseScreen = () => {
   const { control, handleSubmit, getValues, setValue } = useForm<FieldValues>({
@@ -25,6 +27,7 @@ const InputSeedPhraseScreen = () => {
     mode: 'onChange',
   });
   const [isValidating, setIsValidating] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
 
   const validatePhrase = (phrase: string): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -59,7 +62,7 @@ const InputSeedPhraseScreen = () => {
         });
       }
       try {
-        setIsValidating(true);
+        setIsRestoring(true);
 
         await setWalletPassword(password);
         await wallet.restoreSeedPhrase(phrase, password);
@@ -69,12 +72,11 @@ const InputSeedPhraseScreen = () => {
           setIsAccountAvailable(true);
         }, 300);
       } catch (error) {
+        setIsRestoring(false);
         Toast.show(`${error}`, {
           position: Toast.positions.CENTER,
         });
       }
-
-      setIsValidating(false);
     })();
   };
 
@@ -82,6 +84,15 @@ const InputSeedPhraseScreen = () => {
     const txtClipboard = await Clipboard.getStringAsync();
     setValue('phrase', txtClipboard);
   };
+
+  if (isRestoring) {
+    return (
+      <Container>
+        <ActivityIndicator size={'large'} color={colors.white} />
+        <Title textAlign="center">Bring your wallet home...😍</Title>
+      </Container>
+    );
+  }
 
   return (
     <KeyboardScrollViewContainer extraHeight={220}>
