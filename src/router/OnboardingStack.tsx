@@ -42,7 +42,13 @@ const OnboardingStack = () => {
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
       <Stack.Screen name={WELCOME} component={WelcomeScreen} />
-      <Stack.Screen name={CREATE_WALLET_PASSWORD} component={NewWalletScreen} />
+      <Stack.Screen
+        options={{
+          gestureEnabled: true,
+        }}
+        name={CREATE_WALLET_PASSWORD}
+        component={NewWalletScreen}
+      />
       <Stack.Screen name={SECURE_WALLET} component={SecureWalletScreen} />
       <Stack.Screen
         options={{

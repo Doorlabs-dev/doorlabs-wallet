@@ -1,14 +1,14 @@
-import { useNavigation } from '@react-navigation/native';
 import { ethers } from 'ethers';
 import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
-import { Container, Spacer } from '../../../components/layout';
-import { Button, Title } from '../../../components/ui';
-import { colors } from '../../../styles';
-import { useHeaderHeight } from '@react-navigation/elements';
+import {
+  Container,
+  KeyboardScrollViewContainer,
+  Spacer,
+} from '../../../components/layout';
+import { Button, PrimaryButton, Title } from '../../../components/ui';
 import * as Clipboard from 'expo-clipboard';
 import useWalletPassword from '@services/wallet_password';
 import useAuthentication from '@features/auth/hooks/useAuthentication';
@@ -54,7 +54,9 @@ const InputSeedPhraseScreen = () => {
       const success = await validatePhrase(phrase);
       if (!success) {
         setIsValidating(false);
-        return Toast.show('Invalid phrase');
+        return Toast.show('Invalid phrase', {
+          position: Toast.positions.CENTER,
+        });
       }
       try {
         setIsValidating(true);
@@ -67,7 +69,9 @@ const InputSeedPhraseScreen = () => {
           setIsAccountAvailable(true);
         }, 300);
       } catch (error) {
-        Toast.show(`${error}`);
+        Toast.show(`${error}`, {
+          position: Toast.positions.CENTER,
+        });
       }
 
       setIsValidating(false);
@@ -80,64 +84,61 @@ const InputSeedPhraseScreen = () => {
   };
 
   return (
-    <Container center={false} alignItems={'center'}>
-      <AndroidHeaderFix />
-      <Spacer height={20} />
-      <TextInput
-        name="phrase"
-        control={control}
-        placeholder="Secret phrase"
-        label="Typically 12 (sometimes 24) words separated by single spaces"
-        rules={{ required: 'This field is required!' }}
-        inputProps={{
-          multiline: true,
-          style: {
-            height: 128,
-          },
-        }}
-      >
-        <Button
-          width={80}
-          height={40}
-          onPress={onPaste}
-          color="transparent"
-          style={{ alignSelf: 'flex-end' }}
+    <KeyboardScrollViewContainer extraHeight={220}>
+      <Container center={false} alignItems="center">
+        <AndroidHeaderFix />
+        <Spacer height={20} />
+        <TextInput
+          name="phrase"
+          control={control}
+          placeholder="Secret phrase"
+          label="Typically 12 (sometimes 24) words separated by single spaces"
+          rules={{ required: 'This field is required!' }}
+          inputProps={{
+            multiline: true,
+            style: {
+              height: 128,
+            },
+          }}
         >
-          <Title size={16}>Paste</Title>
-        </Button>
-      </TextInput>
-      <TextInput
-        name="password"
-        control={control}
-        placeholder="Input your new password"
-        label="New password"
-        rules={{ required: 'This field is required!' }}
-        inputProps={{
-          secureTextEntry: true,
-        }}
-      />
-      <TextInput
-        name="passwordConfirmation"
-        placeholder="Password confirmation"
-        label="Confirm password"
-        control={control}
-        rules={{
-          required: 'This field is required!',
-          validate: isSameValue,
-        }}
-        inputProps={{
-          secureTextEntry: true,
-        }}
-      />
-      <Spacer height={24} />
-      <Button onPress={onSubmit} width={'100%'}>
-        {isValidating ? (
-          <ActivityIndicator color={colors.white} />
-        ) : (
-          <Title size={20}>Next</Title>
-        )}
-      </Button>
-    </Container>
+          <Button
+            width={80}
+            height={40}
+            onPress={onPaste}
+            color="transparent"
+            style={{ alignSelf: 'flex-end' }}
+          >
+            <Title size={16}>Paste</Title>
+          </Button>
+        </TextInput>
+        <TextInput
+          name="password"
+          control={control}
+          placeholder="Input your new password"
+          label="New password"
+          rules={{ required: 'This field is required!' }}
+          inputProps={{
+            secureTextEntry: true,
+          }}
+        />
+        <TextInput
+          name="passwordConfirmation"
+          placeholder="Password confirmation"
+          label="Confirm password"
+          control={control}
+          rules={{
+            required: 'This field is required!',
+            validate: isSameValue,
+          }}
+          inputProps={{
+            secureTextEntry: true,
+          }}
+        />
+        <Spacer height={4} />
+        <PrimaryButton label="Next" loading={isValidating} onPress={onSubmit} />
+        <Spacer height={20} />
+      </Container>
+    </KeyboardScrollViewContainer>
   );
 };
 
