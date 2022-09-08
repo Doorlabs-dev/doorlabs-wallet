@@ -53,6 +53,7 @@ const OnboardingStack = () => {
       <Stack.Screen name={SECURE_WALLET} component={SecureWalletScreen} />
       <Stack.Screen
         options={{
+          headerShown: true,
           title: 'Show Recovery Phrase',
         }}
         name={RECOVERY_VERIFY_PHRASE}
