@@ -97,7 +97,7 @@ const InputSeedPhraseScreen = () => {
           inputProps={{
             multiline: true,
             style: {
-              height: 128,
+              height: 88,
             },
           }}
         >
