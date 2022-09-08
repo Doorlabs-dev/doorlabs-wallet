@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import colors from '@styles/colors';
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Container, SafeArea, Spacer } from '../../../components/layout';
@@ -25,6 +26,7 @@ const WelcomeScreen = () => {
         <Image source={ONBOARD_LOGO} />
         <View style={styles.btnGr}>
           <PrimaryButton
+            textColor={colors.white}
             label="Create wallet"
             onPress={navigateToCreatePasswordScreen}
           />
