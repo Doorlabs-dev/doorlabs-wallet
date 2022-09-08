@@ -43,7 +43,9 @@ const RestoreWalletScreen = () => {
         }, 300);
       } catch (e) {
         setIsRestoring(false);
-        Toast.show(`${e}`);
+        Toast.show(`${e}`, {
+          position: Toast.positions.CENTER,
+        });
       }
     })();
   };
