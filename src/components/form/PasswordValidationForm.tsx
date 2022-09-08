@@ -30,7 +30,9 @@ const PasswordValidationForm = ({ onPass, onReject }: Props) => {
           onPass?.();
         } else {
           onReject?.();
-          Toast.show('Wrong password');
+          Toast.show('Wrong password', {
+            position: Toast.positions.CENTER,
+          });
         }
         setIsLoading(false);
       }, 500);

@@ -52,7 +52,9 @@ const AddTokenScreen = (props: Props) => {
     if (!tokenAddress) return;
     if (!selectedAccount) return;
     if (!isValidAddress(tokenAddress)) {
-      Toast.show('Invalid address');
+      Toast.show('Invalid address', {
+        position: Toast.positions.CENTER,
+      });
       return;
     }
 
@@ -64,7 +66,9 @@ const AddTokenScreen = (props: Props) => {
     } catch (error) {
       setTokenInfo(undefined);
       setError(error);
-      Toast.show('Token not found in this network');
+      Toast.show('Token not found in this network', {
+        position: Toast.positions.CENTER,
+      });
     }
     setIsFetching(false);
   };

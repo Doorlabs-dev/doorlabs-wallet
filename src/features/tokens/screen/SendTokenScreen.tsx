@@ -126,7 +126,9 @@ const SendTokenScreen = (props: Props) => {
       });
       navigation.goBack();
     } catch (error) {
-      Toast.show(`${error}`);
+      Toast.show(`${error}`, {
+        position: Toast.positions.CENTER,
+      });
       console.log(error);
     }
 
