@@ -16,6 +16,9 @@ import wallet from '@services/wallet';
 import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 import { ActivityIndicator } from 'react-native';
 import colors from '@styles/colors';
+import RestoreSuccessPopup from './components/RestoreSuccessPopup';
+import useModal from '@hooks/useModal';
+import InvalidPhrasePopup from './components/InvalidPhrasePopup';
 
 const InputSeedPhraseScreen = () => {
   const { control, handleSubmit, getValues, setValue } = useForm<FieldValues>({
@@ -28,6 +31,16 @@ const InputSeedPhraseScreen = () => {
   });
   const [isValidating, setIsValidating] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
+  const {
+    visible: restoreSuccessVisible,
+    open: openRestoreSuccess,
+    close: closeRestoreSuccess,
+  } = useModal();
+  const {
+    visible: invalidPhraseVisible,
+    open: openInvalidPhrase,
+    close: closeInvalidPhrase,
+  } = useModal();
 
   const validatePhrase = (phrase: string): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -57,20 +70,14 @@ const InputSeedPhraseScreen = () => {
       const success = await validatePhrase(phrase);
       if (!success) {
         setIsValidating(false);
-        return Toast.show('Invalid phrase', {
-          position: Toast.positions.CENTER,
-        });
+        return openInvalidPhrase();
       }
       try {
         setIsRestoring(true);
 
         await setWalletPassword(password);
         await wallet.restoreSeedPhrase(phrase, password);
-
-        setTimeout(() => {
-          setIsAuthenticated(true);
-          setIsAccountAvailable(true);
-        }, 300);
+        openRestoreSuccess();
       } catch (error) {
         setIsRestoring(false);
         Toast.show(`${error}`, {
@@ -90,6 +97,16 @@ const InputSeedPhraseScreen = () => {
       <Container>
         <ActivityIndicator size={'large'} color={colors.white} />
         <Title textAlign="center">Bring your wallet home...😍</Title>
+        <RestoreSuccessPopup
+          visible={restoreSuccessVisible}
+          onClose={() => {
+            closeRestoreSuccess();
+            setTimeout(() => {
+              setIsAuthenticated(true);
+              setIsAccountAvailable(true);
+            }, 1000);
+          }}
+        />
       </Container>
     );
   }
@@ -148,6 +165,10 @@ const InputSeedPhraseScreen = () => {
         <Spacer height={4} />
         <PrimaryButton label="Next" loading={isValidating} onPress={onSubmit} />
         <Spacer height={20} />
+        <InvalidPhrasePopup
+          visible={invalidPhraseVisible}
+          onClose={closeInvalidPhrase}
+        />
       </Container>
     </KeyboardScrollViewContainer>
   );
