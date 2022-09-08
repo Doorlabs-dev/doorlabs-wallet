@@ -14,6 +14,9 @@ type UseBiometrics = {
   checkAvailable: () => Promise<boolean>;
   supportedTypes: LocalAuthentication.AuthenticationType[];
   getAuthenticationTypeName: () => string;
+  getAuthenticationType: () =>
+    | LocalAuthentication.AuthenticationType
+    | undefined;
 };
 
 const useBiometrics = (): UseBiometrics => {
@@ -34,11 +37,15 @@ const useBiometrics = (): UseBiometrics => {
     }
   }, [isBiometricsAvailable]);
 
+  const getAuthenticationType = (): LocalAuthentication.AuthenticationType => {
+    return supportedTypes[supportedTypes.length - 1];
+  };
+
   const getAuthenticationTypeName = (): string => {
     return supportedTypes[supportedTypes.length - 1] ===
       LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
       ? 'FaceID'
-      : 'Fingerprint/Pass Code';
+      : 'TouchID';
   };
 
   const checkAvailable = async () => {
@@ -58,6 +65,7 @@ const useBiometrics = (): UseBiometrics => {
     supportedTypes,
     authenticateBiometrics,
     checkAvailable,
+    getAuthenticationType,
     getAuthenticationTypeName,
   };
 };

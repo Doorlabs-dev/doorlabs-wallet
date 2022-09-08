@@ -36,7 +36,8 @@ const NewWalletScreen = () => {
   const [isCreatingWallet, setIsCreatingWallet] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
-  const { authenticateBiometrics, supportedTypes } = useBiometrics();
+  const { authenticateBiometrics, supportedTypes, getAuthenticationTypeName } =
+    useBiometrics();
 
   const validateBiometrics = async (useFaceId: boolean): Promise<boolean> => {
     if (!useFaceId) return true;
@@ -143,6 +144,7 @@ const NewWalletScreen = () => {
               supportedTypes={supportedTypes}
               enabled={value}
               onChange={(v) => setValue('useFaceId', v)}
+              authType={getAuthenticationTypeName()}
             />
           )}
         />

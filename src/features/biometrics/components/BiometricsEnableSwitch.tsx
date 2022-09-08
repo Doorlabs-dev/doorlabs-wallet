@@ -9,20 +9,16 @@ type Props = {
   enabled?: boolean;
   onChange?: (enabled: boolean) => void;
   supportedTypes: LocalAuthentication.AuthenticationType[];
+  authType?: string;
 };
 
 const BiometricsEnableSwitch = ({
   enabled = false,
   onChange = (value) => null,
   supportedTypes = [],
+  authType,
 }: Props) => {
   if (!supportedTypes.length) return null;
-
-  const authType =
-    supportedTypes[supportedTypes.length - 1] ===
-    LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
-      ? 'FaceID'
-      : 'Fingerprint/Pass Code';
 
   return (
     <View style={{ width: '100%' }}>
