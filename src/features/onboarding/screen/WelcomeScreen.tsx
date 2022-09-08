@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Container, SafeArea, Spacer } from '../../../components/layout';
-import { Button, Title } from '../../../components/ui';
+import { Button, PrimaryButton, Title } from '../../../components/ui';
 import { ScreenNavigationProps } from '../../../router/navigation-props';
 import ScreenNames from '../../../router/screenNames';
 
@@ -24,10 +24,10 @@ const WelcomeScreen = () => {
       <Container>
         <Image source={ONBOARD_LOGO} />
         <View style={styles.btnGr}>
-          <Button width={'100%'} onPress={navigateToCreatePasswordScreen}>
-            <Title size={16}>Create wallet</Title>
-          </Button>
-          <Spacer height={16} />
+          <PrimaryButton
+            label="Create wallet"
+            onPress={navigateToCreatePasswordScreen}
+          />
           <Button
             color="transparent"
             onPress={navigateToInputPhraseScreen}

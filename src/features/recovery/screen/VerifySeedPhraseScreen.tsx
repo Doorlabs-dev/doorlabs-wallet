@@ -186,12 +186,9 @@ const VerifySeedPhraseScreen = () => {
           <PrimaryButton
             label="Next"
             onPress={() => {
-              navigation.dispatch(
-                StackActions.push(ScreenNames.RECOVERY_VERIFY_PHRASE, {
-                  mode: 'verify',
-                  title: 'Verify Recovery Phrase',
-                })
-              );
+              navigation.setParams({
+                mode: 'verify',
+              });
             }}
           />
           {!isRevealed && (

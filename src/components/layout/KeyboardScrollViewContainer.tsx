@@ -15,7 +15,7 @@ const KeyboardScrollViewContainer = ({ children, extraHeight }: Props) => {
       contentContainerStyle={{ flexGrow: 1 }}
       enableOnAndroid
       enableAutomaticScroll
-      extraScrollHeight={Platform.OS == 'android' ? 0 : 50}
+      extraScrollHeight={Platform.OS == 'android' ? 20 : 50}
       extraHeight={extraHeight || 220}
     >
       {children}
