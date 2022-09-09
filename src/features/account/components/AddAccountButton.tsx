@@ -16,8 +16,8 @@ const AddAccountButton = (props: Props) => {
   const onAddNewAccount = async () => {
     setIsLoading(true);
     const newAccount = await addNewAccount(selectedNetwork?.id);
-    await selectAccount(newAccount);
     setIsLoading(false);
+    await selectAccount(newAccount);
   };
 
   return (

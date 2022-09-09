@@ -27,7 +27,7 @@ const InputSeedPhraseScreen = () => {
       passwordConfirmation: '',
       phrase: '',
     },
-    mode: 'onChange',
+    mode: 'onTouched',
   });
   const [isValidating, setIsValidating] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
@@ -89,7 +89,7 @@ const InputSeedPhraseScreen = () => {
 
   const onPaste = async () => {
     const txtClipboard = await Clipboard.getStringAsync();
-    setValue('phrase', txtClipboard);
+    setValue('phrase', txtClipboard, { shouldValidate: true });
   };
 
   if (isRestoring) {
@@ -112,7 +112,7 @@ const InputSeedPhraseScreen = () => {
   }
 
   return (
-    <KeyboardScrollViewContainer extraHeight={220}>
+    <KeyboardScrollViewContainer extraHeight={250}>
       <Container center={false} alignItems="center">
         <AndroidHeaderFix />
         <Spacer height={20} />

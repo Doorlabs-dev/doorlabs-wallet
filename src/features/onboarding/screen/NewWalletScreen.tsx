@@ -21,15 +21,16 @@ import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
 
 const NewWalletScreen = () => {
-  const { control, handleSubmit, getValues, setValue } = useForm<FieldValues>({
-    defaultValues: {
-      password: '',
-      passwordConfirmation: '',
-      useFaceId: false,
-      agreedPrivacy: false,
-    },
-    mode: 'onChange',
-  });
+  const { control, formState, handleSubmit, getValues, setValue } =
+    useForm<FieldValues>({
+      defaultValues: {
+        password: '',
+        passwordConfirmation: '',
+        useFaceId: false,
+        agreedPrivacy: false,
+      },
+      mode: 'onChange',
+    });
 
   const { setWalletPassword } = useWalletPassword();
 
@@ -134,6 +135,7 @@ const NewWalletScreen = () => {
           textColor={colors.white}
           label="Confirm"
           onPress={onConfirm}
+          disabled={!formState.isValid}
         />
         <Spacer height={27} />
         <Controller
@@ -143,7 +145,7 @@ const NewWalletScreen = () => {
             <BiometricsEnableSwitch
               supportedTypes={supportedTypes}
               enabled={value}
-              onChange={(v) => setValue('useFaceId', v)}
+              onChange={(v) => setValue('useFaceId', v, { shouldDirty: true })}
               authType={getAuthenticationTypeName()}
             />
           )}
@@ -157,7 +159,11 @@ const NewWalletScreen = () => {
             render={({ field: { value } }) => (
               <Checkbox
                 checked={value}
-                onChange={() => setValue('agreedPrivacy', !value)}
+                onChange={() =>
+                  setValue('agreedPrivacy', !value, {
+                    shouldValidate: true,
+                  })
+                }
               />
             )}
           />

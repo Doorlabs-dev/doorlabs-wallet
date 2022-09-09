@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import { ShortAddress, Text } from '@components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 import IconMore from '@assets/svg/icon_more.svg';
-import { Row } from '@components/layout';
+import { Row, Spacer } from '@components/layout';
 import generateAccountName from '@utils/generateAccountName';
 import { Account } from '../account.model';
 
@@ -17,7 +17,7 @@ const { width } = Dimensions.get('window');
 
 const CardContainer = styled(LinearGradient)`
   width: ${width - 63}px;
-  height: 156px;
+  height: 115px;
   justify-content: center;
   align-items: center;
   border-radius: 20px;
@@ -45,9 +45,7 @@ const AccountInfoCard = ({ account, onPress }: Props) => {
           </PositionedIcon>
         </Row>
       </TouchableOpacity>
-      <Text size={28} lineHeight={38} weight={500}>
-        $0.00
-      </Text>
+      <Spacer height={8} />
       <ShortAddress address={account.address} />
     </CardContainer>
   );

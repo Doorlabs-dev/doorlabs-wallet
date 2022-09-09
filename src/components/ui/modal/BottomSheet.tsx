@@ -16,7 +16,8 @@ const BottomModal = styled(Modal)`
 
 const ModalContainer = styled.View`
   width: 100%;
-  border-radius: 24px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
   background-color: ${colors.greyScale800};
   padding: 0px 24px;
 `;

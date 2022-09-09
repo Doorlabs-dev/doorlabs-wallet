@@ -20,7 +20,7 @@ const Overlay = styled.View`
 `;
 
 const Button = styled.TouchableOpacity`
-  padding-right: 20px;
+  padding-right: 50px;
 `;
 
 const AccountScreenHeader = (props: Props) => {

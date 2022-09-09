@@ -180,6 +180,7 @@ const VerifySeedPhraseScreen = () => {
           <Spacer height={24} />
           <PrimaryButton
             label="Next"
+            disabled={!isRevealed}
             onPress={() => {
               navigation.setParams({
                 mode: 'verify',

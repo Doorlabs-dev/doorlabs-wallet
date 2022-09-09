@@ -1,21 +1,26 @@
-import colors from '@styles/colors';
 import React from 'react';
-import { Platform } from 'react-native';
+import colors from '@styles/colors';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 type Props = {
   children: React.ReactNode;
   extraHeight?: number;
+  extraScrollHeight?: number;
 };
 
-const KeyboardScrollViewContainer = ({ children, extraHeight }: Props) => {
+const KeyboardScrollViewContainer = ({
+  children,
+  extraHeight,
+  extraScrollHeight = 50,
+}: Props) => {
   return (
     <KeyboardAwareScrollView
+      keyboardShouldPersistTaps="handled"
       style={{ backgroundColor: colors.primary }}
       contentContainerStyle={{ flexGrow: 1 }}
       enableOnAndroid
       enableAutomaticScroll
-      extraScrollHeight={Platform.OS == 'android' ? 20 : 50}
+      extraScrollHeight={extraScrollHeight}
       extraHeight={extraHeight || 220}
     >
       {children}

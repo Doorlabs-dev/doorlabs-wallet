@@ -1,6 +1,6 @@
 import { ActivityIndicator } from 'react-native';
 import React from 'react';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import colors from '@styles/colors';
 import Text from '../Text';
 
@@ -9,7 +9,6 @@ type Props = {
   onPress: () => void;
   loading?: boolean;
   textColor?: string;
-  disabled?: boolean;
 };
 
 const Container = styled.TouchableOpacity`
@@ -17,26 +16,20 @@ const Container = styled.TouchableOpacity`
   height: 48px;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
   border-radius: 8px;
-  ${(props: { color: string }) => css`
-    background-color: ${props.color || colors.buttonPrimary};
-  `}
+  border-width: 1px;
+  border-color: white;
 `;
 
-const PrimaryButton = ({
+const OutlinedButton = ({
   label,
   onPress,
   loading = false,
   textColor,
-  disabled = false,
 }: Props) => {
   return (
-    <Container
-      disabled={loading || disabled}
-      activeOpacity={0.8}
-      onPress={onPress}
-      color={disabled ? colors.greyScale800 : colors.buttonPrimary}
-    >
+    <Container disabled={loading} activeOpacity={0.8} onPress={onPress}>
       {loading ? (
         <ActivityIndicator color={colors.white} />
       ) : (
@@ -48,4 +41,4 @@ const PrimaryButton = ({
   );
 };
 
-export default PrimaryButton;
+export default OutlinedButton;

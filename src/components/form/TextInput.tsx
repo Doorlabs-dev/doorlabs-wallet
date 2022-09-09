@@ -90,7 +90,7 @@ const TextInput = ({
         <RNTextInput
           placeholderTextColor={colors.greyScale400}
           underlineColorAndroid={'transparent'}
-          selectionColor={colors.white}
+          selectionColor={colors.primary}
           placeholder={placeholder}
           value={value}
           onChangeText={(v) => {

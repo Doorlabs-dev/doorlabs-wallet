@@ -28,7 +28,7 @@ const useAccountTransactions = ({ account, triggerReload }: Props) => {
     if (!account) return;
 
     const result = await getAccountTransaction(account);
-    setAllTransactions(result);
+    setAllTransactions(result || []);
   };
 
   useEffect(() => {
