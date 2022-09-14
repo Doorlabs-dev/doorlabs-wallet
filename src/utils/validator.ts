@@ -1,9 +1,15 @@
+import { BigNumber } from 'ethers';
+import { isArray, isPlainObject } from 'lodash-es';
 import {
   constants,
   number,
   validateAndParseAddress,
   validateChecksumAddress,
 } from 'starknet';
+
+export function isLiteralObject(data: any) {
+  return isPlainObject(data) && data !== null;
+}
 
 export const isNumeric = (numToCheck: any): boolean =>
   !isNaN(parseFloat(numToCheck)) && isFinite(numToCheck);
@@ -52,4 +58,28 @@ export function isValidAddress(address: string) {
   }
 
   return true;
+}
+
+export function validateCallData(calldata: any) {
+  if (!isArray(calldata)) return false;
+
+  if (!calldata.length) return true;
+
+  return calldata.every(
+    (e) =>
+      typeof e === 'string' || typeof e === 'number' || BigNumber.isBigNumber(e)
+  );
+}
+
+export function validateStarknetTransaction(transaction: any) {
+  if (!isLiteralObject(transaction)) return false;
+
+  const { contractAddress, entrypoint, calldata } = transaction;
+  if (!contractAddress || typeof contractAddress !== 'string') return false;
+
+  if (!entrypoint || typeof entrypoint !== 'string') return false;
+
+  if (calldata === undefined) return true;
+
+  return validateCallData(calldata);
 }
