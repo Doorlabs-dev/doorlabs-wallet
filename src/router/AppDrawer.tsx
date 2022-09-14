@@ -5,12 +5,15 @@ import colors from '@styles/colors';
 import CustomDrawer from './components/CustomDrawer';
 import SettingStack from './SettingStack';
 import AccountStack from './account-navigation/AccountStack';
+import useWalletConnect from '@features/walletconnect/useWalletConnect';
 
 const Drawer = createDrawerNavigator();
 
 const { ACCOUNT_STACK, SETTING_STACK } = ScreenNames;
 
 const AppDrawer = () => {
+  useWalletConnect();
+
   return (
     <Drawer.Navigator
       drawerContent={CustomDrawer}
