@@ -17,7 +17,6 @@ import NoAccount from '../components/NoAccount';
 import PendingTransactions from '@features/transactions/components/PendingTransactions';
 import IconSend from '@assets/svg/icon_send.svg';
 import IconReceive from '@assets/svg/icon_receive.svg';
-import IconAdd from '@assets/svg/icon_add.svg';
 import ReceiveAddressModal from '../components/ReceiveAddressModal';
 import { ScrollView } from 'react-native-gesture-handler';
 import TokensList from '@features/tokens/components/TokensList';
