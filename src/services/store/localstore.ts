@@ -11,7 +11,8 @@ class LocalStorage<T> {
   }
 
   async init() {
-    const value = AsyncStorage.getItem(this.name);
+    const value = await AsyncStorage.getItem(this.name);
+
     if (!value && !!this.defaultValue) {
       this.set(this.defaultValue);
     }
@@ -35,10 +36,12 @@ class LocalStorage<T> {
   async get() {
     const value = await AsyncStorage.getItem(this.name);
     if (value) {
-      return this.deserialize(value);
+      try {
+        return this.deserialize(value);
+      } catch (error) {
+        return this.defaultValue as T;
+      }
     }
-
-    return this.defaultValue;
   }
 
   async delete() {

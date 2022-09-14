@@ -43,7 +43,7 @@ class ArrayStore<T> {
   }
 
   async get(selector?: SelectorFn<T>) {
-    const all = await this._store.get();
+    const all = (await this._store.get()) || [];
     if (selector) {
       return all.filter(selector);
     }
@@ -51,28 +51,39 @@ class ArrayStore<T> {
   }
 
   async set(data: T[]) {
-    const all = await this._store.get();
+    const all = (await this._store.get()) || [];
     const result = mergeArrayStableWith<T>(all, data, this.compareFn);
 
     await this._store.set(result);
   }
 
   async remove(selector: SelectorFn<T>) {
-    const all = await this._store.get();
+    const all = (await this._store.get()) || [];
     const newAll = all.filter(selector);
 
     await this._store.set(newAll);
   }
 
   async push(item: T) {
-    const all = await this._store.get();
+    const all = (await this._store.get()) || [];
     const newAll = mergeArrayStableWith(all, [item], this.compareFn);
 
     await this._store.set(newAll);
   }
 
+  async pop(): Promise<T | undefined> {
+    const all = (await this._store.get()) || [];
+    const target = all.pop();
+
+    const newAll = mergeArrayStableWith(all, [], this.compareFn);
+
+    await this._store.set(newAll);
+
+    return target;
+  }
+
   async setItem(selector: SelectorFn<T>, data: T) {
-    const all = await this._store.get();
+    const all = (await this._store.get()) || [];
     const newAll = all.map((i) => {
       if (selector(i)) {
         return data;
