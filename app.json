@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "walletme",
     "name": "doorlabs-wallet",
     "slug": "doorlabs-wallet",
     "version": "1.0.0",
