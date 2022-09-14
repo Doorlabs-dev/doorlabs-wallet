@@ -7,7 +7,7 @@ import {
 } from '../keys/keyDerivation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  BaseWalletAccount,
+  AccountIdentifier,
   WalletAccount,
   WalletSession,
 } from './wallet.model';
@@ -183,9 +183,11 @@ class Wallet {
     await this.storeBackup();
   }
 
-  async selectAccount(accountIdentifier?: BaseWalletAccount) {
+  async selectAccount(
+    accountIdentifier?: AccountIdentifier
+  ): Promise<WalletAccount | undefined> {
     if (!accountIdentifier) {
-      await AsyncStorage.setItem(SELECTED_KEY, '');
+      // await AsyncStorage.setItem(SELECTED_KEY, '');
       return;
     }
 
@@ -198,7 +200,9 @@ class Wallet {
 
     if (targetAccount) {
       await AsyncStorage.setItem(SELECTED_KEY, JSON.stringify(targetAccount));
+      return targetAccount;
     }
+    return;
   }
 
   async exportPrivateKey(): Promise<string> {

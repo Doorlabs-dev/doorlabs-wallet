@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { transactionStore } from '@services/transaction';
 import { compareEqualAccount } from '@services/account';
-import { BaseWalletAccount } from '@services/wallet/wallet.model';
+import { AccountIdentifier } from '@services/wallet/wallet.model';
 import { Transaction } from '@services/transaction/transaction.type';
 
 type Props = {
-  account?: BaseWalletAccount;
+  account?: AccountIdentifier;
   triggerReload?: boolean;
 };
 
-export const getAccountTransaction = async (account: BaseWalletAccount) => {
+export const getAccountTransaction = async (account: AccountIdentifier) => {
   return transactionStore.get((tx) => compareEqualAccount(tx.account, account));
 };
 

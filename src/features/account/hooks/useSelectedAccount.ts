@@ -6,6 +6,7 @@ import selectedAccountState from '../selected-account.state';
 import networkState from '@features/network/network.state';
 import useAccounts from './useAccounts';
 import { mapWalletAccountToAccount } from '../utils/mapWalletAccountToAccount';
+import { AccountIdentifier } from '@services/wallet/wallet.model';
 
 const useSelectedAccount = (fetchOnMount = false) => {
   const [selectedAccount, setSelectedAccount] = useRecoilState<
@@ -42,8 +43,8 @@ const useSelectedAccount = (fetchOnMount = false) => {
     }
   };
 
-  const selectAccount = async (account?: Account) => {
-    await wallet.selectAccount(
+  const selectAccount = async (account?: AccountIdentifier) => {
+    const starknetAccount = await wallet.selectAccount(
       account
         ? {
             address: account.address,
@@ -51,7 +52,11 @@ const useSelectedAccount = (fetchOnMount = false) => {
           }
         : undefined
     );
-    setSelectedAccount(account);
+    if (starknetAccount) {
+      setSelectedAccount(mapWalletAccountToAccount(starknetAccount));
+    } else {
+      throw Error('No account found');
+    }
   };
 
   const exportPrivateKey = async () => {

@@ -1,4 +1,4 @@
-import { BaseWalletAccount } from '@services/wallet/wallet.model';
+import { AccountIdentifier } from '@services/wallet/wallet.model';
 
 export interface AspectNft {
   contract_address: string;
@@ -20,7 +20,7 @@ const baseUrlGoerli = 'https://api-testnet.aspect.co/api/v0/assets';
 const baseUrlMainnet = 'https://api.aspect.co/api/v0/assets';
 
 export const fetchAspectNfts = async (
-  account: BaseWalletAccount
+  account: AccountIdentifier
 ): Promise<AspectNft[]> => {
   try {
     const { address } = account;
