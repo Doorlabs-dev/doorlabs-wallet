@@ -19,6 +19,8 @@ const ScreenNames = {
   ACCOUNT_TOKENS: 'account-tokens',
   ACCOUNT_PRIVATE_KEY: 'account-private-key',
   ACCOUNT_RECEIVE: 'account-receive',
+  ACCOUNT_CONNECT_DAPP: 'account-connect-dapp',
+  ACCOUNT_TRANSACTION_APPROVAL: 'account-transaction-approval',
   // NFT
   NFT_SEND_NFT: 'nft:send-nft',
   // TOKEN
