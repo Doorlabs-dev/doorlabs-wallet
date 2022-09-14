@@ -1,3 +1,4 @@
+import useConnectListener from '@features/walletconnect/useConnectListener';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useCallback, useEffect } from 'react';
 import useAuthentication from '../features/auth/hooks/useAuthentication';
@@ -22,6 +23,8 @@ const AppNavigation = () => {
     },
     onAppBackground: () => {},
   });
+
+  useConnectListener();
 
   useEffect(() => {
     checkAccountAvailable();
