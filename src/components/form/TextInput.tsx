@@ -1,6 +1,6 @@
 import { Spacer } from '@components/layout';
 import { Text } from '@components/ui';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import {
   Control,
   ControllerFieldState,
@@ -90,7 +90,7 @@ const TextInput = ({
         <RNTextInput
           placeholderTextColor={colors.greyScale400}
           underlineColorAndroid={'transparent'}
-          selectionColor={colors.white}
+          selectionColor={colors.primary}
           placeholder={placeholder}
           value={value}
           onChangeText={(v) => {
@@ -99,7 +99,11 @@ const TextInput = ({
           {...inputProps}
           onFocus={_onFocus}
           onBlur={_onBlur}
-          style={[styles.textInput, inputProps?.style]}
+          style={[
+            styles.textInput,
+            inputProps?.style,
+            inputProps?.multiline ? { textAlignVertical: 'top' } : null,
+          ]}
         />
         {children}
       </View>

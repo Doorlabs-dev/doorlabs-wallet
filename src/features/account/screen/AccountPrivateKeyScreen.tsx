@@ -36,6 +36,10 @@ const AccountPrivateKeyScreen = (props: Props) => {
       const walletPassword = await getWalletSavedPassword();
       if (walletPassword === value.password) {
         setPassed(true);
+      } else {
+        Toast.show('Wrong password', {
+          position: Toast.positions.CENTER,
+        });
       }
     })();
   };

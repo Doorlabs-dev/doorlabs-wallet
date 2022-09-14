@@ -16,8 +16,10 @@ const PendingTransactions = () => {
     triggerReload: isFocused,
   });
 
+  if (!pendingTransactions.length) return null;
+
   return (
-    <View style={{ width: '100%' }}>
+    <View style={{ width: '100%', marginTop: 24 }}>
       {pendingTransactions.map((tx) => (
         <PendingTransactionItem
           onTransactionSuccess={setAllTransactions}

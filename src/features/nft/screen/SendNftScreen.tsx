@@ -63,36 +63,33 @@ const SendNftScreen = (props: Props) => {
 
   if (!selectedAccount || !nft)
     return (
-      <SafeArea>
-        <Container>
-          <Text>No account or nft found</Text>
-        </Container>
-      </SafeArea>
+      <Container>
+        <Text>No account or nft found</Text>
+      </Container>
     );
 
   return (
-    <SafeArea>
-      <Container center={false}>
-        <NftInfoCard nft={nft} />
-        <Spacer height={24} />
-        <TextInput
-          name="recipient"
-          control={control}
-          label="Recipient's address"
-          placeholder="Input address"
-          rules={{
-            required: 'Required',
-            validate: {
-              isValidAddress,
-            },
-          }}
-          errorMessages={{
-            isValidAddress: 'Invalid address',
-          }}
-        />
-        <PrimaryButton loading={isSubmitting} label="Next" onPress={submit()} />
-      </Container>
-    </SafeArea>
+    <Container center={false}>
+      <Spacer height={36} />
+      <NftInfoCard nft={nft} />
+      <Spacer height={24} />
+      <TextInput
+        name="recipient"
+        control={control}
+        label="Recipient's address"
+        placeholder="Input address"
+        rules={{
+          required: 'Required',
+          validate: {
+            isValidAddress,
+          },
+        }}
+        errorMessages={{
+          isValidAddress: 'Invalid address',
+        }}
+      />
+      <PrimaryButton loading={isSubmitting} label="Next" onPress={submit()} />
+    </Container>
   );
 };
 

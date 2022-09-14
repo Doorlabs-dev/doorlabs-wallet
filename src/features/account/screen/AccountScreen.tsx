@@ -45,17 +45,15 @@ const AccountScreen = () => {
 
   if (isLoading) {
     return (
-      <SafeArea>
-        <Container>
-          <ActivityIndicator color={colors.white} />
-        </Container>
-      </SafeArea>
+      <Container>
+        <ActivityIndicator color={colors.white} />
+      </Container>
     );
   }
 
   if (!selectedAccount) {
     return (
-      <Container center={false}>
+      <Container center={false} padding={null}>
         <Spacer height={48} />
         <NoAccount />
       </Container>
@@ -64,8 +62,8 @@ const AccountScreen = () => {
 
   return (
     <Container center={false} padding={null}>
-      <Spacer height={48} />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <Spacer height={48} />
         <Container alignItems="center" center={false}>
           <AccountInfoCard
             onPress={() => openActionModal()}
@@ -73,8 +71,8 @@ const AccountScreen = () => {
           />
           <Spacer height={24} />
           <View style={{ width: '90%' }}>
-            <Row justifyContent="space-between">
-              <RoundButton icon={<IconAdd />} title="Add funds" />
+            <Row justifyContent="center">
+              {/* <RoundButton icon={<IconAdd />} title="Add funds" /> */}
               <RoundButton
                 icon={<IconReceive />}
                 title="Receive"
@@ -82,6 +80,7 @@ const AccountScreen = () => {
                   openReceiveModal();
                 }}
               />
+              <Spacer width={60} />
               <RoundButton
                 icon={<IconSend />}
                 title="Send"
@@ -91,15 +90,18 @@ const AccountScreen = () => {
               />
             </Row>
           </View>
-          <Spacer height={32} />
-          <TokensList />
-          <SecondaryButton
-            title="Add tokens"
-            onPress={() =>
-              navigation.navigate({ name: ScreenNames.TOKEN_ADD_TOKEN })
-            }
-          />
           <PendingTransactions />
+          <Spacer height={24} />
+          <TokensList
+            renderFooter={() => (
+              <SecondaryButton
+                title="Add tokens"
+                onPress={() =>
+                  navigation.navigate({ name: ScreenNames.TOKEN_ADD_TOKEN })
+                }
+              />
+            )}
+          />
           <AccountActionsModal
             actions={[
               {
@@ -123,14 +125,14 @@ const AccountScreen = () => {
                   });
                 },
               },
-              {
-                label: 'Hide account',
-                onPress: () => {},
-              },
-              {
-                label: 'Edit name',
-                onPress: () => {},
-              },
+              // {
+              //   label: 'Hide account',
+              //   onPress: () => {},
+              // },
+              // {
+              //   label: 'Edit name',
+              //   onPress: () => {},
+              // },
             ]}
             visible={actionModalVisible}
             onClose={closeActionModal}

@@ -71,6 +71,7 @@ const SecureWalletScreen = (props: Props) => {
             navigation.navigate({ name: ScreenNames.RECOVERY_VERIFY_PHRASE })
           }
         />
+        <Spacer height={34} />
       </Container>
       <PhraseExplainPopup
         visible={phraseModalVisible}

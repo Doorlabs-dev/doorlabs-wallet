@@ -4,39 +4,41 @@ import useBiometrics, { biometricsStore } from '@hooks/useBiometrics';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { TextInput } from '../../../components/form';
 import {
   Container,
-  KeyboardView,
+  KeyboardScrollViewContainer,
   SafeArea,
   Spacer,
 } from '../../../components/layout';
-import { Button, PrimaryButton, Text, Title } from '../../../components/ui';
+import { PrimaryButton, Text, Title } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
 
 const NewWalletScreen = () => {
-  const { control, handleSubmit, getValues, setValue } = useForm<FieldValues>({
-    defaultValues: {
-      password: '',
-      passwordConfirmation: '',
-      useFaceId: false,
-      agreedPrivacy: false,
-    },
-    mode: 'onChange',
-  });
+  const { control, formState, handleSubmit, getValues, setValue } =
+    useForm<FieldValues>({
+      defaultValues: {
+        password: '',
+        passwordConfirmation: '',
+        useFaceId: false,
+        agreedPrivacy: false,
+      },
+      mode: 'onChange',
+    });
 
   const { setWalletPassword } = useWalletPassword();
 
   const [isCreatingWallet, setIsCreatingWallet] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
-  const { authenticateBiometrics, supportedTypes } = useBiometrics();
+  const { authenticateBiometrics, supportedTypes, getAuthenticationTypeName } =
+    useBiometrics();
 
   const validateBiometrics = async (useFaceId: boolean): Promise<boolean> => {
     if (!useFaceId) return true;
@@ -47,6 +49,14 @@ const NewWalletScreen = () => {
 
     return result;
   };
+
+  useEffect(() => {
+    if (isCreatingWallet) {
+      navigation.setOptions({ headerBackVisible: false });
+    } else {
+      navigation.setOptions({ headerBackVisible: true });
+    }
+  }, [isCreatingWallet]);
 
   const onConfirm = () => {
     handleSubmit(async ({ password, useFaceId }) => {
@@ -82,91 +92,88 @@ const NewWalletScreen = () => {
 
   if (isCreatingWallet) {
     return (
-      <SafeArea>
-        <Container>
-          <ActivityIndicator size={'large'} color={colors.white} />
-          <Title textAlign="center">Creating wallet{'\n'}for you...🚀</Title>
-        </Container>
-      </SafeArea>
+      <Container>
+        <ActivityIndicator size={'large'} color={colors.white} />
+        <Title textAlign="center">Creating wallet{'\n'}for you...🚀</Title>
+      </Container>
     );
   }
 
   return (
-    <SafeArea>
-      <KeyboardView>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}
-        >
-          <Spacer height={36} />
-          <Container style={{ justifyContent: 'flex-start' }}>
-            <Title textAlign="center" size={28}>
-              New password for your wallet
-            </Title>
-            <Spacer height={24} />
-            <TextInput
-              name="password"
-              placeholder="Password"
-              label="Password"
-              control={control}
-              rules={{ required: 'This field is required!' }}
-              inputProps={{
-                secureTextEntry: true,
-              }}
+    <KeyboardScrollViewContainer extraHeight={300}>
+      <Spacer height={36} />
+      <Container style={{ justifyContent: 'flex-start' }}>
+        <Title textAlign="center" size={28}>
+          New password for your wallet
+        </Title>
+        <Spacer height={24} />
+        <TextInput
+          name="password"
+          placeholder="Password"
+          label="Password"
+          control={control}
+          rules={{ required: 'This field is required!' }}
+          inputProps={{
+            secureTextEntry: true,
+          }}
+        />
+        <TextInput
+          name="passwordConfirmation"
+          placeholder="Password confirmation"
+          label="Confirm password"
+          control={control}
+          rules={{
+            required: 'This field is required!',
+            validate: isSameValue,
+          }}
+          inputProps={{
+            secureTextEntry: true,
+          }}
+        />
+        <Spacer height={16} />
+        <PrimaryButton
+          textColor={colors.white}
+          label="Confirm"
+          onPress={onConfirm}
+          disabled={!formState.isValid}
+        />
+        <Spacer height={27} />
+        <Controller
+          control={control}
+          name="useFaceId"
+          render={({ field: { value } }) => (
+            <BiometricsEnableSwitch
+              supportedTypes={supportedTypes}
+              enabled={value}
+              onChange={(v) => setValue('useFaceId', v, { shouldDirty: true })}
+              authType={getAuthenticationTypeName()}
             />
-            <TextInput
-              name="passwordConfirmation"
-              placeholder="Password confirmation"
-              label="Confirm password"
-              control={control}
-              rules={{
-                required: 'This field is required!',
-                validate: isSameValue,
-              }}
-              inputProps={{
-                secureTextEntry: true,
-              }}
-            />
-            <Spacer height={16} />
-            <PrimaryButton
-              textColor={colors.white}
-              label="Confirm"
-              onPress={onConfirm}
-            />
-            <Spacer height={27} />
-            <Controller
-              control={control}
-              name="useFaceId"
-              render={({ field: { value } }) => (
-                <BiometricsEnableSwitch
-                  supportedTypes={supportedTypes}
-                  enabled={value}
-                  onChange={(v) => setValue('useFaceId', v)}
-                />
-              )}
-            />
-            <Spacer height={27} />
-            <View style={styles.privacyWrapper}>
-              <Controller
-                control={control}
-                name="agreedPrivacy"
-                rules={{ required: 'Need to accept the privacy!' }}
-                render={({ field: { value } }) => (
-                  <Checkbox
-                    checked={value}
-                    onChange={() => setValue('agreedPrivacy', !value)}
-                  />
-                )}
+          )}
+        />
+        <Spacer height={27} />
+        <View style={styles.privacyWrapper}>
+          <Controller
+            control={control}
+            name="agreedPrivacy"
+            rules={{ required: 'Need to accept the privacy!' }}
+            render={({ field: { value } }) => (
+              <Checkbox
+                checked={value}
+                onChange={() =>
+                  setValue('agreedPrivacy', !value, {
+                    shouldValidate: true,
+                  })
+                }
               />
-              <Text size={16} color="white" style={styles.privacyTxt}>
-                I have read and agreed to the Terms and Conditions
-              </Text>
-            </View>
-            <Spacer height={50} />
-          </Container>
-        </ScrollView>
-      </KeyboardView>
-    </SafeArea>
+            )}
+          />
+          <Text size={16} color="white" style={styles.privacyTxt}>
+            I have read and agreed to the Terms and Conditions
+          </Text>
+        </View>
+        <Spacer height={50} />
+      </Container>
+    </KeyboardScrollViewContainer>
   );
 };
 

@@ -5,13 +5,13 @@ import selectedAccountState from '@features/account/selected-account.state';
 import { Token } from '@services/tokens/token.model';
 import TokenItem from './TokenItem';
 import { fetchTokensByNetwork } from '@services/tokens';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { Spacer } from '@components/layout';
 import styled from 'styled-components/native';
-import { ScreenNavigationProps } from '@router/navigation-props';
 
 type Props = {
   renderItem?: (token: Token) => JSX.Element;
+  renderFooter?: () => React.ReactElement | null;
 };
 
 const TokenListWrapper = styled.View`
@@ -19,10 +19,9 @@ const TokenListWrapper = styled.View`
   align-items: center;
 `;
 
-const TokensList = ({ renderItem }: Props) => {
+const TokensList = ({ renderItem, renderFooter = () => null }: Props) => {
   const selectedAccount = useRecoilValue(selectedAccountState);
   const [tokens, setTokens] = useState<Token[]>([]);
-  const navigation = useNavigation<ScreenNavigationProps<any>>();
   const isFocused = useIsFocused();
 
   const fetchTokens = async () => {
@@ -52,7 +51,8 @@ const TokensList = ({ renderItem }: Props) => {
               <TokenItem key={t.address} token={t} account={selectedAccount} />
             )
           }
-        ></FlatList>
+          ListFooterComponent={renderFooter?.()}
+        />
       </ScrollView>
     </TokenListWrapper>
   );

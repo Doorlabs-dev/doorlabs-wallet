@@ -3,9 +3,10 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Alert, Image, StatusBar, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
-import { PrimaryButton, Title } from '../../../components/ui';
+import { PrimaryButton, SecondaryButton, Title } from '../../../components/ui';
 import { ScreenNavigationProps } from '../../../router/navigation-props';
 import ScreenNames from '../../../router/screenNames';
 import wallet from '../../../services/wallet';
@@ -26,6 +27,7 @@ const LoginScreen = () => {
     defaultValues: { password: '' },
     mode: 'onChange',
   });
+  const insets = useSafeAreaInsets();
 
   const onSubmit = () => {
     handleSubmit(async ({ password }) => {
@@ -73,21 +75,21 @@ const LoginScreen = () => {
       />
       <Spacer height={12} />
       <PrimaryButton loading={isStarting} onPress={onSubmit} label="Unlock" />
+      <Spacer height={20} />
       <BiometricsLoginButton
         onSuccess={() => {
           setValue('password', savedPassword);
           onSubmit();
         }}
       />
-      <Spacer height={16} />
-      <Title
-        size={16}
+      <Container />
+      <SecondaryButton
+        title="Reset wallet"
         onPress={() => {
           navigation.navigate({ name: ScreenNames.RESET_CONFIRMATION });
         }}
-      >
-        Reset wallet
-      </Title>
+      />
+      <Spacer height={insets.bottom} />
     </Container>
   );
 };

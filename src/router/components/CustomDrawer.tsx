@@ -37,7 +37,7 @@ const Line = styled.View`
 
 const DrawerItem = ({ label, icon, onPress }: DrawerItemProps) => (
   <TouchableOpacity onPress={onPress}>
-    <Row>
+    <Row alignItems="center">
       {icon}
       <Spacer width={18} />
       <Text size={16} lineHeight={24} weight={400}>

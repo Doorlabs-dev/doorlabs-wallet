@@ -126,7 +126,9 @@ const SendTokenScreen = (props: Props) => {
       });
       navigation.goBack();
     } catch (error) {
-      Toast.show(`${error}`);
+      Toast.show(`${error}`, {
+        position: Toast.positions.CENTER,
+      });
       console.log(error);
     }
 
@@ -163,7 +165,7 @@ const SendTokenScreen = (props: Props) => {
               isSufficientAmount,
             },
           }}
-          transformValue={(v) => v.replaceAll(',', '.')}
+          transformValue={(v) => v.replace(/,/g, '.')}
         />
         {maxFeeLoading ? (
           <Floating>

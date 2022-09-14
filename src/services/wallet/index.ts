@@ -5,7 +5,7 @@ import {
   getPathForIndex,
   getStarkPair,
 } from '../keys/keyDerivation';
-import * as SecureStorage from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   BaseWalletAccount,
   WalletAccount,
@@ -109,7 +109,7 @@ class Wallet {
   }
 
   async loadBackup() {
-    this.backup = (await SecureStorage.getItemAsync(BACKUP_KEY)) || undefined;
+    this.backup = (await AsyncStorage.getItem(BACKUP_KEY)) || undefined;
   }
 
   async storeBackup() {
@@ -124,12 +124,12 @@ class Wallet {
 
     const backupString = JSON.stringify(extendedBackup);
 
-    await SecureStorage.setItemAsync(BACKUP_KEY, backupString);
+    await AsyncStorage.setItem(BACKUP_KEY, backupString);
     this.backup = backupString;
   }
 
   async resetBackup() {
-    await SecureStorage.deleteItemAsync(BACKUP_KEY);
+    await AsyncStorage.removeItem(BACKUP_KEY);
   }
 
   async createWallet(password: string) {
@@ -185,7 +185,7 @@ class Wallet {
 
   async selectAccount(accountIdentifier?: BaseWalletAccount) {
     if (!accountIdentifier) {
-      await SecureStorage.setItemAsync(SELECTED_KEY, '');
+      await AsyncStorage.setItem(SELECTED_KEY, '');
       return;
     }
 
@@ -197,10 +197,7 @@ class Wallet {
     );
 
     if (targetAccount) {
-      await SecureStorage.setItemAsync(
-        SELECTED_KEY,
-        JSON.stringify(targetAccount)
-      );
+      await AsyncStorage.setItem(SELECTED_KEY, JSON.stringify(targetAccount));
     }
   }
 
@@ -221,7 +218,7 @@ class Wallet {
   }
 
   async getSelectedAccount(): Promise<WalletAccount | null> {
-    const res = await SecureStorage.getItemAsync(SELECTED_KEY);
+    const res = await AsyncStorage.getItem(SELECTED_KEY);
     if (res) {
       return JSON.parse(res) as WalletAccount;
     }
@@ -231,11 +228,11 @@ class Wallet {
   }
 
   async resetSelectedAccount() {
-    await SecureStorage.deleteItemAsync(SELECTED_KEY);
+    await AsyncStorage.removeItem(SELECTED_KEY);
   }
 
   async resetWalletAccounts() {
-    await SecureStorage.deleteItemAsync(ACCOUNTS_KEY);
+    await AsyncStorage.removeItem(ACCOUNTS_KEY);
   }
 
   async getWalletAccountsByNetwork(networkId: string) {
@@ -244,7 +241,7 @@ class Wallet {
   }
 
   async getWalletAccounts(): Promise<WalletAccount[]> {
-    const result = await SecureStorage.getItemAsync(ACCOUNTS_KEY);
+    const result = await AsyncStorage.getItem(ACCOUNTS_KEY);
 
     if (!result) return [];
 
@@ -267,7 +264,7 @@ class Wallet {
       compareEqualAccount
     );
 
-    await SecureStorage.setItemAsync(ACCOUNTS_KEY, JSON.stringify(result));
+    await AsyncStorage.setItem(ACCOUNTS_KEY, JSON.stringify(result));
   }
   // TODO: handle multi accounts
   // async restoreAccountFromWallet() {
@@ -357,7 +354,7 @@ class Wallet {
   private async restoreAccountsFromWallet(
     secret: string,
     network: Network,
-    offset: number = 10
+    offset: number = 5
   ): Promise<WalletAccount[]> {
     const provider = getProvider(network);
 
@@ -403,10 +400,13 @@ class Wallet {
             }),
             0
           );
+          console.log('Found address-----------', address);
           const code = await provider.getCode(address);
 
           if (code.bytecode.length > 0) {
             lastHit = lastCheck;
+            console.log('Correct address-------------', address);
+
             accounts.push({
               address,
               networkId: network.id,
