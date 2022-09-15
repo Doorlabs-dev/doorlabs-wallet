@@ -18,7 +18,7 @@ export function compareDAppConnection(a: DAppConnection, b: DAppConnection) {
   return (
     a.account.networkId === b.account.networkId &&
     a.account.address === b.account.address &&
-    a.meta.uri === b.meta.uri
+    a.meta.scheme === b.meta.scheme
   );
 }
 

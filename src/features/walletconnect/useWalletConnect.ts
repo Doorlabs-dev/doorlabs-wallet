@@ -1,4 +1,4 @@
-import walletConnectActionStore from '@services/walletconnect/walletConnectActionStore.store';
+import walletConnectActionRequestStore from '@services/walletconnect/walletConnectActionRequestStore.store';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
@@ -6,20 +6,21 @@ import ScreenNames from '@router/screenNames';
 import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
 import {
-  ConnectAction,
-  ExecuteTransactionAction,
+  ConnectActionRequest,
+  ConnectActionResponse,
+  ExecuteTransactionActionRequest,
 } from '@services/walletconnect/walletconnect.action';
 import walletConnectPreAuthorize from '@services/walletconnect/walletconnectPreauthorize';
 import { Alert } from 'react-native';
-import { testConnectLink, testExecuteLink } from './mock_link';
 import useSelectedAccount from '@features/account/hooks/useSelectedAccount';
+import WalletConnectActionLinkHandler from '@services/walletconnect/walletConnectActionLinkHandler.service';
 
 const useWalletConnect = () => {
   const navigation = useNavigation<ScreenNavigationProps<any>>();
   const selectedAccount = useRecoilValue(selectedAccountState);
   const { selectAccount } = useSelectedAccount(false);
 
-  const handleConnect = async (action: ConnectAction) => {
+  const handleConnect = async (action: ConnectActionRequest) => {
     const { payload } = action;
     const { meta, account } = payload;
 
@@ -57,10 +58,18 @@ const useWalletConnect = () => {
       return;
     }
 
-    Alert.alert('Already connected with this account');
+    await WalletConnectActionLinkHandler.respond(meta, {
+      action: 'connect-dapp',
+      result: {
+        account: {
+          address: selectedAccount?.address,
+          networkId: selectedAccount?.networkId,
+        },
+      },
+    } as ConnectActionResponse);
   };
 
-  const handleExecuteTx = async (action: ExecuteTransactionAction) => {
+  const handleExecuteTx = async (action: ExecuteTransactionActionRequest) => {
     const { payload } = action;
     const { meta, transactions, account } = payload;
 
@@ -106,30 +115,26 @@ const useWalletConnect = () => {
       return;
     }
   };
-  // TEST
-  // useEffect(() => {
-  //   testExecuteLink();
-  // }, []);
 
   useEffect(() => {
     async function fetchAction() {
-      const action = await walletConnectActionStore.get();
+      const request = await walletConnectActionRequestStore.get();
 
-      if (!action) return;
+      if (!request) return;
       if (!selectedAccount) return;
 
-      switch (action.name) {
+      switch (request.action) {
         case 'connect-dapp':
-          handleConnect(action);
+          handleConnect(request);
           break;
         case 'execute-transaction':
-          handleExecuteTx(action);
+          handleExecuteTx(request);
           break;
         default:
           break;
       }
       // delete action after handle action
-      await walletConnectActionStore.delete();
+      await walletConnectActionRequestStore.delete();
     }
 
     fetchAction();

@@ -404,12 +404,11 @@ class Wallet {
             }),
             0
           );
-          console.log('Found address-----------', address);
+
           const code = await provider.getCode(address);
 
           if (code.bytecode.length > 0) {
             lastHit = lastCheck;
-            console.log('Correct address-------------', address);
 
             accounts.push({
               address,

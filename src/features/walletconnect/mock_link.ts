@@ -4,12 +4,13 @@ import * as Linking from 'expo-linking';
 import { getChecksumAddress, stark } from 'starknet';
 
 export function testConnectLink() {
-  const testConnectLink = Linking.createURL('connect-dapp', {
+  const testConnectLink = Linking.createURL('request', {
     scheme: 'walletme',
     queryParams: {
+      action: 'connect-dapp',
       data: JSON.stringify({
         meta: {
-          uri: 'mydapp',
+          scheme: 'mydapp',
           name: 'Dapp Shit',
         },
         account: {
@@ -24,12 +25,13 @@ export function testConnectLink() {
 }
 
 export function testExecuteLink() {
-  const testConnectLink = Linking.createURL('execute-transaction', {
+  const testConnectLink = Linking.createURL('request', {
     scheme: 'walletme',
     queryParams: {
+      action: 'execute-transaction',
       data: JSON.stringify({
         meta: {
-          uri: 'mydapp',
+          scheme: 'mydapp',
           name: 'Dapp Shit',
         },
         account: {

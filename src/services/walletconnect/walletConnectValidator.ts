@@ -1,20 +1,28 @@
 import { isLiteralObject, validateStarknetTransaction } from '@utils/validator';
-import { isArray, isPlainObject } from 'lodash-es';
+import { isArray } from 'lodash-es';
 
-export function isValidConnectDappAction(payload: any) {
-  if (!isLiteralObject(payload)) return false;
+export function isValidConnectDappAction(queryData?: {
+  action: string;
+  data: any;
+}) {
+  if (!isLiteralObject(queryData)) return false;
+  if (!isLiteralObject(queryData?.data)) return false;
 
-  const { meta } = payload;
+  const { meta } = queryData?.data;
 
-  if (!meta || !meta?.name || !meta?.uri) return false;
+  if (!meta || !meta?.name || !meta?.scheme) return false;
 
   return true;
 }
 
-export function isValidExecuteTransactionAction(payload: any) {
-  if (!isLiteralObject(payload)) return false;
+export function isValidExecuteTransactionAction(queryData?: {
+  action: string;
+  data: any;
+}) {
+  if (!isLiteralObject(queryData)) return false;
+  if (!isLiteralObject(queryData?.data)) return false;
 
-  const { transactions } = payload;
+  const { transactions } = queryData?.data;
 
   if (!transactions) return false;
 

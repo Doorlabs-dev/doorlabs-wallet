@@ -3,19 +3,19 @@ import { Call } from 'starknet';
 
 export type DAppMeta = {
   name: string;
-  uri: string;
+  scheme: string;
 };
 
-export interface ConnectAction {
-  name: 'connect-dapp';
+export interface ConnectActionRequest {
+  action: 'connect-dapp';
   payload: {
     meta: DAppMeta;
     account?: AccountIdentifier;
   };
 }
 
-export interface ExecuteTransactionAction {
-  name: 'execute-transaction';
+export interface ExecuteTransactionActionRequest {
+  action: 'execute-transaction';
   payload: {
     meta: DAppMeta;
     transactions: Call | Call[];
@@ -23,7 +23,24 @@ export interface ExecuteTransactionAction {
   };
 }
 
-export const WalletConnectActionPaths = {
+export type ConnectActionResponse = {
+  action: 'connect-dapp';
+  result: {
+    account?: AccountIdentifier;
+    error?: string;
+  };
+};
+
+export type ExecuteTransactionActionResponse = {
+  action: 'execute-transaction';
+  result: {
+    account?: AccountIdentifier;
+    txHash?: string;
+    error?: string;
+  };
+};
+
+export const WalletConnectActions = {
   connectDapp: 'connect-dapp',
   executeTransaction: 'execute-transaction',
 };

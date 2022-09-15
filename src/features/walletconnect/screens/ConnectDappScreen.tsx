@@ -12,7 +12,7 @@ import colors from '@styles/colors';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import { addNewDApp } from '@services/walletconnect/connectedDappsStore.store';
 import Toast from 'react-native-root-toast';
-import * as Linking from 'expo-linking';
+import WalletConnectActionLinkHandler from '@services/walletconnect/walletConnectActionLinkHandler.service';
 
 type Props = {};
 
@@ -32,6 +32,17 @@ const ConnectDappScreen = (props: Props) => {
   const dAppMeta = route?.params?.dAppMeta;
   const navigation = useNavigation<ScreenNavigationProps<any>>();
 
+  const onReject = async () => {
+    navigation.goBack();
+    await WalletConnectActionLinkHandler.respond(dAppMeta, {
+      action: 'connect-dapp',
+      result: {
+        account: undefined,
+        error: 'Connect request rejected',
+      },
+    });
+  };
+
   const onApprove = async () => {
     await addNewDApp({
       meta: dAppMeta,
@@ -43,15 +54,16 @@ const ConnectDappScreen = (props: Props) => {
     Toast.show('Successfully connected', {
       position: Toast.positions.CENTER,
     });
-    // const url = Linking.createURL('walletme', {
-    //   scheme: dAppMeta.uri,
-    //   queryParams: {
-    //     address: selectedAccount?.address,
-    //     networkId: selectedAccount?.networkId,
-    //   },
-    // });
-    // console.log(url);
     navigation.goBack();
+    await WalletConnectActionLinkHandler.respond(dAppMeta, {
+      action: 'connect-dapp',
+      result: {
+        account: {
+          address: selectedAccount?.address!,
+          networkId: selectedAccount?.networkId!,
+        },
+      },
+    });
   };
 
   if (!selectedAccount) return <Container />;
@@ -89,7 +101,7 @@ const ConnectDappScreen = (props: Props) => {
       <Spacer height={20} />
       <Row>
         <Flex>
-          <OutlinedButton label="Reject" onPress={navigation.goBack} />
+          <OutlinedButton label="Reject" onPress={onReject} />
         </Flex>
         <Spacer width={16} />
         <Flex>

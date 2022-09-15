@@ -1,59 +1,94 @@
 import * as Linking from 'expo-linking';
 import {
-  ConnectAction,
-  ExecuteTransactionAction,
-  WalletConnectActionPaths,
+  ConnectActionRequest,
+  ConnectActionResponse,
+  DAppMeta,
+  ExecuteTransactionActionRequest,
+  ExecuteTransactionActionResponse,
+  WalletConnectActions,
 } from './walletconnect.action';
-import walletConnectActionStore from './walletConnectActionStore.store';
+import walletConnectActionStore from './walletConnectActionRequestStore.store';
 import {
   isValidConnectDappAction,
   isValidExecuteTransactionAction,
 } from './walletConnectValidator';
 
 class WalletConnectActionLinkHandler {
-  private _parsePayload(queryParams: any) {
+  static _parseQueryParams(
+    queryParams: any
+  ): { action: string; data: any } | null {
     if (!queryParams?.data) return null;
     try {
-      return JSON.parse(queryParams.data);
+      const data = JSON.parse(queryParams.data);
+
+      return {
+        action: queryParams?.action,
+        data,
+      };
     } catch (error) {
       return null;
     }
   }
 
-  async addAction(url: string) {
-    const { hostname, queryParams } = Linking.parse(url);
-    const payload = this._parsePayload(queryParams);
+  static _makeResponseUri(
+    dAppMeta: DAppMeta,
+    response: ConnectActionResponse | ExecuteTransactionActionResponse
+  ) {
+    const responseUri = Linking.createURL('response', {
+      scheme: dAppMeta.scheme,
+      queryParams: {
+        action: response.action,
+        result: JSON.stringify(response.result),
+      },
+    });
+    return responseUri;
+  }
 
-    switch (hostname) {
-      case WalletConnectActionPaths.connectDapp:
-        if (isValidConnectDappAction(payload)) {
+  static async addAction(url: string) {
+    const { hostname, queryParams } = Linking.parse(url);
+    const queryData = this._parseQueryParams(queryParams);
+
+    if (hostname !== 'request') throw Error('Unknown url');
+
+    switch (queryData?.action) {
+      case WalletConnectActions.connectDapp:
+        if (isValidConnectDappAction(queryData)) {
           const action = {
-            name: 'connect-dapp',
-            payload: payload,
-          } as ConnectAction;
+            action: 'connect-dapp',
+            payload: queryData.data,
+          } as ConnectActionRequest;
 
           walletConnectActionStore.set(action);
         } else {
           throw Error('Invalid payload to connect with wallet');
         }
         break;
-      case WalletConnectActionPaths.executeTransaction:
+      case WalletConnectActions.executeTransaction:
         if (
-          isValidConnectDappAction(payload) &&
-          isValidExecuteTransactionAction(payload)
+          isValidConnectDappAction(queryData) &&
+          isValidExecuteTransactionAction(queryData)
         ) {
           const action = {
-            name: 'execute-transaction',
-            payload,
-          } as ExecuteTransactionAction;
+            action: 'execute-transaction',
+            payload: queryData.data,
+          } as ExecuteTransactionActionRequest;
+
           walletConnectActionStore.set(action);
         } else {
           throw Error('Invalid payload to execute transaction');
         }
         break;
       default:
-        throw Error('Not supported this action');
+        throw Error('Action not supported');
     }
+  }
+
+  static async respond(
+    dAppMeta: DAppMeta,
+    response: ConnectActionResponse | ExecuteTransactionActionResponse
+  ) {
+    const responseUri = this._makeResponseUri(dAppMeta, response);
+    await Linking.openURL(responseUri);
   }
 }
 
