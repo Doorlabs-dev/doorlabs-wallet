@@ -1,16 +1,17 @@
 import { parseAmount } from '@services/tokens/amount';
 import { getUint256CalldataFromBN } from '@services/transaction';
+import { REQUEST_SCHEME } from '@services/walletconnect/walletconnect.action';
 import * as Linking from 'expo-linking';
 import { getChecksumAddress, stark } from 'starknet';
 
 export function testConnectLink() {
-  const testConnectLink = Linking.createURL('request', {
-    scheme: 'walletme',
+  const testConnectLink = Linking.createURL('', {
+    scheme: REQUEST_SCHEME,
     queryParams: {
       action: 'connect-dapp',
       data: JSON.stringify({
         meta: {
-          scheme: 'mydapp',
+          appId: 'mydapp',
           name: 'Dapp Shit',
         },
         account: {
@@ -25,13 +26,13 @@ export function testConnectLink() {
 }
 
 export function testExecuteLink() {
-  const testConnectLink = Linking.createURL('request', {
-    scheme: 'walletme',
+  const testConnectLink = Linking.createURL('', {
+    scheme: REQUEST_SCHEME,
     queryParams: {
       action: 'execute-transaction',
       data: JSON.stringify({
         meta: {
-          scheme: 'mydapp',
+          appId: 'mydapp',
           name: 'Dapp Shit',
         },
         account: {

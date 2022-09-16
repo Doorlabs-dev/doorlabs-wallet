@@ -29,7 +29,7 @@
 			<string>walletme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>walletme</string>
+				<string>wmreq</string>
 			</array>
 		</dict>
 	</array>
@@ -78,5 +78,9 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>wmres</string>
+	</array>
 </dict>
 </plist>

@@ -5,6 +5,8 @@ import {
   DAppMeta,
   ExecuteTransactionActionRequest,
   ExecuteTransactionActionResponse,
+  REQUEST_SCHEME,
+  RESPONSE_SCHEME,
   WalletConnectActions,
 } from './walletconnect.action';
 import walletConnectActionStore from './walletConnectActionRequestStore.store';
@@ -30,25 +32,25 @@ class WalletConnectActionLinkHandler {
     }
   }
 
-  static _makeResponseUri(
+  static _makeResponseUrl(
     dAppMeta: DAppMeta,
     response: ConnectActionResponse | ExecuteTransactionActionResponse
   ) {
-    const responseUri = Linking.createURL('response', {
-      scheme: dAppMeta.scheme,
+    const responseUrl = Linking.createURL('', {
+      scheme: RESPONSE_SCHEME,
       queryParams: {
         action: response.action,
         result: JSON.stringify(response.result),
       },
     });
-    return responseUri;
+    return responseUrl;
   }
 
   static async addAction(url: string) {
-    const { hostname, queryParams } = Linking.parse(url);
+    const { queryParams, scheme } = Linking.parse(url);
     const queryData = this._parseQueryParams(queryParams);
 
-    if (hostname !== 'request') throw Error('Unknown url');
+    if (scheme !== REQUEST_SCHEME) throw Error('Unsupported');
 
     switch (queryData?.action) {
       case WalletConnectActions.connectDapp:
@@ -87,8 +89,10 @@ class WalletConnectActionLinkHandler {
     dAppMeta: DAppMeta,
     response: ConnectActionResponse | ExecuteTransactionActionResponse
   ) {
-    const responseUri = this._makeResponseUri(dAppMeta, response);
-    await Linking.openURL(responseUri);
+    const responseUrl = this._makeResponseUrl(dAppMeta, response);
+    if (await Linking.canOpenURL(responseUrl)) {
+      await Linking.openURL(responseUrl);
+    }
   }
 }
 

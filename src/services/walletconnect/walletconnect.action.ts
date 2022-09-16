@@ -1,9 +1,12 @@
 import { AccountIdentifier } from '@services/wallet/wallet.model';
 import { Call } from 'starknet';
 
+export const REQUEST_SCHEME = 'wmreq';
+export const RESPONSE_SCHEME = 'wmres';
+
 export type DAppMeta = {
   name: string;
-  scheme: string;
+  appId: string;
 };
 
 export interface ConnectActionRequest {

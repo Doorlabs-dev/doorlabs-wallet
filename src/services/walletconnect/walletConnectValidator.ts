@@ -10,7 +10,7 @@ export function isValidConnectDappAction(queryData?: {
 
   const { meta } = queryData?.data;
 
-  if (!meta || !meta?.name || !meta?.scheme) return false;
+  if (!meta || !meta?.name || !meta?.appId) return false;
 
   return true;
 }

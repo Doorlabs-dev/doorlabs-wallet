@@ -10,7 +10,7 @@ async function walletConnectPreAuthorize(
     (c) =>
       c.account.address === accountIdentifier.address &&
       c.account.networkId === accountIdentifier.networkId &&
-      c.meta.scheme === dappMeta.scheme
+      c.meta.appId === dappMeta.appId
   );
 
   return result.length !== 0;
