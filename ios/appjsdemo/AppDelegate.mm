@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTConvert.h>
+#import "RNSplashScreen.h"  // here
 
 #import <React/RCTAppSetupUtils.h>
 
@@ -53,6 +54,8 @@
   [self.window makeKeyAndVisible];
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
+  
+  [RNSplashScreen show];  // here
 
   return YES;
 }

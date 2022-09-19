@@ -7,11 +7,6 @@
     "orientation": "portrait",
     "icon": "./assets/icons/app-icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#161616"
-    },
     "jsEngine": "hermes",
     "updates": {
       "fallbackToCacheTimeout": 0
