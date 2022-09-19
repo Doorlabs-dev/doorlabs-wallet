@@ -8,7 +8,6 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 
-
 import expo.modules.ReactActivityDelegateWrapper;
 
 public class MainActivity extends ReactActivity {
@@ -17,8 +16,8 @@ public class MainActivity extends ReactActivity {
     // Set the theme to AppTheme BEFORE onCreate to support
     // coloring the background, status bar, and navigation bar.
     // This is required for expo-splash-screen.
-    SplashScreen.show(this);  // here
-//    setTheme(R.style.AppTheme);
+    SplashScreen.show(this); // here
+    setTheme(R.style.AppTheme);
     super.onCreate(null);
   }
 
