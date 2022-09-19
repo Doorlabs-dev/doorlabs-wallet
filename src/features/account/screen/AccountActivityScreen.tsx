@@ -9,6 +9,7 @@ import { getTransactionsBySection } from '../utils/getTransactionsBySection';
 import { Text } from '@components/ui';
 import colors from '@styles/colors';
 import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
+import NoActivity from '../components/NoActivity';
 
 type Props = {};
 
@@ -24,6 +25,15 @@ const AccountActivityScreen = (props: Props) => {
     <Container center={false}>
       <AndroidHeaderFix />
       <SectionList
+        contentContainerStyle={
+          !transactionsSections.length
+            ? {
+                flexGrow: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }
+            : null
+        }
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <Spacer height={16} />}
         renderItem={({ item: tx }) => (
@@ -42,6 +52,7 @@ const AccountActivityScreen = (props: Props) => {
         keyExtractor={(tx) => tx.hash}
         sections={transactionsSections}
         ListFooterComponent={() => <Spacer height={100} />}
+        ListEmptyComponent={() => <NoActivity />}
       />
     </Container>
   );

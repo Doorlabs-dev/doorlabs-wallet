@@ -54,7 +54,6 @@ const AccountScreen = () => {
   if (!selectedAccount) {
     return (
       <Container center={false} padding={null}>
-        <Spacer height={48} />
         <NoAccount />
       </Container>
     );
