@@ -11,7 +11,8 @@
     <item name="android:textColorHint">#c8c8c8</item>
     <item name="android:textColor">@android:color/black</item>
   </style>
-  <style name="Theme.App.SplashScreen" parent="AppTheme">
-    <item name="android:windowBackground">@drawable/splashscreen</item>
+  <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
+    <item name="android:windowBackground"
+        >@color/splashscreen_background</item>
   </style>
 </resources>
