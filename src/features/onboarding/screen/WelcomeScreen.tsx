@@ -23,6 +23,7 @@ const WelcomeScreen = () => {
   return (
     <SafeArea>
       <Container>
+        <Spacer height={67} />
         <Image source={ONBOARD_LOGO} />
         <View style={styles.btnGr}>
           <PrimaryButton
