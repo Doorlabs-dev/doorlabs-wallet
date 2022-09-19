@@ -6,21 +6,20 @@ import wallet from '../../../services/wallet';
 import { colors } from '../../../styles';
 import styled from 'styled-components/native';
 import { BlurView as RNBlurView } from '@react-native-community/blur';
-import {
-  RouteProp,
-  StackActions,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
-import ScreenNames from '@router/screenNames';
 import { TextInput } from '@components/form';
 import { FieldValues, useForm } from 'react-hook-form';
 import useModal from '@hooks/useModal';
 import SkipVerifyPhrasePopup from './components/SkipVerifyPhrasePopup';
-import useAuthentication from '@features/auth/hooks/useAuthentication';
 import Toast from 'react-native-root-toast';
 import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
+import useCheckPhraseVerified from '../hooks/useCheckPhraseVerified';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  notifyPhraseVerifiedSuccess,
+  notifySkipVerifyPhrase,
+} from '../hooks/useVerifyPhraseEmitter';
 
 const PhraseContainer = styled.View`
   background-color: ${colors.greyScale700};
@@ -39,39 +38,40 @@ const BlurView = styled(RNBlurView)`
 
 type VerifyPhraseScreenMode = 'display' | 'verify';
 
-type ParamList = {
-  'verify-phrase': {
-    mode: VerifyPhraseScreenMode;
-  };
+type ParamsList = {
+  'verify-phrase': VerifySeedPhraseScreenParams;
+};
+
+export type VerifySeedPhraseScreenParams = {
+  mode?: VerifyPhraseScreenMode;
 };
 
 const VerifySeedPhraseScreen = () => {
+  const insets = useSafeAreaInsets();
   const [isLoading, setIsLoading] = useState(false);
   const [phrase, setPhrase] = useState('');
   const [isRevealed, setIsisRevealed] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
-  const route = useRoute<RouteProp<ParamList, 'verify-phrase'>>();
-  const screenMode = route?.params?.mode;
+  const route = useRoute<RouteProp<ParamsList, 'verify-phrase'>>();
+  const { mode: screenMode } = route?.params || {};
   const { control, handleSubmit } = useForm<FieldValues>({
     defaultValues: {
       input_phrase: '',
     },
   });
   const { visible, close, open } = useModal();
-  const { setIsAuthenticated, setIsAccountAvailable } = useAuthentication();
+  const { updatePhraseIsVerified } = useCheckPhraseVerified();
 
-  const goToApp = () => {
+  const skip = () => {
     close();
-    setTimeout(() => {
-      setIsAuthenticated(true);
-      setIsAccountAvailable(true);
-    }, 500);
+    notifySkipVerifyPhrase();
   };
 
   const submit = () =>
-    handleSubmit((values) => {
+    handleSubmit(async (values) => {
       if (values.input_phrase === phrase) {
-        goToApp();
+        await updatePhraseIsVerified();
+        notifyPhraseVerifiedSuccess();
       } else {
         Toast.show('Invalid phrase', {
           position: Toast.positions.CENTER,
@@ -128,8 +128,9 @@ const VerifySeedPhraseScreen = () => {
         <PrimaryButton label="Complete" onPress={submit()} />
         <Container />
         <SecondaryButton title="Remind me later" onPress={() => open()} />
+        <Spacer height={insets.bottom} />
         <SkipVerifyPhrasePopup
-          onSkip={goToApp}
+          onSkip={skip}
           visible={visible}
           onClose={close}
         />
@@ -196,13 +197,10 @@ const VerifySeedPhraseScreen = () => {
           )}
           <Container />
           <SecondaryButton title="Remind me later" onPress={() => open()} />
+          <Spacer height={insets.bottom} />
         </>
       )}
-      <SkipVerifyPhrasePopup
-        onSkip={goToApp}
-        visible={visible}
-        onClose={close}
-      />
+      <SkipVerifyPhrasePopup onSkip={skip} visible={visible} onClose={close} />
     </Container>
   );
 };

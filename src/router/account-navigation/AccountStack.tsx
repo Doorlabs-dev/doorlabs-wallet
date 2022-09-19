@@ -12,6 +12,7 @@ import SendNftScreen from '@features/nft/screen/SendNftScreen';
 import WebViewScreen from '@components/ui/WebViewScreen';
 import ConnectDappScreen from '@features/walletconnect/screens/ConnectDappScreen';
 import TransactionsApprovalScreen from '@features/transactions/screens/TransactionsApprovalScreen';
+import VerifySeedPhraseScreen from '@features/recovery/screen/VerifySeedPhraseScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const {
   WEBVIEW,
   ACCOUNT_CONNECT_DAPP,
   ACCOUNT_TRANSACTION_APPROVAL,
+  RECOVERY_VERIFY_PHRASE,
 } = ScreenNames;
 
 const AccountStack = () => {
@@ -114,6 +116,14 @@ const AccountStack = () => {
         }}
         name={ACCOUNT_TRANSACTION_APPROVAL}
         component={TransactionsApprovalScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: 'Show Recovery Phrase',
+        }}
+        name={RECOVERY_VERIFY_PHRASE}
+        component={VerifySeedPhraseScreen}
       />
     </Stack.Navigator>
   );
