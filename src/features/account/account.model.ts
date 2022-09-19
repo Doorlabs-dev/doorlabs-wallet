@@ -1,7 +1,7 @@
 import { addTransaction } from '@services/transaction';
 import wallet from '@services/wallet';
 import { ProviderInterface, Account as SNAccount, ec } from 'starknet';
-import { getNetwork, Network } from '../../services/network';
+import { Network } from '../../services/network';
 import { getProvider } from '../../services/provider';
 import {
   WalletAccount,

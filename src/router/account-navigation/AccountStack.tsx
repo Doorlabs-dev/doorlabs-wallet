@@ -10,6 +10,8 @@ import SendTokenScreen from '@features/tokens/screen/SendTokenScreen';
 import AddTokenScreen from '@features/tokens/screen/AddTokenScreen';
 import SendNftScreen from '@features/nft/screen/SendNftScreen';
 import WebViewScreen from '@components/ui/WebViewScreen';
+import ConnectDappScreen from '@features/walletconnect/screens/ConnectDappScreen';
+import TransactionsApprovalScreen from '@features/transactions/screens/TransactionsApprovalScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,8 @@ const {
   TOKEN_ADD_TOKEN,
   NFT_SEND_NFT,
   WEBVIEW,
+  ACCOUNT_CONNECT_DAPP,
+  ACCOUNT_TRANSACTION_APPROVAL,
 } = ScreenNames;
 
 const AccountStack = () => {
@@ -96,6 +100,20 @@ const AccountStack = () => {
         }}
         name={WEBVIEW}
         component={WebViewScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: 'Connect Dapp',
+        }}
+        name={ACCOUNT_CONNECT_DAPP}
+        component={ConnectDappScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: 'Transaction Approval',
+        }}
+        name={ACCOUNT_TRANSACTION_APPROVAL}
+        component={TransactionsApprovalScreen}
       />
     </Stack.Navigator>
   );

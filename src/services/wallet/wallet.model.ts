@@ -14,12 +14,12 @@ export interface WithSigner {
   signer: WalletAccountSigner;
 }
 
-export interface BaseWalletAccount {
+export interface AccountIdentifier {
   address: string;
   networkId: string;
 }
 
-export interface WalletAccount extends BaseWalletAccount, WithSigner {
+export interface WalletAccount extends AccountIdentifier, WithSigner {
   network: Network;
   hidden?: boolean;
 }
