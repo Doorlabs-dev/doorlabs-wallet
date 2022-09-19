@@ -20,6 +20,7 @@ import IconReceive from '@assets/svg/icon_receive.svg';
 import ReceiveAddressModal from '../components/ReceiveAddressModal';
 import { ScrollView } from 'react-native-gesture-handler';
 import TokensList from '@features/tokens/components/TokensList';
+import VerifyPhraseReminder from '@features/recovery/screen/components/VerifyPhraseReminder';
 
 const AccountScreen = () => {
   const { selectedAccount, isLoading } = useSelectedAccount(true);
@@ -91,6 +92,7 @@ const AccountScreen = () => {
           </View>
           <PendingTransactions />
           <Spacer height={24} />
+          <VerifyPhraseReminder />
           <TokensList
             renderFooter={() => (
               <SecondaryButton

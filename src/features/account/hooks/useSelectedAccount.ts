@@ -52,11 +52,10 @@ const useSelectedAccount = (fetchOnMount = false) => {
           }
         : undefined
     );
-    if (starknetAccount) {
-      setSelectedAccount(mapWalletAccountToAccount(starknetAccount));
-    } else {
-      throw Error('No account found');
-    }
+
+    setSelectedAccount(
+      starknetAccount ? mapWalletAccountToAccount(starknetAccount) : undefined
+    );
   };
 
   const exportPrivateKey = async () => {

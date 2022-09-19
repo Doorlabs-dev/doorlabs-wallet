@@ -11,6 +11,9 @@ import SecurityImportantExplainPopup from '../components/SecurityImportantExplai
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
+import { VerifySeedPhraseScreenParams } from '@features/recovery/screen/VerifySeedPhraseScreen';
+import useAuthentication from '@features/auth/hooks/useAuthentication';
+import useVerifyPhraseEmitter from '@features/recovery/hooks/useVerifyPhraseEmitter';
 
 type Props = {};
 
@@ -30,7 +33,22 @@ const SecureWalletScreen = (props: Props) => {
     open: openExplainModal,
     close: closeExplainModal,
   } = useModal();
-  const navigation = useNavigation<ScreenNavigationProps<any>>();
+  const navigation =
+    useNavigation<ScreenNavigationProps<VerifySeedPhraseScreenParams>>();
+  const { setIsAccountAvailable, setIsAuthenticated } = useAuthentication();
+
+  const goToApp = () => {
+    setTimeout(() => {
+      setIsAuthenticated(true);
+      setIsAccountAvailable(true);
+    }, 500);
+  };
+
+  useVerifyPhraseEmitter({
+    onPhraseVerifiedSuccess: goToApp,
+    onSkipVerifyPhrase: goToApp,
+  });
+
   return (
     <SafeArea>
       <Spacer height={40} />
@@ -68,7 +86,9 @@ const SecureWalletScreen = (props: Props) => {
         <PrimaryButton
           label="Start"
           onPress={() =>
-            navigation.navigate({ name: ScreenNames.RECOVERY_VERIFY_PHRASE })
+            navigation.navigate({
+              name: ScreenNames.RECOVERY_VERIFY_PHRASE,
+            })
           }
         />
         <Spacer height={34} />

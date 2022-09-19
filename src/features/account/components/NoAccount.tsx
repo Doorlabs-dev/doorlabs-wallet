@@ -14,6 +14,7 @@ const NoAccount = (props: Props) => {
       <Image
         source={require('@assets/images/account/icon_add_account.png')}
         style={{ width: 80, height: 80 }}
+        resizeMode="contain"
       />
       <Spacer height={24} />
       <Text size={14} lineHeight={24} weight={400} color={colors.greyScale300}>

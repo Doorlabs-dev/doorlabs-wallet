@@ -3,11 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image } from 'react-native';
 import { Container, Spacer } from '../../../components/layout';
-import { Button, PrimaryButton, Text, Title } from '../../../components/ui';
+import { PrimaryButton, Text, Title } from '../../../components/ui';
 import { ScreenNavigationProps } from '../../../router/navigation-props';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import useAuthentication from '../../auth/hooks/useAuthentication';
+import { phraseVerifiedStorage } from '../hooks/useCheckPhraseVerified';
 
 const ETHE_LOCK = require('@assets/ethereum_locker.png');
 
@@ -20,6 +21,7 @@ const ResetConfirmationScreen = (props: Props) => {
   const onConfirmReset = async () => {
     await wallet.reset();
     await deleteWalletPassword();
+    await phraseVerifiedStorage.delete();
     setIsAccountAvailable(false);
   };
   const headerHeight = useHeaderHeight();
