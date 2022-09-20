@@ -18,8 +18,7 @@ const NoAccount = (props: Props) => {
       />
       <Spacer height={24} />
       <Text size={14} lineHeight={24} weight={400} color={colors.greyScale300}>
-        Contrary to popular belief, Lorem Ipsum is not simply random text. It
-        has roots in a
+        No accounts on this network, click below to add one.
       </Text>
       <Spacer height={24} />
       <AddAccountButton />
