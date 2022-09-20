@@ -13,7 +13,7 @@ import { isAllowedNumericInputValue, isValidAddress } from '@utils/validator';
 import colors from '@styles/colors';
 import styled from 'styled-components/native';
 import useMaxFeeEstimateForTransfer from '../hooks/useMaxFeeForTransfer';
-import { number } from 'starknet';
+import { getChecksumAddress, number } from 'starknet';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import { addTransaction } from '@services/transaction';
@@ -190,6 +190,14 @@ const SendTokenScreen = (props: Props) => {
         rules={{
           required: 'Required',
           validate: { isValidAddress: isValidAddress },
+        }}
+        transformValue={(v) => {
+          if (!v) return v;
+          try {
+            return getChecksumAddress(v);
+          } catch (error) {
+            return v;
+          }
         }}
       />
       <Spacer height={8} />

@@ -31,7 +31,7 @@ const VerifyPhraseReminder = () => {
     useNavigation<ScreenNavigationProps<VerifySeedPhraseScreenParams>>();
 
   const backToHome = () => {
-    navigation.dispatch(StackActions.pop());
+    navigation.goBack();
   };
 
   const navigateToVerifyPhrase = () => {
