@@ -48,7 +48,7 @@ export type VerifySeedPhraseScreenParams = {
 
 const VerifySeedPhraseScreen = () => {
   const insets = useSafeAreaInsets();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [phrase, setPhrase] = useState('');
   const [isRevealed, setIsisRevealed] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
@@ -64,14 +64,18 @@ const VerifySeedPhraseScreen = () => {
 
   const skip = () => {
     close();
-    notifySkipVerifyPhrase();
+    setTimeout(() => {
+      notifySkipVerifyPhrase();
+    }, 500);
   };
 
   const submit = () =>
     handleSubmit(async (values) => {
       if (values.input_phrase === phrase) {
         await updatePhraseIsVerified();
-        notifyPhraseVerifiedSuccess();
+        setTimeout(() => {
+          notifyPhraseVerifiedSuccess();
+        }, 500);
       } else {
         Toast.show('Invalid phrase', {
           position: Toast.positions.CENTER,
@@ -86,7 +90,10 @@ const VerifySeedPhraseScreen = () => {
   }, [screenMode]);
 
   useEffect(() => {
-    getRecoveryPhrase();
+    setTimeout(() => {
+      // Prevent skip frames due to heavy getting phrase
+      getRecoveryPhrase();
+    }, 500);
   }, []);
 
   const getRecoveryPhrase = async () => {
