@@ -14,6 +14,7 @@ import ScreenNames from '@router/screenNames';
 import { VerifySeedPhraseScreenParams } from '@features/recovery/screen/VerifySeedPhraseScreen';
 import useAuthentication from '@features/auth/hooks/useAuthentication';
 import useVerifyPhraseEmitter from '@features/recovery/hooks/useVerifyPhraseEmitter';
+import CreateWalletSuccessPopup from '../components/CreateWalletSuccessPopup';
 
 type Props = {};
 
@@ -33,11 +34,17 @@ const SecureWalletScreen = (props: Props) => {
     open: openExplainModal,
     close: closeExplainModal,
   } = useModal();
+  const {
+    visible: createWalletSuccessVisible,
+    open: openCreateWalletSuccessModal,
+    close: closeCreateWalletSuccessModal,
+  } = useModal();
   const navigation =
     useNavigation<ScreenNavigationProps<VerifySeedPhraseScreenParams>>();
   const { setIsAccountAvailable, setIsAuthenticated } = useAuthentication();
 
   const goToApp = () => {
+    closeCreateWalletSuccessModal();
     setTimeout(() => {
       setIsAuthenticated(true);
       setIsAccountAvailable(true);
@@ -45,8 +52,8 @@ const SecureWalletScreen = (props: Props) => {
   };
 
   useVerifyPhraseEmitter({
-    onPhraseVerifiedSuccess: goToApp,
-    onSkipVerifyPhrase: goToApp,
+    onPhraseVerifiedSuccess: openCreateWalletSuccessModal,
+    onSkipVerifyPhrase: openCreateWalletSuccessModal,
   });
 
   return (
@@ -100,6 +107,10 @@ const SecureWalletScreen = (props: Props) => {
       <SecurityImportantExplainPopup
         visible={explainModalVisible}
         onClose={closeExplainModal}
+      />
+      <CreateWalletSuccessPopup
+        visible={createWalletSuccessVisible}
+        onClose={goToApp}
       />
     </SafeArea>
   );
