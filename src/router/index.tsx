@@ -1,9 +1,11 @@
 import useConnectListener from '@features/walletconnect/useConnectListener';
+import useScreenLayoutAnimation from '@hooks/useScreenLayoutAnimation';
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import useAuthentication from '../features/auth/hooks/useAuthentication';
 import SplashScreen from '../features/onboarding/screen/SplashScreen';
 import useAppState from '../hooks/useAppState';
+import AccountStack from './account-navigation/AccountStack';
 import AppDrawer from './AppDrawer';
 import AuthStack from './AuthStack';
 import OnboardingStack from './OnboardingStack';
@@ -30,20 +32,25 @@ const AppNavigation = () => {
     checkAccountAvailable();
   }, []);
 
-  const renderNavigator = useCallback(() => {
-    let navigator;
-    if (!isAccountAvailable) {
-      navigator = <OnboardingStack />;
-    } else {
-      navigator = isAuthenticated ? <AppDrawer /> : <AuthStack />;
-    }
+  const MemoAuthStack = useMemo(() => AuthStack, []);
 
-    return navigator;
+  const MemoAppDrawer = useMemo(() => AppDrawer, []);
+
+  const Navigator = useMemo(() => {
+    if (!isAccountAvailable) return OnboardingStack;
+
+    return isAuthenticated
+      ? useScreenLayoutAnimation(MemoAppDrawer)
+      : useScreenLayoutAnimation(MemoAuthStack);
   }, [isAccountAvailable, isAuthenticated]);
 
   if (isCheckingAccount) return <SplashScreen />;
 
-  return <NavigationContainer>{renderNavigator()}</NavigationContainer>;
+  return (
+    <NavigationContainer>
+      <Navigator />
+    </NavigationContainer>
+  );
 };
 
 export default AppNavigation;
