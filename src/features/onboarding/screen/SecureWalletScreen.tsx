@@ -51,9 +51,14 @@ const SecureWalletScreen = (props: Props) => {
     }, 500);
   };
 
+  const onCreateWalletSuccess = () => {
+    navigation.goBack();
+    openCreateWalletSuccessModal();
+  };
+
   useVerifyPhraseEmitter({
-    onPhraseVerifiedSuccess: openCreateWalletSuccessModal,
-    onSkipVerifyPhrase: openCreateWalletSuccessModal,
+    onPhraseVerifiedSuccess: onCreateWalletSuccess,
+    onSkipVerifyPhrase: onCreateWalletSuccess,
   });
 
   return (
