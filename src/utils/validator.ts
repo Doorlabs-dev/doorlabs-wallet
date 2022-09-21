@@ -14,7 +14,7 @@ export function isLiteralObject(data: any) {
 export const isNumeric = (numToCheck: any): boolean =>
   !isNaN(parseFloat(numToCheck)) && isFinite(numToCheck);
 
-export const isAllowedNumericInputValue = (value: string, maxDecimals = 16) => {
+export const isAllowedNumericInputValue = (value: string, maxDecimals = 18) => {
   const numericalRegex = new RegExp(`^[0-9]*.?[0-9]{0,${maxDecimals}}$`);
   if (value === '') {
     return true;
