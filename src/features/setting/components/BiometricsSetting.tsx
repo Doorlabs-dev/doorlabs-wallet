@@ -23,6 +23,7 @@ const BiometricsSetting = (props: Props) => {
       supportedTypes={supportedTypes}
       enabled={enabled}
       onChange={onChange}
+      textSize={18}
     />
   );
 };

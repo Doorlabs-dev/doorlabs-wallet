@@ -12,8 +12,7 @@ import ScreenNames from '../../../router/screenNames';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import useAuthentication from '../hooks/useAuthentication';
-
-const LOGO = require('@assets/logo.png');
+import AppLogo from '@assets/svg/app_logo.svg';
 
 const LoginScreen = () => {
   const { getWalletSavedPassword } = useWalletPassword();
@@ -58,7 +57,7 @@ const LoginScreen = () => {
   return (
     <Container center={false} alignItems="center">
       <View style={styles.logoWrap}>
-        <Image source={LOGO} style={styles.logo} />
+        <AppLogo />
       </View>
       <View style={styles.tileWrap}>
         <Title size={20}>Unlock your wallet to continue</Title>

@@ -1,10 +1,8 @@
-import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import TextInput from './TextInput';
 import { PrimaryButton } from '@components/ui';
 import useWalletPassword from '@services/wallet_password';
-import { Spacer } from '@components/layout';
 import Toast from 'react-native-root-toast';
 
 type Props = {
@@ -49,6 +47,7 @@ const PasswordValidationForm = ({ onPass, onReject }: Props) => {
         }}
         rules={{ required: true }}
         label="Password"
+        placeholder="Password"
       />
       <PrimaryButton loading={isLoading} label="Next" onPress={submit} />
     </>

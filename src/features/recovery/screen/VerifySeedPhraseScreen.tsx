@@ -20,6 +20,7 @@ import {
   notifyPhraseVerifiedSuccess,
   notifySkipVerifyPhrase,
 } from '../hooks/useVerifyPhraseEmitter';
+import useHeaderTitle from '@hooks/useHeaderTitle';
 
 const PhraseContainer = styled.View`
   background-color: ${colors.greyScale700};
@@ -85,7 +86,9 @@ const VerifySeedPhraseScreen = () => {
 
   useLayoutEffect(() => {
     if (screenMode && screenMode === 'verify') {
-      navigation.setOptions({ title: 'Verify Recovery Phrase' });
+      navigation.setOptions({
+        headerTitle: useHeaderTitle('Verify Recovery Phrase'),
+      });
     }
   }, [screenMode]);
 

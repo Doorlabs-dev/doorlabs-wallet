@@ -8,6 +8,8 @@ import { ScreenNavigationProps } from './navigation-props';
 import IconClose from '@assets/svg/icon_close.svg';
 import SettingScreen from '@features/setting/screen/SettingScreen';
 import GetSeedPhraseScreen from '@features/recovery/screen/GetSeedPhraseScreen';
+import useHeaderTitle from '@hooks/useHeaderTitle';
+import { Row, Spacer } from '@components/layout';
 
 const Stack = createNativeStackNavigator();
 const { ACCOUNT_STACK, RECOVERY_GET_PHRASE } = ScreenNames;
@@ -31,15 +33,17 @@ const SettingStack = () => {
       <Stack.Screen
         name={'settings'}
         options={{
-          headerTitle: 'Settings',
-          headerTitleAlign: 'center',
+          headerTitle: useHeaderTitle('Settings'),
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate({ name: ACCOUNT_STACK });
               }}
             >
-              <IconClose />
+              <Row alignItems="center">
+                <IconClose />
+                <Spacer width={16} />
+              </Row>
             </TouchableOpacity>
           ),
         }}
@@ -47,7 +51,7 @@ const SettingStack = () => {
       />
       <Stack.Screen
         options={{
-          headerTitle: 'View Recovery Phrase',
+          headerTitle: useHeaderTitle('View Recovery Phrase'),
         }}
         name={RECOVERY_GET_PHRASE}
         component={GetSeedPhraseScreen}
