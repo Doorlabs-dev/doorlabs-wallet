@@ -4,7 +4,7 @@ import { Account } from '../account.model';
 import useAccounts from '../hooks/useAccounts';
 import AccountItem from './AccountItem';
 import { Text } from '@components/ui';
-import { Spacer } from '@components/layout';
+import { Row, Spacer } from '@components/layout';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AddAccountButton from './AddAccountButton';
 import { FlatList } from 'react-native';
@@ -26,14 +26,17 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
         setAccounts(res);
       });
     }
-  }, [visible]);
+  }, [visible, selectedAccount?.address]);
 
   return (
     <BottomSheet visible={visible} onClose={onClose}>
-      <Text size={20} lineHeight={30} weight={500}>
-        List Account
-      </Text>
-      <Spacer height={32} />
+      <Row alignItems="center" justifyContent="space-between">
+        <Text size={20} lineHeight={30} weight={500}>
+          List Account
+        </Text>
+        <AddAccountButton shape="round" />
+      </Row>
+      <Spacer height={16} />
 
       {!!accounts.length ? (
         <>
@@ -53,14 +56,11 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
               />
             )}
           />
-
-          <AddAccountButton />
         </>
       ) : (
         <>
           <Text>No accounts on this network yet</Text>
           <Spacer height={16} />
-          <AddAccountButton />
         </>
       )}
     </BottomSheet>
