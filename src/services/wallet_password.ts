@@ -4,8 +4,12 @@ const WALLET_PASSWORD_KEY = 'wallet_password';
 
 const useWalletPassword = () => {
   const getWalletSavedPassword = async () => {
-    const value = await SecureStore.getItemAsync(WALLET_PASSWORD_KEY);
-    return value;
+    try {
+      const value = await SecureStore.getItemAsync(WALLET_PASSWORD_KEY);
+      return value;
+    } catch (error) {
+      return null;
+    }
   };
 
   const setWalletPassword = async (password: string) => {
