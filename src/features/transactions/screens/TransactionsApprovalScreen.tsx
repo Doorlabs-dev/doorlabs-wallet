@@ -13,11 +13,21 @@ import OutlinedButton from '@components/ui/button/OutlinedButton';
 import { PrimaryButton } from '@components/ui';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import { executeTransaction } from '@services/transaction/transactionExecution';
+import FeeEstimation from '@features/tokens/components/FeeEstimation';
+import Toast from 'react-native-root-toast';
+import {
+  SendNFTTransactionReview,
+  SendTokenTransactionReview,
+} from '../transactionReview.type';
+import TransactionReview from '@features/tokens/components/TransactionReview';
+
+export type TransactionApprovalScreenParams = {
+  transactions: Call | Call[];
+  transactionReview?: SendTokenTransactionReview | SendNFTTransactionReview;
+};
 
 type Params = {
-  'transaction-approval': {
-    transactions: Call | Call[];
-  };
+  'transaction-approval': TransactionApprovalScreenParams;
 };
 
 const Section = styled.View`
@@ -34,6 +44,8 @@ const TransactionsApprovalScreen = () => {
   const selectedAccount = useRecoilValue(selectedAccountState);
   const route = useRoute<RouteProp<Params, 'transaction-approval'>>();
   const transactions = route?.params?.transactions || null;
+  const transactionReview = route?.params?.transactionReview || null;
+
   const navigation = useNavigation<ScreenNavigationProps<any>>();
   const [executing, setExecuting] = useState(false);
 
@@ -49,11 +61,36 @@ const TransactionsApprovalScreen = () => {
         transactions: transactions,
       });
       setExecuting(false);
+      Toast.show('Transaction Received', { position: Toast.positions.CENTER });
       navigation.goBack();
     } catch (error) {
-      console.log(error);
+      Toast.show('Error executing transaction', {
+        position: Toast.positions.CENTER,
+      });
       setExecuting(false);
     }
+  };
+
+  const renderButtons = (isExecutable: boolean) => {
+    return (
+      <>
+        <Spacer height={16} />
+        <Row>
+          <Flex>
+            <OutlinedButton label="Reject" onPress={onReject} />
+          </Flex>
+          <Spacer width={16} />
+          <Flex>
+            <PrimaryButton
+              disabled={!isExecutable}
+              loading={executing}
+              label="Approve"
+              onPress={onApprove}
+            />
+          </Flex>
+        </Row>
+      </>
+    );
   };
 
   if (!transactions) return <Container />;
@@ -65,6 +102,14 @@ const TransactionsApprovalScreen = () => {
         <AccountReviewInfo account={selectedAccount} />
       </Section>
       <Spacer height={16} />
+      {!!transactionReview && (
+        <>
+          <Section>
+            <TransactionReview transactionReview={transactionReview} />
+          </Section>
+          <Spacer height={16} />
+        </>
+      )}
       {isArray(transactions) ? (
         transactions.map((tx, index) => (
           <React.Fragment key={index}>
@@ -82,19 +127,12 @@ const TransactionsApprovalScreen = () => {
           <Spacer height={16} />
         </>
       )}
-      <Row>
-        <Flex>
-          <OutlinedButton label="Reject" onPress={onReject} />
-        </Flex>
-        <Spacer width={16} />
-        <Flex>
-          <PrimaryButton
-            loading={executing}
-            label="Approve"
-            onPress={onApprove}
-          />
-        </Flex>
-      </Row>
+
+      <FeeEstimation
+        account={selectedAccount}
+        call={transactions}
+        render={renderButtons}
+      />
     </Container>
   );
 };
