@@ -36,7 +36,7 @@ const AppNavigation = () => {
   const MemoMainStack = useMemo(() => MainStack, []);
 
   const Navigator = useMemo(() => {
-    if (!isAccountAvailable) return OnboardingStack;
+    if (!isAccountAvailable) return useScreenLayoutAnimation(OnboardingStack);
 
     return isAuthenticated
       ? useScreenLayoutAnimation(MemoMainStack)
