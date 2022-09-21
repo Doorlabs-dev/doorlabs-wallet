@@ -1,9 +1,9 @@
-import { StackActionType } from '@react-navigation/native';
+import { DrawerActionType, StackActionType } from '@react-navigation/native';
 
 type ScreenNavigationProps<T> = {
   navigate: ({ name, params }: { name: string; params?: T }) => void;
   goBack: () => void;
-  dispatch: (actions: StackActionType) => void;
+  dispatch: (actions: StackActionType | DrawerActionType) => void;
   openDrawer: () => void;
   closeDrawer: () => void;
   setParams: (params?: T) => void;

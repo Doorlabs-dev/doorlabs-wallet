@@ -8,6 +8,8 @@ import { Row, Spacer } from '@components/layout';
 import useSelectedAccount from '../hooks/useSelectedAccount';
 import AddAccountButton from './AddAccountButton';
 import { FlatList } from 'react-native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { ScreenNavigationProps } from '@router/navigation-props';
 
 type Props = {
   visible: boolean;
@@ -19,6 +21,7 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const { getAccountsByNetwork } = useAccounts();
   const { selectAccount, selectedAccount } = useSelectedAccount(false);
+  const navigation = useNavigation<ScreenNavigationProps<any>>();
 
   useEffect(() => {
     if (visible) {
@@ -50,6 +53,7 @@ const AccountsListModal = ({ visible, onClose, networkId }: Props) => {
                 onPress={async () => {
                   await selectAccount(acc);
                   setTimeout(() => {
+                    navigation.dispatch(DrawerActions.closeDrawer());
                     onClose();
                   }, 0);
                 }}
