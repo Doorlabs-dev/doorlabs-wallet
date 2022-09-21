@@ -39,7 +39,7 @@ const PendingTransactionItem = ({
 
   const Icon = transaction.meta?.type
     ? IconByType[transaction.meta?.type]
-    : () => null;
+    : IconByType.transfer;
 
   return (
     <Container>
