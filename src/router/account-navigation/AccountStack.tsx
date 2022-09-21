@@ -43,6 +43,7 @@ const AccountStack = () => {
         },
         headerBackTitleVisible: false,
         headerTintColor: colors.white,
+        animation: 'slide_from_right',
       }}
     >
       <Stack.Screen

@@ -16,7 +16,6 @@ const {
   CREATE_WALLET_PASSWORD,
   SECURE_WALLET,
   INPUT_PHRASE,
-  RESTORE_WALLET,
   RECOVERY_VERIFY_PHRASE,
 } = ScreenNames;
 
@@ -36,6 +35,7 @@ export const defaultScreenOptions: NativeStackNavigationOptions = {
     backgroundColor: colors.primary,
   },
   headerTitleAlign: 'left',
+  animation: 'slide_from_right',
 };
 
 const OnboardingStack = () => {

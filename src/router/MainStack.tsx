@@ -6,8 +6,10 @@ import CustomDrawer from './components/CustomDrawer';
 import SettingStack from './SettingStack';
 import AccountStack from './account-navigation/AccountStack';
 import useWalletConnect from '@features/walletconnect/useWalletConnect';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 const { ACCOUNT_STACK, SETTING_STACK } = ScreenNames;
 
@@ -42,4 +44,16 @@ const AppDrawer = () => {
   );
 };
 
-export default AppDrawer;
+const Main = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Main" component={AppDrawer} />
+    </Stack.Navigator>
+  );
+};
+
+export default Main;

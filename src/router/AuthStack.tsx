@@ -25,6 +25,7 @@ const defaultScreenOptions: NativeStackNavigationOptions = {
   },
   headerTitleAlign: 'left',
   headerTintColor: colors.white,
+  animation: 'slide_from_right',
 };
 
 const AuthStack = () => {
