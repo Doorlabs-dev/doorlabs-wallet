@@ -10,6 +10,7 @@ import PrimaryButton from './button/PrimaryButton';
 import TodoScreen from './TodoScreen';
 import DefaultAvatar from './DefaultAvatar';
 import SearchBar from './SearchBar';
+import HeaderTitle from './HeaderTitle';
 
 export {
   Title,
@@ -24,4 +25,5 @@ export {
   TodoScreen,
   DefaultAvatar,
   SearchBar,
+  HeaderTitle,
 };

@@ -4,7 +4,6 @@ import ScreenNames from '../screenNames';
 import AccountTabs from './AccountTabs';
 import AccountPrivateKeyScreen from '@features/account/screen/AccountPrivateKeyScreen';
 import colors from '@styles/colors';
-import AccountReceiveScreen from '@features/account/screen/AccountReceiveScreen';
 import SelectTokenScreen from '@features/tokens/screen/SelectTokenScreen';
 import SendTokenScreen from '@features/tokens/screen/SendTokenScreen';
 import AddTokenScreen from '@features/tokens/screen/AddTokenScreen';
@@ -13,13 +12,13 @@ import WebViewScreen from '@components/ui/WebViewScreen';
 import ConnectDappScreen from '@features/walletconnect/screens/ConnectDappScreen';
 import TransactionsApprovalScreen from '@features/transactions/screens/TransactionsApprovalScreen';
 import VerifySeedPhraseScreen from '@features/recovery/screen/VerifySeedPhraseScreen';
+import useHeaderTitle from '@hooks/useHeaderTitle';
 
 const Stack = createNativeStackNavigator();
 
 const {
   ACCOUNT_TABS,
   ACCOUNT_PRIVATE_KEY,
-  ACCOUNT_RECEIVE,
   TOKEN_SELECT_TOKENS,
   TOKEN_SEND,
   TOKEN_ADD_TOKEN,
@@ -55,42 +54,35 @@ const AccountStack = () => {
       />
       <Stack.Screen
         options={{
-          headerTitle: 'Show Private Key',
+          headerTitle: useHeaderTitle('Show Private Key'),
         }}
         name={ACCOUNT_PRIVATE_KEY}
         component={AccountPrivateKeyScreen}
       />
       <Stack.Screen
         options={{
-          headerTitle: 'Receive',
-        }}
-        name={ACCOUNT_RECEIVE}
-        component={AccountReceiveScreen}
-      />
-      <Stack.Screen
-        options={{
-          headerTitle: 'Send',
+          headerTitle: useHeaderTitle('Send'),
         }}
         name={TOKEN_SELECT_TOKENS}
         component={SelectTokenScreen}
       />
       <Stack.Screen
         options={{
-          headerTitle: 'Send',
+          headerTitle: useHeaderTitle('Send'),
         }}
         name={TOKEN_SEND}
         component={SendTokenScreen}
       />
       <Stack.Screen
         options={{
-          headerTitle: 'Add tokens',
+          headerTitle: useHeaderTitle('Add tokens'),
         }}
         name={TOKEN_ADD_TOKEN}
         component={AddTokenScreen}
       />
       <Stack.Screen
         options={{
-          headerTitle: 'Send NFT',
+          headerTitle: useHeaderTitle('Send NFT'),
         }}
         name={NFT_SEND_NFT}
         component={SendNftScreen}
@@ -105,14 +97,14 @@ const AccountStack = () => {
       />
       <Stack.Screen
         options={{
-          title: 'Connect Dapp',
+          headerTitle: useHeaderTitle('Connect Dapp'),
         }}
         name={ACCOUNT_CONNECT_DAPP}
         component={ConnectDappScreen}
       />
       <Stack.Screen
         options={{
-          title: 'Transaction Approval',
+          headerTitle: useHeaderTitle('Transaction Approval'),
         }}
         name={ACCOUNT_TRANSACTION_APPROVAL}
         component={TransactionsApprovalScreen}
@@ -120,7 +112,7 @@ const AccountStack = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: 'Show Recovery Phrase',
+          headerTitle: useHeaderTitle('Show Recovery Phrase'),
         }}
         name={RECOVERY_VERIFY_PHRASE}
         component={VerifySeedPhraseScreen}

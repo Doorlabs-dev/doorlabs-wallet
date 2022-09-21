@@ -1,6 +1,7 @@
 import SecureWalletScreen from '@features/onboarding/screen/SecureWalletScreen';
 import InputSeedPhraseScreen from '@features/recovery/screen/InputSeedPhraseScreen';
 import VerifySeedPhraseScreen from '@features/recovery/screen/VerifySeedPhraseScreen';
+import useHeaderTitle from '@hooks/useHeaderTitle';
 import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
@@ -9,7 +10,6 @@ import colors from '@styles/colors';
 import React from 'react';
 import NewWalletScreen from '../features/onboarding/screen/NewWalletScreen';
 import WelcomeScreen from '../features/onboarding/screen/WelcomeScreen';
-import RestoreWalletScreen from '../features/recovery/screen/RestoreWalletScreen';
 import ScreenNames from './screenNames';
 const {
   WELCOME,
@@ -54,7 +54,7 @@ const OnboardingStack = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: 'Show Recovery Phrase',
+          headerTitle: useHeaderTitle('Show Recovery Phrase'),
         }}
         name={RECOVERY_VERIFY_PHRASE}
         component={VerifySeedPhraseScreen}
@@ -64,10 +64,9 @@ const OnboardingStack = () => {
         component={InputSeedPhraseScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Restore wallet',
+          headerTitle: useHeaderTitle('Restore wallet'),
         }}
       />
-      <Stack.Screen name={RESTORE_WALLET} component={RestoreWalletScreen} />
     </Stack.Navigator>
   );
 };
