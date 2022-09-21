@@ -6,7 +6,7 @@ import colors from '@styles/colors';
 import IconEther from '@assets/svg/icon_ether.svg';
 import { Token } from '@services/tokens/token.model';
 import { Account } from '@features/account/account.model';
-import formatEther from '@utils/formatEther';
+import formatUnits from '@utils/formatUnits';
 import { View } from 'react-native';
 import { useBalance } from '../hooks/useBalance';
 
@@ -59,7 +59,7 @@ const SelectTokenItem = ({
               {token?.name}
             </Text>
             <Text color={colors.white} size={16} weight={500} lineHeight={24}>
-              {formatEther(tokenBalance || 0)} {token?.symbol}
+              {formatUnits(tokenBalance || 0, token?.decimals)} {token?.symbol}
             </Text>
           </View>
         </Row>
