@@ -1,19 +1,25 @@
 import React from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  RouteProp,
+  StackActions,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { AspectNft } from '@services/nft/aspect.service';
 import selectedAccountState from '@features/account/selected-account.state';
 import { useRecoilValue } from 'recoil';
-import { Container, SafeArea, Spacer } from '@components/layout';
+import { Container, Spacer } from '@components/layout';
 import { PrimaryButton, Text } from '@components/ui';
 import { FieldValues, useForm } from 'react-hook-form';
 import { TextInput } from '@components/form';
 import NftInfoCard from '../components/NftInfoCard';
 import { isValidAddress } from '@utils/validator';
-import { executeTransaction } from '@services/transaction/transactionExecution';
-import { stark } from 'starknet';
+import { getChecksumAddress, stark } from 'starknet';
 import { getUint256CalldataFromBN } from '@services/transaction';
 import { BigNumber } from 'ethers';
 import { ScreenNavigationProps } from '@router/navigation-props';
+import ScreenNames from '@router/screenNames';
+import { SendNFTTransactionReview } from '@features/transactions/transactionReview.type';
 
 type Props = {};
 
@@ -43,19 +49,28 @@ const SendNftScreen = (props: Props) => {
   const submit = () =>
     handleSubmit(async (values) => {
       try {
-        await executeTransaction({
-          account: selectedAccount!,
-          transactions: {
-            contractAddress: nft.contract_address,
-            entrypoint: 'transferFrom',
-            calldata: stark.compileCalldata({
-              from_: selectedAccount?.address!,
-              to: values.recipient,
-              tokenId: getUint256CalldataFromBN(BigNumber.from(nft.token_id)),
-            }),
-          },
-        });
-        navigation.goBack();
+        const transactions = {
+          contractAddress: nft.contract_address,
+          entrypoint: 'transferFrom',
+          calldata: stark.compileCalldata({
+            from_: selectedAccount?.address!,
+            to: values.recipient,
+            tokenId: getUint256CalldataFromBN(BigNumber.from(nft.token_id)),
+          }),
+        };
+
+        const transactionReview: SendNFTTransactionReview = {
+          type: 'sendNft',
+          tokenId: nft.token_id,
+          to: values.recipient,
+        };
+
+        navigation.dispatch(
+          StackActions.replace(ScreenNames.ACCOUNT_TRANSACTION_APPROVAL, {
+            transactions,
+            transactionReview,
+          })
+        );
       } catch (error) {
         console.log(error);
       }
@@ -83,6 +98,14 @@ const SendNftScreen = (props: Props) => {
           validate: {
             isValidAddress,
           },
+        }}
+        transformValue={(v) => {
+          if (!v) return v;
+          try {
+            return getChecksumAddress(v);
+          } catch (error) {
+            return v;
+          }
         }}
         errorMessages={{
           isValidAddress: 'Invalid address',
