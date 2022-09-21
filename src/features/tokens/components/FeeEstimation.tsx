@@ -6,7 +6,7 @@ import { Account } from '@features/account/account.model';
 import { useBalance } from '../hooks/useBalance';
 import useFeeEstimation from '../hooks/useFeeEstimation';
 import { Text } from '@components/ui';
-import { Row } from '@components/layout';
+import { Row, Spacer } from '@components/layout';
 import colors from '@styles/colors';
 import { utils } from 'ethers';
 import styled from 'styled-components/native';
@@ -49,9 +49,6 @@ const FeeEstimation = ({ account, call, render }: Props) => {
             <Text size={16} color={colors.white}>
               Network fee
             </Text>
-            {!isEnough && !isFetchingFee && (
-              <Text>Not enough ETH for transaction</Text>
-            )}
           </View>
           {isFetchingFee ? (
             <ActivityIndicator size="small" color={colors.white} />
@@ -61,6 +58,12 @@ const FeeEstimation = ({ account, call, render }: Props) => {
             </Text>
           )}
         </Row>
+        {!isEnough && !isFetchingFee && (
+          <>
+            <Spacer height={8} />
+            <Text color={colors.red}>Not enough ETH for transaction</Text>
+          </>
+        )}
       </Container>
       {render?.(isEnough && !isFetchingFee)}
     </>
