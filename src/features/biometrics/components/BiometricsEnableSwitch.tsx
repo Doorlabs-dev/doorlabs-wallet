@@ -9,7 +9,7 @@ type Props = {
   enabled?: boolean;
   onChange?: (enabled: boolean) => void;
   supportedTypes: LocalAuthentication.AuthenticationType[];
-  authType?: string;
+  authType: string;
   textSize?: number;
 };
 

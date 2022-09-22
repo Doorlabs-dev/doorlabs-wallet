@@ -7,7 +7,7 @@ type Props = {};
 const BiometricsSetting = (props: Props) => {
   const [enabled, setEnabled] = useState(false);
 
-  const { supportedTypes } = useBiometrics();
+  const { supportedTypes, getAuthenticationTypeName } = useBiometrics();
 
   const onChange = async (enabled: boolean) => {
     setEnabled(enabled);
@@ -23,6 +23,7 @@ const BiometricsSetting = (props: Props) => {
       supportedTypes={supportedTypes}
       enabled={enabled}
       onChange={onChange}
+      authType={getAuthenticationTypeName()}
       textSize={18}
     />
   );
