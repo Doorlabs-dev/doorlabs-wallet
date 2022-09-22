@@ -4,7 +4,6 @@ import { Container, Spacer } from '@components/layout';
 import { FieldValues, useForm } from 'react-hook-form';
 import { TextInput } from '@components/form';
 import { PrimaryButton, Text } from '@components/ui';
-import { transfer } from '@services/tokens';
 import { useRecoilValue } from 'recoil';
 import selectedAccountState from '@features/account/selected-account.state';
 import { utils } from 'ethers';
@@ -13,16 +12,20 @@ import { isAllowedNumericInputValue, isValidAddress } from '@utils/validator';
 import colors from '@styles/colors';
 import styled from 'styled-components/native';
 import useMaxFeeEstimateForTransfer from '../hooks/useMaxFeeForTransfer';
-import { getChecksumAddress, number } from 'starknet';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { Call, getChecksumAddress, number, stark } from 'starknet';
+import {
+  RouteProp,
+  StackActions,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
-import { addTransaction } from '@services/transaction';
+import { getUint256CalldataFromBN } from '@services/transaction';
 import { useBalance } from '../hooks/useBalance';
 import { Token } from '@services/tokens/token.model';
-import Toast from 'react-native-root-toast';
-import useModal from '@hooks/useModal';
-import SendTokenConfirmationModal from '../components/SendTokenConfirmationModal';
 import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
+import ScreenNames from '@router/screenNames';
+import { SendTokenTransactionReview } from '@features/transactions/transactionReview.type';
 
 type Props = {};
 
@@ -49,21 +52,13 @@ const SendTokenScreen = (props: Props) => {
     defaultValues: {
       amount: '',
       recipient: '',
-      // '0x3eae8126702bbf06de496dbf9b745ee423a3b4836aa35dd2b3d2e6c10323f9d',
-      // for testing only
     },
     mode: 'onChange',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
   const route = useRoute<RouteProp<ParamsList>>();
   const selectedAccount = useRecoilValue(selectedAccountState);
   const token = route.params.token;
-  const {
-    visible: confirmationModalVisible,
-    close: closeConfirmationModal,
-    open: openConfirmationModal,
-  } = useModal();
 
   const { data: balance } = useBalance(token?.address, selectedAccount);
 
@@ -82,7 +77,7 @@ const SendTokenScreen = (props: Props) => {
     balance: parsedBalance,
   });
 
-  const onUseMax = useCallback(() => {
+  const onUseMax = () => {
     if (balance && maxFee) {
       const maxAmount = parsedBalance.sub(number.toHex(maxFee));
       const formattedMaxAmount = utils.formatUnits(maxAmount, token?.decimals);
@@ -91,13 +86,17 @@ const SendTokenScreen = (props: Props) => {
         'amount',
         maxAmount.lte(0)
           ? utils.formatUnits(balance, token?.decimals)
-          : formattedMaxAmount
+          : formattedMaxAmount,
+        {
+          shouldValidate: true,
+        }
       );
     }
-  }, [setValue, maxFee, balance, token?.decimals]);
+  };
 
   const isSufficientAmount = (value: string): boolean => {
     const parsedAmount = parseAmount(value ?? '0', token?.decimals);
+
     if (balance && maxFee) {
       const maxAmount = parsedBalance.sub(number.toHex(maxFee));
       return parsedAmount.lte(maxAmount);
@@ -106,38 +105,32 @@ const SendTokenScreen = (props: Props) => {
     return parsedAmount.lte(parsedBalance);
   };
 
-  const submit = async () => {
-    const values = getValues();
-    try {
-      setIsSubmitting(true);
-      const txRes = await transfer({
-        fromAccount: selectedAccount!,
-        to: values.recipient,
-        token,
-        amount: utils.parseUnits(values.amount, token?.decimals),
-      });
-      await addTransaction({
-        hash: txRes.transaction_hash,
-        account: selectedAccount?.getWalletAccount()!,
-        meta: {
-          title: 'Transfer',
-          type: 'transfer',
-        },
-      });
-      navigation.goBack();
-    } catch (error) {
-      Toast.show(`${error}`, {
-        position: Toast.positions.CENTER,
-      });
-      console.log(error);
-    }
-
-    setIsSubmitting(false);
-  };
-
   const onNext = () => {
     handleSubmit(async (values) => {
-      openConfirmationModal();
+      const call: Call = {
+        contractAddress: token.address,
+        entrypoint: 'transfer',
+        calldata: stark.compileCalldata({
+          recipient: values.recipient,
+          amount: getUint256CalldataFromBN(
+            parseAmount(values.amount, token?.decimals)
+          ),
+        }),
+      };
+
+      const transactionReview: SendTokenTransactionReview = {
+        type: 'send',
+        amount: values.amount,
+        to: values.recipient,
+        token,
+      };
+
+      navigation.dispatch(
+        StackActions.replace(ScreenNames.ACCOUNT_TRANSACTION_APPROVAL, {
+          transactions: call,
+          transactionReview,
+        })
+      );
     })();
   };
 
@@ -202,16 +195,6 @@ const SendTokenScreen = (props: Props) => {
       />
       <Spacer height={8} />
       <PrimaryButton label="Next" onPress={onNext} />
-      <SendTokenConfirmationModal
-        token={token}
-        account={selectedAccount}
-        amount={getValues('amount')}
-        recipient={getValues('recipient')}
-        visible={confirmationModalVisible}
-        onClose={closeConfirmationModal}
-        onApprove={submit}
-        isLoading={isSubmitting}
-      />
     </Container>
   );
 };
