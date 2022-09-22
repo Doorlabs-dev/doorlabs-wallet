@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { useEffect, useState } from 'react';
 import LocalStorage from '@services/store/localstore';
@@ -44,8 +44,12 @@ const useBiometrics = (): UseBiometrics => {
   const getAuthenticationTypeName = (): string => {
     return supportedTypes[supportedTypes.length - 1] ===
       LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
-      ? 'FaceID'
-      : 'TouchID';
+      ? Platform.OS === 'ios'
+        ? 'FaceID'
+        : 'Face Recognition'
+      : Platform.OS === 'ios'
+      ? 'TouchID'
+      : 'Fingerprint';
   };
 
   const checkAvailable = async () => {
