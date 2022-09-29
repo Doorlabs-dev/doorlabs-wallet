@@ -5,7 +5,7 @@ import useAuthentication from '@features/auth/hooks/useAuthentication';
 const SESSION_DURATION = 30e3; //30s
 
 const useSession = () => {
-  const { setIsAuthenticated, isAuthenticated } = useAuthentication();
+  const { setIsAuthenticated } = useAuthentication();
   const backgroundAt = useRef<number>();
 
   const lock = () => {
@@ -18,11 +18,10 @@ const useSession = () => {
 
   const checkShouldLock = () => {
     if (!backgroundAt.current) return;
-
     const now = Date.now();
     const sleepTime = now - backgroundAt.current;
 
-    if (sleepTime >= SESSION_DURATION && isAuthenticated) {
+    if (sleepTime >= SESSION_DURATION) {
       lock();
     }
 
