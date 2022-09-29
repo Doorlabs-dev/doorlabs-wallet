@@ -5,6 +5,7 @@ const secondary = '#383838';
 const greyScale = '#414141';
 const greyScale800 = '#2E2E2E';
 const greyScale700 = '#414141';
+const greyScale650 = '#565656';
 const greyScale600 = '#707070';
 const greyScale400 = '#A0A0A0';
 const greyScale300 = '#CFCFCF';
@@ -28,6 +29,7 @@ export default {
   greyScale,
   greyScale800,
   greyScale700,
+  greyScale650,
   greyScale600,
   greyScale400,
   greyScale300,
