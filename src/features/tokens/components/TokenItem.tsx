@@ -9,7 +9,7 @@ import { Token } from '@services/tokens/token.model';
 import { Account } from '@features/account/account.model';
 import formatUnits from '@utils/formatUnits';
 import { useBalance } from '../hooks/useBalance';
-import { utils } from 'ethers';
+import { generateTokenSymbol } from '../utils/generateTokenSymbol';
 
 const { width } = Dimensions.get('window');
 
@@ -37,7 +37,7 @@ const TokenItem = ({ token, account }: Props) => {
           ) : token?.image ? (
             <Image source={{ uri: token?.image }} />
           ) : (
-            <DefaultAvatar text={token?.symbol} />
+            <DefaultAvatar text={generateTokenSymbol(token?.name)} />
           )}
           <Spacer width={16} />
           <View>
