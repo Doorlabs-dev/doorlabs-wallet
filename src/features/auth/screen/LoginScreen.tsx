@@ -2,7 +2,7 @@ import BiometricsLoginButton from '@features/biometrics/components/BiometricsLog
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Alert, Image, StatusBar, StyleSheet, View } from 'react-native';
+import { Alert, StatusBar, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TextInput } from '../../../components/form';
 import { Container, Spacer } from '../../../components/layout';
@@ -13,11 +13,11 @@ import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import useAuthentication from '../hooks/useAuthentication';
 import AppLogo from '@assets/svg/app_logo.svg';
+import Toast from 'react-native-root-toast';
 
 const LoginScreen = () => {
   const { getWalletSavedPassword } = useWalletPassword();
   const { setIsAuthenticated } = useAuthentication();
-  const [savedPassword, setSavedPassword] = useState<string | null>();
   const [isStarting, setIsStarting] = useState(false);
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
   const navigation = useNavigation<ScreenNavigationProps<any>>();
@@ -28,25 +28,49 @@ const LoginScreen = () => {
   });
   const insets = useSafeAreaInsets();
 
-  const onSubmit = () => {
-    handleSubmit(async ({ password }) => {
-      if (password !== savedPassword) return Alert.alert('Wrong password');
+  const initializeWallet = async (password: string) => {
+    if (wallet.hasSession()) return setIsAuthenticated(true);
 
-      if (wallet.hasSession()) return setIsAuthenticated(true);
+    setIsStarting(true);
 
-      setIsStarting(true);
+    const success = await wallet.startSession(password);
 
-      const success = await wallet.startSession(password);
-
-      setIsStarting(false);
-      if (success) {
-        setIsLoginSuccess(true);
-      }
-    })();
+    setIsStarting(false);
+    if (success) {
+      setIsLoginSuccess(true);
+    }
   };
-  useEffect(() => {
-    getWalletSavedPassword().then((value) => setSavedPassword(value));
-  }, []);
+
+  const loginWithPassword = async (password: string) => {
+    try {
+      const savedPassword = await getWalletSavedPassword();
+
+      if (password !== savedPassword) throw Error('Login failed');
+
+      await initializeWallet(password);
+    } catch (error) {
+      Toast.show(`${error}`, {
+        position: Toast.positions.CENTER,
+      });
+    }
+  };
+
+  const loginWithBiometrics = async () => {
+    try {
+      const password = await getWalletSavedPassword();
+      if (!password) throw Error('Login failed');
+
+      await initializeWallet(password);
+    } catch (error) {
+      Toast.show(`${error}`, {
+        position: Toast.positions.CENTER,
+      });
+    }
+  };
+
+  const onSubmit = () => {
+    handleSubmit(async ({ password }) => loginWithPassword(password))();
+  };
 
   useEffect(() => {
     if (isLoginSuccess) {
@@ -75,12 +99,7 @@ const LoginScreen = () => {
       <Spacer height={12} />
       <PrimaryButton loading={isStarting} onPress={onSubmit} label="Unlock" />
       <Spacer height={20} />
-      <BiometricsLoginButton
-        onSuccess={() => {
-          setValue('password', savedPassword);
-          onSubmit();
-        }}
-      />
+      <BiometricsLoginButton onSuccess={() => loginWithBiometrics()} />
       <Container />
       <SecondaryButton
         title="Reset wallet"
