@@ -15,7 +15,7 @@ const useAppState = ({ onAppActive, onAppBackground }: Props) => {
         onAppActive();
       }
 
-      if (nextAppState.match('/background/')) {
+      if (nextAppState.match(/background/)) {
         onAppBackground();
       }
 
@@ -25,7 +25,7 @@ const useAppState = ({ onAppActive, onAppBackground }: Props) => {
     return () => {
       subscription.remove();
     };
-  }, [onAppActive, onAppBackground]);
+  }, []);
 };
 
 export default useAppState;
