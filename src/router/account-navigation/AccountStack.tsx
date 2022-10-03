@@ -13,6 +13,7 @@ import ConnectDappScreen from '@features/walletconnect/screens/ConnectDappScreen
 import TransactionsApprovalScreen from '@features/transactions/screens/TransactionsApprovalScreen';
 import VerifySeedPhraseScreen from '@features/recovery/screen/VerifySeedPhraseScreen';
 import useHeaderTitle from '@hooks/useHeaderTitle';
+import AccountEditNameScreen from '@features/account/screen/AccountEditNameScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ const {
   ACCOUNT_CONNECT_DAPP,
   ACCOUNT_TRANSACTION_APPROVAL,
   RECOVERY_VERIFY_PHRASE,
+  ACCOUNT_EDIT_ACCOUNT_NAME,
 } = ScreenNames;
 
 const AccountStack = () => {
@@ -117,6 +119,14 @@ const AccountStack = () => {
         }}
         name={RECOVERY_VERIFY_PHRASE}
         component={VerifySeedPhraseScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          headerTitle: useHeaderTitle('Edit Name'),
+        }}
+        name={ACCOUNT_EDIT_ACCOUNT_NAME}
+        component={AccountEditNameScreen}
       />
     </Stack.Navigator>
   );

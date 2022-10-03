@@ -105,6 +105,15 @@ const AccountScreen = () => {
           <AccountActionsModal
             actions={[
               {
+                label: 'Edit name',
+                onPress: () => {
+                  closeActionModal();
+                  navigation.navigate({
+                    name: ScreenNames.ACCOUNT_EDIT_ACCOUNT_NAME,
+                  });
+                },
+              },
+              {
                 label: 'View on voyager',
                 onPress: () => {
                   closeActionModal();
@@ -129,10 +138,6 @@ const AccountScreen = () => {
               //   label: 'Hide account',
               //   onPress: () => {},
               // },
-              // {
-              //   label: 'Edit name',
-              //   onPress: () => {},
-              // },
             ]}
             visible={actionModalVisible}
             onClose={closeActionModal}
@@ -151,3 +156,4 @@ const AccountScreen = () => {
 };
 
 export default AccountScreen;
+1;

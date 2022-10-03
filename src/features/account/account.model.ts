@@ -14,21 +14,30 @@ export class Account {
   networkId: string;
   signer: WalletAccountSigner;
   txHash?: string;
+  name?: string;
 
   provider: ProviderInterface;
 
-  constructor(
-    address: string,
-    network: Network,
-    signer: WalletAccountSigner,
-    txHash?: string
-  ) {
+  constructor({
+    address,
+    network,
+    signer,
+    txHash,
+    name,
+  }: {
+    address: string;
+    network: Network;
+    signer: WalletAccountSigner;
+    txHash?: string;
+    name?: string;
+  }) {
     this.address = address;
     this.network = network;
     this.networkId = network.id;
     this.signer = signer;
     this.provider = getProvider(network);
     this.txHash = txHash;
+    this.name = name;
   }
 
   getWalletAccount(): WalletAccount {
@@ -37,6 +46,7 @@ export class Account {
       signer: this.signer,
       networkId: this.networkId,
       network: this.network,
+      name: this.name,
     };
   }
 
@@ -59,11 +69,12 @@ export class Account {
       },
     });
 
-    return new Account(
-      account.address,
-      account.network,
-      account.signer,
-      txHash
-    );
+    return new Account({
+      address: account.address,
+      network: account.network,
+      signer: account.signer,
+      txHash: txHash,
+      name: account.name,
+    });
   }
 }

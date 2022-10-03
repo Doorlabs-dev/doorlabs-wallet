@@ -15,12 +15,9 @@ import { getNetwork, Network } from '../network';
 import { getProvider } from '../provider';
 import { DEFAULT_NETWORKS } from '../network/default_networks';
 import ProxyContract from '../../contracts/ProxyContract';
-import {
-  calculateContractAddressFromHash,
-  getSelectorFromName,
-} from 'starknet/dist/utils/hash';
+import { calculateContractAddressFromHash } from 'starknet/dist/utils/hash';
 import { union } from 'lodash-es';
-import { mergeArrayStableWith } from '@services/store';
+import ArrayStore from '@services/store';
 import { compareEqualAccount } from '@services/account';
 
 const BACKUP_KEY = 'backup';
@@ -49,7 +46,17 @@ class Wallet {
   public backup?: string;
   public session?: WalletSession;
 
+  private accountsStore: ArrayStore<WalletAccount>;
+
   private static instance: Wallet;
+
+  constructor() {
+    this.accountsStore = new ArrayStore<WalletAccount>({
+      name: ACCOUNTS_KEY,
+      defaultValue: [],
+      compareFn: compareEqualAccount,
+    });
+  }
 
   public static getInstance(): Wallet {
     if (!Wallet.instance) return new Wallet();
@@ -245,11 +252,11 @@ class Wallet {
   }
 
   async getWalletAccounts(): Promise<WalletAccount[]> {
-    const result = await AsyncStorage.getItem(ACCOUNTS_KEY);
+    const result = await this.accountsStore.get();
 
     if (!result) return [];
 
-    return JSON.parse(result) as WalletAccount[];
+    return result;
   }
 
   public getKeyPairByDerivationPath(derivationPath: string) {
@@ -260,32 +267,15 @@ class Wallet {
   }
 
   private async addWalletAccounts(accounts: WalletAccount[]) {
-    const oldAccounts = await this.getWalletAccounts();
-
-    const result = mergeArrayStableWith(
-      oldAccounts,
-      accounts,
-      compareEqualAccount
-    );
-
-    await AsyncStorage.setItem(ACCOUNTS_KEY, JSON.stringify(result));
+    await this.accountsStore.set(accounts);
   }
-  // TODO: handle multi accounts
-  // async restoreAccountFromWallet() {
-  //   if (!this.session) return;
-  //   const payload = await this.getDeployContractPayloadForAccount();
-  //   const response = await provider.deployContract(payload);
 
-  //   if (!response.address) return;
-
-  //   const account = {
-  //     address: response.address,
-  //   };
-
-  //   await this.addWalletAccount(account);
-
-  //   return { account, txHash: response.transaction_hash };
-  // }
+  async updateWalletAccount(account: WalletAccount) {
+    await this.accountsStore.setItem(
+      (item) => compareEqualAccount(account, item),
+      account
+    );
+  }
 
   async getAccountClassHash(network: Network) {
     return network.accountClassHash;

@@ -5,9 +5,10 @@ import { Account } from '../account.model';
 export function mapWalletAccountToAccount(
   walletAccount: WalletAccount
 ): Account {
-  return new Account(
-    walletAccount.address,
-    getNetwork(walletAccount.networkId),
-    walletAccount.signer
-  );
+  return new Account({
+    address: walletAccount.address,
+    network: getNetwork(walletAccount.networkId),
+    signer: walletAccount.signer,
+    name: walletAccount.name,
+  });
 }
