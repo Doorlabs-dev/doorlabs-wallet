@@ -14,6 +14,7 @@ const ScreenNames = {
   ACCOUNTS_LIST: 'accounts-list',
   ACCOUNT_NFTS: 'account-nfts',
   ACCOUNT_ACTIVITY: 'account-activity',
+  ACCOUNT_EDIT_ACCOUNT_NAME: 'account-edit-account-name',
   // ACCOUNT TOKEN STACK
   ACCOUNT_TOKENS_STACK: 'account-tokens-stack',
   ACCOUNT_TOKENS: 'account-tokens',

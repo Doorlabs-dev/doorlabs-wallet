@@ -18,7 +18,7 @@ const iconSize = {
 };
 
 const TabBarContainer = styled.View`
-  background-color: ${colors.greyScale};
+  background-color: ${colors.greyScale650};
   width: ${width - 82}px;
   height: 74px;
   padding: 8px 21px;
@@ -76,7 +76,7 @@ const TabBarItem = ({
   onPress,
 }: TabBarItemProps) => {
   const Icon = Icons[iconName];
-  const color = active ? colors.white : colors.lightGreyScale;
+  const color = active ? colors.white : colors.greyScale400;
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <TabBarItemContainer>

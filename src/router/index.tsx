@@ -4,27 +4,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useMemo } from 'react';
 import useAuthentication from '../features/auth/hooks/useAuthentication';
 import SplashScreen from '../features/onboarding/screen/SplashScreen';
-import useAppState from '../hooks/useAppState';
 import MainStack from './MainStack';
 import AuthStack from './AuthStack';
 import OnboardingStack from './OnboardingStack';
+import useSession from '@hooks/useSession';
 
 const AppNavigation = () => {
   const {
     isCheckingAccount,
     isAccountAvailable,
     isAuthenticated,
-    setIsAuthenticated,
+
     checkAccountAvailable,
   } = useAuthentication();
 
-  useAppState({
-    onAppActive: () => {
-      setIsAuthenticated(false);
-    },
-    onAppBackground: () => {},
-  });
-
+  useSession();
   useConnectListener();
 
   useEffect(() => {

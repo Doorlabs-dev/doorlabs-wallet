@@ -59,7 +59,10 @@ const useBiometrics = (): UseBiometrics => {
   };
 
   const authenticateBiometrics = async (): Promise<boolean> => {
-    const result = await LocalAuthentication.authenticateAsync();
+    const result = await LocalAuthentication.authenticateAsync({
+      disableDeviceFallback: true,
+      cancelLabel: 'Cancel',
+    });
 
     return result.success;
   };

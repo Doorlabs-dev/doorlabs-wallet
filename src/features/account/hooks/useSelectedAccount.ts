@@ -58,6 +58,17 @@ const useSelectedAccount = (fetchOnMount = false) => {
     );
   };
 
+  const changeAccountName = async (name: string) => {
+    if (!selectedAccount) return;
+
+    const updatedWalletAccount = {
+      ...selectedAccount!.getWalletAccount(),
+      name,
+    };
+    await wallet.updateWalletAccount(updatedWalletAccount);
+    await selectAccount(updatedWalletAccount);
+  };
+
   const exportPrivateKey = async () => {
     return await wallet.exportPrivateKey();
   };
@@ -67,6 +78,7 @@ const useSelectedAccount = (fetchOnMount = false) => {
     isLoading,
     selectAccount,
     exportPrivateKey,
+    changeAccountName,
   };
 };
 

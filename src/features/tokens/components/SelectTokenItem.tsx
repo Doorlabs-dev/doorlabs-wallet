@@ -9,6 +9,7 @@ import { Account } from '@features/account/account.model';
 import formatUnits from '@utils/formatUnits';
 import { View } from 'react-native';
 import { useBalance } from '../hooks/useBalance';
+import { generateTokenSymbol } from '../utils/generateTokenSymbol';
 
 const ItemContainer = styled.TouchableOpacity`
   background-color: ${colors.greyScale};
@@ -46,7 +47,7 @@ const SelectTokenItem = ({
           ) : token?.image ? (
             <IconImage source={{ uri: token?.image }} />
           ) : (
-            <DefaultAvatar text={token?.symbol} />
+            <DefaultAvatar text={generateTokenSymbol(token?.name)} />
           )}
           <Spacer width={16} />
           <View>

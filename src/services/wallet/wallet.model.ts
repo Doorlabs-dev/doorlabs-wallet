@@ -15,6 +15,7 @@ export interface WithSigner {
 }
 
 export interface AccountIdentifier {
+  name?: string;
   address: string;
   networkId: string;
 }
