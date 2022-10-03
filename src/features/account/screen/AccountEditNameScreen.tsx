@@ -15,7 +15,7 @@ const AccountEditNameScreen = (props: Props) => {
   const navigation = useNavigation();
   const { control, handleSubmit } = useForm<FieldValues>({
     defaultValues: {
-      name: selectedAccount?.name || generateAccountName(selectedAccount),
+      name: selectedAccount?.name || generateAccountName(selectedAccount).name,
     },
   });
 
