@@ -62,6 +62,7 @@ const useBiometrics = (): UseBiometrics => {
     const result = await LocalAuthentication.authenticateAsync({
       disableDeviceFallback: true,
       cancelLabel: 'Cancel',
+      fallbackLabel: '',
     });
 
     return result.success;
