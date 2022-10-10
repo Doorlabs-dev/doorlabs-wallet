@@ -6,7 +6,6 @@ import {
   ExecuteTransactionActionRequest,
   ExecuteTransactionActionResponse,
   REQUEST_SCHEME,
-  RESPONSE_SCHEME,
   WalletConnectActions,
 } from './walletconnect.action';
 import walletConnectActionStore from './walletConnectActionRequestStore.store';
@@ -36,8 +35,11 @@ class WalletConnectActionLinkHandler {
     dAppMeta: DAppMeta,
     response: ConnectActionResponse | ExecuteTransactionActionResponse
   ) {
-    const responseUrl = Linking.createURL('', {
-      scheme: RESPONSE_SCHEME,
+    const { path, hostname } = Linking.parse(dAppMeta.redirectUrl);
+    if (!path || !hostname) return;
+
+    const responseUrl = Linking.createURL(`${hostname}/${path}`, {
+      scheme: 'https',
       queryParams: {
         action: response.action,
         result: JSON.stringify(response.result),
@@ -90,6 +92,8 @@ class WalletConnectActionLinkHandler {
     response: ConnectActionResponse | ExecuteTransactionActionResponse
   ) {
     const responseUrl = this._makeResponseUrl(dAppMeta, response);
+    if (!responseUrl) return;
+
     if (await Linking.canOpenURL(responseUrl)) {
       await Linking.openURL(responseUrl);
     }
