@@ -7,6 +7,7 @@ export const RESPONSE_SCHEME = 'wmres';
 export type DAppMeta = {
   name: string;
   appId: string;
+  redirectUrl: string;
 };
 
 export interface ConnectActionRequest {

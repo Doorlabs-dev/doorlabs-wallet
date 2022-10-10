@@ -1,5 +1,10 @@
-import { isLiteralObject, validateStarknetTransaction } from '@utils/validator';
+import {
+  isHttpsURL,
+  isLiteralObject,
+  validateStarknetTransaction,
+} from '@utils/validator';
 import { isArray } from 'lodash-es';
+import { DAppMeta } from './walletconnect.action';
 
 export function isValidConnectDappAction(queryData?: {
   action: string;
@@ -8,9 +13,11 @@ export function isValidConnectDappAction(queryData?: {
   if (!isLiteralObject(queryData)) return false;
   if (!isLiteralObject(queryData?.data)) return false;
 
-  const { meta } = queryData?.data;
+  const { meta }: { meta: DAppMeta } = queryData?.data;
 
-  if (!meta || !meta?.name || !meta?.appId) return false;
+  if (!meta || !meta?.name || !meta?.appId || !meta?.redirectUrl) return false;
+
+  if (!isHttpsURL(meta.redirectUrl)) return false;
 
   return true;
 }

@@ -14,6 +14,7 @@ import walletConnectPreAuthorize from '@services/walletconnect/walletconnectPrea
 import { Alert } from 'react-native';
 import useSelectedAccount from '@features/account/hooks/useSelectedAccount';
 import WalletConnectActionLinkHandler from '@services/walletconnect/walletConnectActionLinkHandler.service';
+import useAppState from '@hooks/useAppState';
 
 const useWalletConnect = () => {
   const navigation = useNavigation<ScreenNavigationProps<any>>();
@@ -55,6 +56,15 @@ const useWalletConnect = () => {
         address: account?.address || '',
         networkId: account?.networkId || '',
       });
+      await WalletConnectActionLinkHandler.respond(meta, {
+        action: 'connect-dapp',
+        result: {
+          account: {
+            address: account?.address,
+            networkId: account?.networkId,
+          },
+        },
+      } as ConnectActionResponse);
       return;
     }
 
@@ -116,27 +126,33 @@ const useWalletConnect = () => {
     }
   };
 
-  useEffect(() => {
-    async function fetchAction() {
-      const request = await walletConnectActionRequestStore.get();
+  const fetchAction = async () => {
+    const request = await walletConnectActionRequestStore.get();
+    if (!request) return;
+    if (!selectedAccount) return;
 
-      if (!request) return;
-      if (!selectedAccount) return;
-
-      switch (request.action) {
-        case 'connect-dapp':
-          handleConnect(request);
-          break;
-        case 'execute-transaction':
-          handleExecuteTx(request);
-          break;
-        default:
-          break;
-      }
-      // delete action after handle action
-      await walletConnectActionRequestStore.delete();
+    switch (request.action) {
+      case 'connect-dapp':
+        handleConnect(request);
+        break;
+      case 'execute-transaction':
+        handleExecuteTx(request);
+        break;
+      default:
+        break;
     }
+    // delete action after handle action
+    await walletConnectActionRequestStore.delete();
+  };
 
+  useAppState({
+    onAppActive: () => {
+      fetchAction();
+    },
+    onAppBackground: () => {},
+  });
+
+  useEffect(() => {
     fetchAction();
   }, [selectedAccount?.address, selectedAccount?.networkId]);
 };
