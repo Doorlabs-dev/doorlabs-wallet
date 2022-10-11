@@ -5,6 +5,8 @@ import colors from '@styles/colors';
 import Text from './Text';
 import IconCopy from '@assets/svg/icon_copy.svg';
 import { Row, Spacer } from '@components/layout';
+import { getChecksumAddress } from '@utils/getChecksumAddress';
+import { useMemo } from 'react';
 
 const ShortAddress = ({
   address,
@@ -17,6 +19,8 @@ const ShortAddress = ({
   size?: number;
   lineHeight?: number;
 }) => {
+  const checksumAddress = useMemo(() => getChecksumAddress(address), [address]);
+
   if (!address) {
     return null;
   }
@@ -25,7 +29,7 @@ const ShortAddress = ({
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={async () => {
-        await setStringAsync(address);
+        await setStringAsync(checksumAddress);
         Toast.show('Copied');
       }}
     >

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import BottomSheet from '@components/ui/modal/BottomSheet';
 import QRCode from 'react-native-qrcode-svg';
 import { Spacer } from '@components/layout';
 import { ShortAddress } from '@components/ui';
 import styled from 'styled-components/native';
 import colors from '@styles/colors';
+import { getChecksumAddress } from '@utils/getChecksumAddress';
 
 type Props = {
   visible: boolean;
@@ -27,12 +28,15 @@ const QRBox = styled.View`
 `;
 
 const ReceiveAddressModal = ({ visible, onClose, address }: Props) => {
+  const checksumAddress = useMemo(() => {
+    return getChecksumAddress(address);
+  }, [address]);
   return (
     <BottomSheet visible={visible} onClose={onClose}>
       <Wrapper>
         <Spacer height={36} />
         <QRBox>
-          <QRCode size={200} value={address} />
+          <QRCode size={200} value={checksumAddress} />
         </QRBox>
         <Spacer height={16} />
         <ShortAddress color={colors.white} address={address} />

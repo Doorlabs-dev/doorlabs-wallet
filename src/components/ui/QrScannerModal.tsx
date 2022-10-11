@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CustomModalProps } from '@hooks/useModal';
 import {
   Camera,
@@ -12,6 +12,7 @@ import RNModal from 'react-native-modal';
 import styled from 'styled-components/native';
 import IconClose from '@assets/svg/icon_close.svg';
 import QRPlaceholder from '@assets/svg/qr_placeholder.svg';
+import colors from '@styles/colors';
 
 type Props = {
   onQRFound: (code: string | undefined) => void;
@@ -54,10 +55,8 @@ const QrScannerModal = ({ visible, onClose, onQRFound }: Props) => {
       backdropTransitionOutTiming={0}
       hideModalContentWhileAnimating
       isVisible={visible}
-      animationIn="fadeIn"
-      animationOut="fadeOut"
       onBackdropPress={onClose}
-      style={{ margin: 0 }}
+      style={{ margin: 0, backgroundColor: colors.primary }}
     >
       <Container>
         {!!device && (
