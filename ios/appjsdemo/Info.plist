@@ -78,6 +78,10 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraPortraitEffectEnabled</key>
+	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Walletme needs access to your Camera to read QR Code</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>wmres</string>
