@@ -20,6 +20,9 @@ import { BigNumber } from 'ethers';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
 import { SendNFTTransactionReview } from '@features/transactions/transactionReview.type';
+import useModal from '@hooks/useModal';
+import useCameraPermission from '@hooks/useCameraPermission';
+import QRScanButton from '@components/ui/QRScanButton';
 
 type Props = {};
 
@@ -33,6 +36,7 @@ const SendNftScreen = (props: Props) => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { isSubmitting },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -93,6 +97,7 @@ const SendNftScreen = (props: Props) => {
         control={control}
         label="Recipient's address"
         placeholder="Input address"
+        wrapperStyles={{ paddingRight: 56 }}
         rules={{
           required: 'Required',
           validate: {
@@ -110,7 +115,13 @@ const SendNftScreen = (props: Props) => {
         errorMessages={{
           isValidAddress: 'Invalid address',
         }}
-      />
+      >
+        <QRScanButton
+          onQRFound={(code) =>
+            setValue('recipient', code, { shouldValidate: true })
+          }
+        />
+      </TextInput>
       <PrimaryButton loading={isSubmitting} label="Next" onPress={submit()} />
     </Container>
   );
