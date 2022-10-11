@@ -10,7 +10,6 @@ type Props = {
   visible: boolean;
   onClose: () => void;
   address: string;
-  exploreUrl: string;
 };
 
 const Wrapper = styled.View`
@@ -18,17 +17,23 @@ const Wrapper = styled.View`
   align-items: center;
 `;
 
-const ReceiveAddressModal = ({
-  visible,
-  onClose,
-  address,
-  exploreUrl,
-}: Props) => {
+const QRBox = styled.View`
+  width: 250px;
+  height: 250px;
+  background-color: ${colors.white};
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+`;
+
+const ReceiveAddressModal = ({ visible, onClose, address }: Props) => {
   return (
     <BottomSheet visible={visible} onClose={onClose}>
       <Wrapper>
         <Spacer height={36} />
-        <QRCode size={200} value={exploreUrl} />
+        <QRBox>
+          <QRCode size={200} value={address} />
+        </QRBox>
         <Spacer height={16} />
         <ShortAddress color={colors.white} address={address} />
         <Spacer height={20} />
