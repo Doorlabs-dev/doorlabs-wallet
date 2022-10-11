@@ -149,7 +149,6 @@ const AccountScreen = () => {
         visible={receiveModalVisible}
         onClose={closeReceiveModal}
         address={selectedAccount?.address || ''}
-        exploreUrl={exploredAccountUrl}
       />
     </Container>
   );
