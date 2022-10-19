@@ -25,4 +25,4 @@ export const DEFAULT_NETWORKS = [
   },
 ];
 
-export const defaultNetwork = DEFAULT_NETWORKS[1];
+export const defaultNetwork = DEFAULT_NETWORKS[0];
