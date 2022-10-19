@@ -36,15 +36,19 @@ class WalletConnectActionLinkHandler {
     response: ConnectActionResponse | ExecuteTransactionActionResponse
   ) {
     const { path, hostname } = Linking.parse(dAppMeta.redirectUrl);
-    if (!path || !hostname) return;
 
-    const responseUrl = Linking.createURL(`${hostname}/${path}`, {
-      scheme: 'https',
-      queryParams: {
-        action: response.action,
-        result: JSON.stringify(response.result),
-      },
-    });
+    if (!hostname) return;
+
+    const responseUrl = Linking.createURL(
+      [hostname, path].filter((v) => !!v).join('/'),
+      {
+        scheme: 'https',
+        queryParams: {
+          action: response.action,
+          result: JSON.stringify(response.result),
+        },
+      }
+    );
     return responseUrl;
   }
 
