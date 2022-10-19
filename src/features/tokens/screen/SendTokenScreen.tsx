@@ -26,6 +26,7 @@ import { Token } from '@services/tokens/token.model';
 import AndroidHeaderFix from '@components/layout/AndroidHeaderFix';
 import ScreenNames from '@router/screenNames';
 import { SendTokenTransactionReview } from '@features/transactions/transactionReview.type';
+import QRScanButton from '@components/ui/QRScanButton';
 
 type Props = {};
 
@@ -47,7 +48,6 @@ const SendTokenScreen = (props: Props) => {
     handleSubmit,
     setValue,
     formState: { errors },
-    getValues,
   } = useForm<FieldValues>({
     defaultValues: {
       amount: '',
@@ -177,6 +177,7 @@ const SendTokenScreen = (props: Props) => {
         placeholder="Address"
         control={control}
         label="Recipient's address"
+        wrapperStyles={{ paddingRight: 56 }}
         errorMessages={{
           isValidAddress: 'Invalid address',
         }}
@@ -192,7 +193,13 @@ const SendTokenScreen = (props: Props) => {
             return v;
           }
         }}
-      />
+      >
+        <QRScanButton
+          onQRFound={(code) =>
+            setValue('recipient', code, { shouldValidate: true })
+          }
+        />
+      </TextInput>
       <Spacer height={8} />
       <PrimaryButton label="Next" onPress={onNext} />
     </Container>

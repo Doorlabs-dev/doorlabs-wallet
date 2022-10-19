@@ -14,12 +14,14 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { TextInput } from '@components/form';
 import NftInfoCard from '../components/NftInfoCard';
 import { isValidAddress } from '@utils/validator';
-import { getChecksumAddress, stark } from 'starknet';
+import { stark } from 'starknet';
 import { getUint256CalldataFromBN } from '@services/transaction';
 import { BigNumber } from 'ethers';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
 import { SendNFTTransactionReview } from '@features/transactions/transactionReview.type';
+import QRScanButton from '@components/ui/QRScanButton';
+import { getChecksumAddress } from '@utils/getChecksumAddress';
 
 type Props = {};
 
@@ -33,11 +35,11 @@ const SendNftScreen = (props: Props) => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { isSubmitting },
   } = useForm<FieldValues>({
     defaultValues: {
       recipient: '',
-      // '0x0303664190A1Fa7a74Cd4D977d34cad2b40fa61980d3876FD268Dd815c71bfc5',
     },
     mode: 'onChange',
   });
@@ -93,6 +95,7 @@ const SendNftScreen = (props: Props) => {
         control={control}
         label="Recipient's address"
         placeholder="Input address"
+        wrapperStyles={{ paddingRight: 56 }}
         rules={{
           required: 'Required',
           validate: {
@@ -110,7 +113,15 @@ const SendNftScreen = (props: Props) => {
         errorMessages={{
           isValidAddress: 'Invalid address',
         }}
-      />
+      >
+        <QRScanButton
+          onQRFound={(code) => {
+            setValue('recipient', code, {
+              shouldValidate: true,
+            });
+          }}
+        />
+      </TextInput>
       <PrimaryButton loading={isSubmitting} label="Next" onPress={submit()} />
     </Container>
   );
