@@ -5,7 +5,7 @@ import colors from '@styles/colors';
 import Text from './Text';
 import IconCopy from '@assets/svg/icon_copy.svg';
 import { Row, Spacer } from '@components/layout';
-import useChecksumAddress from '@features/account/hooks/useChecksumAddress';
+import { getChecksumAddress } from '@utils/getChecksumAddress';
 
 const ShortAddress = ({
   address,
@@ -18,8 +18,6 @@ const ShortAddress = ({
   size?: number;
   lineHeight?: number;
 }) => {
-  const checksumAddress = useChecksumAddress(address);
-
   if (!address) {
     return null;
   }
@@ -28,7 +26,7 @@ const ShortAddress = ({
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={async () => {
-        await setStringAsync(checksumAddress);
+        await setStringAsync(getChecksumAddress(address));
         Toast.show('Copied');
       }}
     >
@@ -38,8 +36,7 @@ const ShortAddress = ({
           size={size || 18}
           lineHeight={lineHeight || 28}
         >
-          {checksumAddress.substring(0, 6)} ...{' '}
-          {checksumAddress.substring(address.length - 4)}
+          {address.substring(0, 6)} ... {address.substring(address.length - 4)}
         </Text>
         <Spacer width={8} />
         <IconCopy />
