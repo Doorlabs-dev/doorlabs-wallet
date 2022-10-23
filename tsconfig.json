@@ -11,7 +11,10 @@
       "@styles/*": ["./src/styles/*"],
       "@utils/*": ["./src/utils/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@router/*": ["./src/router/*"]
+      "@router/*": ["./src/router/*"],
+      "crypto": ["react-native-quick-crypto"],
+      "stream": ["stream-browserify"],
+      "buffer": ["@craftzdog/react-native-buffer"]
     }
   }
 }

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = function (api) {
   api.cache(true);
   return {
@@ -22,6 +24,9 @@ module.exports = function (api) {
             '@utils': './src/utils',
             '@hooks': './src/hooks',
             '@router': './src/router',
+            crypto: 'react-native-quick-crypto',
+            stream: 'stream-browserify',
+            buffer: '@craftzdog/react-native-buffer',
           },
         },
       ],

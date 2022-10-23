@@ -155,4 +155,3 @@ const AccountScreen = () => {
 };
 
 export default AccountScreen;
-1;
