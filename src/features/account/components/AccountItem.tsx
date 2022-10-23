@@ -6,6 +6,7 @@ import { Row, Spacer } from '../../../components/layout';
 import { TouchableOpacity } from 'react-native';
 import IconCheck from '@assets/svg/icon_check.svg';
 import generateAccountName from '@utils/generateAccountName';
+import useChecksumAddress from '../hooks/useChecksumAddress';
 
 type Props = {
   account: Account;
@@ -20,7 +21,7 @@ const AccountItemContainer = styled.View`
 `;
 
 const AccountItem = ({ account, onPress, selected = false }: Props) => {
-  const address = account.address;
+  const checksumAddress = useChecksumAddress(account.address);
   const { name, symbol } = generateAccountName(account);
   return (
     <AccountItemContainer>
@@ -32,8 +33,8 @@ const AccountItem = ({ account, onPress, selected = false }: Props) => {
             <Title size={20}>{name}</Title>
             <Spacer height={8} />
             <Text>
-              {address.substring(0, 6)} ...{' '}
-              {address.substring(address.length - 4)}
+              {checksumAddress.substring(0, 6)} ...{' '}
+              {checksumAddress.substring(checksumAddress.length - 4)}
             </Text>
           </TouchableOpacity>
         </Row>

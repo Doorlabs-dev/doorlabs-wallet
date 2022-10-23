@@ -5,8 +5,7 @@ import colors from '@styles/colors';
 import Text from './Text';
 import IconCopy from '@assets/svg/icon_copy.svg';
 import { Row, Spacer } from '@components/layout';
-import { getChecksumAddress } from '@utils/getChecksumAddress';
-import { useMemo } from 'react';
+import useChecksumAddress from '@features/account/hooks/useChecksumAddress';
 
 const ShortAddress = ({
   address,
@@ -19,7 +18,7 @@ const ShortAddress = ({
   size?: number;
   lineHeight?: number;
 }) => {
-  const checksumAddress = useMemo(() => getChecksumAddress(address), [address]);
+  const checksumAddress = useChecksumAddress(address);
 
   if (!address) {
     return null;
@@ -39,7 +38,8 @@ const ShortAddress = ({
           size={size || 18}
           lineHeight={lineHeight || 28}
         >
-          {address.substring(0, 6)} ... {address.substring(address.length - 4)}
+          {checksumAddress.substring(0, 6)} ...{' '}
+          {checksumAddress.substring(address.length - 4)}
         </Text>
         <Spacer width={8} />
         <IconCopy />
