@@ -31,6 +31,8 @@ build/
 .idea
 .gradle
 local.properties
+*.jks
+*.pepk
 *.iml
 *.hprof
 
