@@ -21,6 +21,7 @@ const AccountItemContainer = styled.View`
 
 const AccountItem = ({ account, onPress, selected = false }: Props) => {
   const address = account.address;
+
   const { name, symbol } = generateAccountName(account);
   return (
     <AccountItemContainer>
