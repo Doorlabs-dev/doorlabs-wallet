@@ -20,6 +20,13 @@ import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
 
+const commonPasswordRules = {
+  required: 'This field is required!',
+  minLength: 8,
+};
+
+const minLengthErrorMessage = 'Password should contain at least 8 characters';
+
 const NewWalletScreen = () => {
   const { control, formState, handleSubmit, getValues, setValue } =
     useForm<FieldValues>({
@@ -112,7 +119,10 @@ const NewWalletScreen = () => {
           placeholder="Password"
           label="Password"
           control={control}
-          rules={{ required: 'This field is required!' }}
+          rules={commonPasswordRules}
+          errorMessages={{
+            minLength: minLengthErrorMessage,
+          }}
           inputProps={{
             secureTextEntry: true,
           }}
@@ -123,8 +133,11 @@ const NewWalletScreen = () => {
           label="Confirm password"
           control={control}
           rules={{
-            required: 'This field is required!',
+            ...commonPasswordRules,
             validate: isSameValue,
+          }}
+          errorMessages={{
+            minLength: minLengthErrorMessage,
           }}
           inputProps={{
             secureTextEntry: true,
