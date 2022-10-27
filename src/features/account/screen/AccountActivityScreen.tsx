@@ -37,7 +37,11 @@ const AccountActivityScreen = (props: Props) => {
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <Spacer height={16} />}
         renderItem={({ item: tx }) => (
-          <TransactionItem key={tx.hash} transaction={tx} />
+          <TransactionItem
+            network={selectedAccount?.network}
+            key={tx.hash}
+            transaction={tx}
+          />
         )}
         renderSectionHeader={({ section }) => (
           <>

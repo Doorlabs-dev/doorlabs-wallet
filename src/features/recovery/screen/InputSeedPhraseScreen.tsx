@@ -19,6 +19,7 @@ import colors from '@styles/colors';
 import RestoreSuccessPopup from './components/RestoreSuccessPopup';
 import useModal from '@hooks/useModal';
 import InvalidPhrasePopup from './components/InvalidPhrasePopup';
+import { commonPasswordRules, minLengthErrorMessage } from '@utils/validator';
 
 const InputSeedPhraseScreen = () => {
   const { control, handleSubmit, getValues, setValue } = useForm<FieldValues>({
@@ -121,7 +122,8 @@ const InputSeedPhraseScreen = () => {
           control={control}
           placeholder="Secret phrase"
           label="Typically 12 (sometimes 24) words separated by single spaces"
-          rules={{ required: 'This field is required!' }}
+          rules={commonPasswordRules}
+          errorMessages={{ minLength: minLengthErrorMessage }}
           inputProps={{
             multiline: true,
             style: {
@@ -144,7 +146,8 @@ const InputSeedPhraseScreen = () => {
           control={control}
           placeholder="Input your new password"
           label="New password"
-          rules={{ required: 'This field is required!' }}
+          rules={commonPasswordRules}
+          errorMessages={{ minLength: minLengthErrorMessage }}
           inputProps={{
             secureTextEntry: true,
           }}

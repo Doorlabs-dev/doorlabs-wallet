@@ -4,6 +4,7 @@ import useBiometrics, { biometricsStore } from '@hooks/useBiometrics';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { ScreenNavigationProps } from '@router/navigation-props';
 import ScreenNames from '@router/screenNames';
+import { commonPasswordRules, minLengthErrorMessage } from '@utils/validator';
 import React, { useEffect, useState } from 'react';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
@@ -19,13 +20,6 @@ import { PrimaryButton, Text, Title } from '../../../components/ui';
 import wallet from '../../../services/wallet';
 import useWalletPassword from '../../../services/wallet_password';
 import { colors } from '../../../styles';
-
-const commonPasswordRules = {
-  required: 'This field is required!',
-  minLength: 8,
-};
-
-const minLengthErrorMessage = 'Password should contain at least 8 characters';
 
 const NewWalletScreen = () => {
   const { control, formState, handleSubmit, getValues, setValue } =

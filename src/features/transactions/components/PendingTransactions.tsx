@@ -28,6 +28,7 @@ const PendingTransactions = () => {
             <PendingTransactionItem
               onTransactionSuccess={setAllTransactions}
               key={tx.hash}
+              network={selectedAccount?.network}
               transaction={tx}
             />
           )}
