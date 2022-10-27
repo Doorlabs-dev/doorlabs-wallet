@@ -4,7 +4,7 @@ export const DEFAULT_NETWORKS = [
     name: 'Ethereum Mainnet',
     chainId: 'SN_MAIN',
     baseUrl: 'https://alpha-mainnet.starknet.io',
-    explorerUrl: 'https://voyager.online',
+    explorerUrl: 'https://starkscan.co',
     accountClassHash:
       '0x3e327de1c40540b98d05cbcb13552008e36f0ec8d61d46956d2f9752c294328',
     multicallAddress:
@@ -16,7 +16,7 @@ export const DEFAULT_NETWORKS = [
     name: 'Goerli Testnet',
     chainId: 'SN_GOERLI',
     baseUrl: 'https://alpha4.starknet.io',
-    explorerUrl: 'https://goerli.voyager.online',
+    explorerUrl: 'https://testnet.starkscan.co',
     accountClassHash:
       '0x3e327de1c40540b98d05cbcb13552008e36f0ec8d61d46956d2f9752c294328',
     multicallAddress:

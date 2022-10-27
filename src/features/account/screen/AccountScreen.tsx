@@ -114,7 +114,7 @@ const AccountScreen = () => {
                 },
               },
               {
-                label: 'View on voyager',
+                label: 'View on Starkscan',
                 onPress: () => {
                   closeActionModal();
                   navigation.navigate({

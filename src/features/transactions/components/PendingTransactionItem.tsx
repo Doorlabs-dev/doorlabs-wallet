@@ -1,4 +1,4 @@
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { Transaction } from '@services/transaction/transaction.type';
 import { ShortAddress, Text } from '@components/ui';
@@ -8,8 +8,14 @@ import { Row, Spacer } from '@components/layout';
 import IconTransactionDeploy from '@assets/svg/transaction/icon_transaction_deploy.svg';
 import IconTransactionTransfer from '@assets/svg/transaction/icon_transaction_transfer.svg';
 import useTrackTransaction from '../hooks/useTrackTransaction';
+import { Network } from '@services/network';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNavigationProps } from '@router/navigation-props';
+import ScreenNames from '@router/screenNames';
+import { getExploreTxUrl } from '@services/explore';
 
 type Props = {
+  network?: Network;
   transaction: Transaction;
   onTransactionSuccess: (transactions: Transaction[]) => void;
 };
@@ -32,40 +38,55 @@ const Right = styled.View`
 `;
 
 const PendingTransactionItem = ({
+  network,
   transaction,
   onTransactionSuccess,
 }: Props) => {
   useTrackTransaction({ transaction, onTransactionSuccess });
+  const navigation = useNavigation<ScreenNavigationProps<any>>();
 
   const Icon = transaction.meta?.type
     ? IconByType[transaction.meta?.type]
     : IconByType.transfer;
 
+  const viewOnStarkScan = () => {
+    if (!network) return;
+
+    navigation.navigate({
+      name: ScreenNames.WEBVIEW,
+      params: {
+        url: getExploreTxUrl(network.explorerUrl, transaction.hash),
+      },
+    });
+  };
+
   return (
-    <Container>
-      <Row alignItems="center">
-        <Icon />
-        <Spacer width={16} />
-        <View>
-          <Text color={colors.white} size={16} lineHeight={24} weight={600}>
-            {transaction.meta?.title ?? 'Pending transaction'}
-          </Text>
-          {transaction?.meta?.subTitle ? (
+    <TouchableOpacity activeOpacity={0.8} onPress={viewOnStarkScan}>
+      <Container>
+        <Row alignItems="center">
+          <Icon />
+          <Spacer width={16} />
+          <View>
             <Text color={colors.white} size={16} lineHeight={24} weight={600}>
               {transaction.meta?.title ?? 'Pending transaction'}
             </Text>
-          ) : (
-            <ShortAddress
-              color={colors.greyScale300}
-              address={transaction.hash}
-            />
-          )}
-        </View>
-        <Right>
-          <ActivityIndicator size={'small'} color={colors.white} />
-        </Right>
-      </Row>
-    </Container>
+            {transaction?.meta?.subTitle ? (
+              <Text color={colors.white} size={16} lineHeight={24} weight={600}>
+                {transaction.meta?.title ?? 'Pending transaction'}
+              </Text>
+            ) : (
+              <ShortAddress
+                color={colors.greyScale300}
+                address={transaction.hash}
+              />
+            )}
+          </View>
+          <Right>
+            <ActivityIndicator size={'small'} color={colors.white} />
+          </Right>
+        </Row>
+      </Container>
+    </TouchableOpacity>
   );
 };
 

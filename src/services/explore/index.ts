@@ -4,3 +4,7 @@ export const getExploreAccountURL = (
 ) => {
   return `${baseExploreURL}/contract/${address}`;
 };
+
+export const getExploreTxUrl = (baseExploreURL: string, hash: string) => {
+  return `${baseExploreURL}/tx/${hash}`;
+};

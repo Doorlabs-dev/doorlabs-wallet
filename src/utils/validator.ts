@@ -89,3 +89,11 @@ export function isHttpsURL(url: string) {
     /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
   return urlRegex.test(url);
 }
+
+export const commonPasswordRules = {
+  required: 'This field is required!',
+  minLength: 8,
+};
+
+export const minLengthErrorMessage =
+  'Password should contain at least 8 characters';
