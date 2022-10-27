@@ -306,6 +306,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // vision camera
+    implementation ('androidx.browser:browser:1.4.0') {
+        force = true
+    }
 
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
